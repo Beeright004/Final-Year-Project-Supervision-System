@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white;
+  }
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Micro animations */
+.glow-on-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glow-on-hover:hover {
+  box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Presenter Glowing Border */
+.presenter-glow {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  border-color: rgba(59, 130, 246, 0.6);
+  animation: border-pulse 2s infinite alternate;
+}
+
+@keyframes border-pulse {
+  0% {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.7), 0 0 8px rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.8);
+  }
+}
+
+/* Smooth layout scaling transitions */
+.video-transition-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Picture in Picture layout classes */
+.pip-overlay {
+  position: absolute;
+  z-index: 50;
+  width: 280px;
+  height: 180px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .pip-overlay {
+    width: 160px;
+    height: 110px;
+  }
+}
+
+.pip-top-left {
+  top: 16px;
+  left: 16px;
+}
+.pip-top-right {
+  top: 16px;
+  right: 16px;
+}
+.pip-bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+.pip-bottom-right {
+  bottom: 16px;
+  right: 16px;
+}
+

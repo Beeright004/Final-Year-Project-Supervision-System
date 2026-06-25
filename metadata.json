@@ -1,0 +1,6 @@
+{
+  "name": "Final Year Supervision System",
+  "description": "A comprehensive web-based platform managing project topics, proposal reviews, meeting scheduling, and approvals between students, supervisors, and admins.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

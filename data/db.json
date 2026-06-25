@@ -1,0 +1,1286 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_heritage15",
+      "name": "Heritage Oni (Admin)",
+      "email": "heritageoni15@gmail.com",
+      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "role": "admin",
+      "department": "Computer Science",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    },
+    {
+      "id": "usr_admin_heritage",
+      "name": "Heritage Oni",
+      "email": "heritageoni16@gmail.com",
+      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "role": "admin",
+      "department": "Computer Science",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    },
+    {
+      "id": "usr_stud_1",
+      "name": "Sunday Bright",
+      "email": "beeright004@gmail.com",
+      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "role": "student",
+      "matricNumber": "210502197",
+      "department": "Computer Science",
+      "supervisorId": "usr_sup_olukunle",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    },
+    {
+      "id": "usr_sup_olukunle",
+      "name": "Olukunle Adebayo",
+      "email": "olukunle.adebayo@university.edu",
+      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "role": "supervisor",
+      "department": "Computer Science",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    },
+    {
+      "id": "usr_jlyz7ta23",
+      "name": "Test Student Three",
+      "email": "test.student3@school.edu",
+      "password": "$2b$10$REsCQoO1Dt3Lj4uXk8UeWOmnTIKM7Ij786pQcLmyCOWI6uWWYBfrm",
+      "role": "student",
+      "matricNumber": "STU/2026/003",
+      "department": "ICT (Information Technology)",
+      "supervisorId": "usr_admin_heritage",
+      "createdAt": "2026-06-24T07:44:17.563Z"
+    },
+    {
+      "id": "usr_619mht7zp",
+      "name": "Olaogun Demilade",
+      "email": "olaogundemilade@gmail.com",
+      "password": "$2b$10$cf12qrn/ERZqcAC9PTjqmuQVuB.ZqZz5VCPH1ajCsqpuCT9fPq2AS",
+      "role": "student",
+      "matricNumber": "220501012",
+      "department": "Computer Science",
+      "supervisorId": "usr_sup_olukunle",
+      "createdAt": "2026-06-24T14:07:33.064Z"
+    },
+    {
+      "id": "usr_qswt7ag64",
+      "name": "Glory Okum",
+      "email": "gloryokum863@gmail.com",
+      "password": "$2b$10$xdO7q0Hua/8um9wc1rzQyO4EgtaDLTTvOXSKDiD2NTaedqhRnPQYO",
+      "role": "student",
+      "matricNumber": "220502063",
+      "department": "ICT (Information Technology)",
+      "supervisorId": "usr_sup_olukunle",
+      "createdAt": "2026-06-24T14:30:37.407Z"
+    }
+  ],
+  "topics": [
+    {
+      "id": "top_demo_1",
+      "title": "Design and Implementation of a Final Year Project Supervision System",
+      "description": "A web-based application developed to improve the management of final-year projects in higher institutions. The system serves as a centralized platform where students, supervisors, and administrators can efficiently manage project-related activities.",
+      "status": "approved",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "feedback": "Good topic selection. Please proceed with the proposal document.",
+      "createdAt": "2026-06-23T16:21:38.476Z",
+      "updatedAt": "2026-06-23T16:21:38.476Z"
+    }
+  ],
+  "proposals": [],
+  "notifications": [
+    {
+      "id": "not_c9uwoit2a",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"SEMINAR\" at 2026-06-24 17:48",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:47:58.025Z"
+    },
+    {
+      "id": "not_9c1uk3ivl",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"SEMINAR DEFENCE + PRESENTATION\" at 2026-06-24 17:27",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:27:36.365Z"
+    },
+    {
+      "id": "not_olmcqq7q4",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"SEMINAR DEFENCE + PRESENTATION\" at 2026-06-24 17:27",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:27:32.678Z"
+    },
+    {
+      "id": "not_d7e49equa",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"SEMINAR DEFENCE + PRESENTATION\" at 2026-06-24 17:27",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:27:29.615Z"
+    },
+    {
+      "id": "not_vmtrpzltc",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION REVIEW\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:26:31.485Z"
+    },
+    {
+      "id": "not_vgxjzzxh3",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION REVIEW\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:26:26.450Z"
+    },
+    {
+      "id": "not_9ov2liyw8",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION REVIEW\" at 2026-06-24 17:20",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:19:19.640Z"
+    },
+    {
+      "id": "not_cfkutpb03",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION REVIEW\" at 2026-06-24 17:20",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:19:16.725Z"
+    },
+    {
+      "id": "not_ay15eutmb",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION REVIEW\" at 2026-06-24 17:20",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:19:14.458Z"
+    },
+    {
+      "id": "not_5999d2cbg",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"PROJECT REVIEW\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:18:21.753Z"
+    },
+    {
+      "id": "not_a8amdkzou",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": true,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:53.107Z"
+    },
+    {
+      "id": "not_55v3hly6y",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:50.297Z"
+    },
+    {
+      "id": "not_vq33e72t0",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:48.706Z"
+    },
+    {
+      "id": "not_k4yls0fpi",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:13.563Z"
+    },
+    {
+      "id": "not_btnak714c",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:12.123Z"
+    },
+    {
+      "id": "not_4bzp9wd52",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:06.490Z"
+    },
+    {
+      "id": "not_47vfilb8r",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:15:04.217Z"
+    },
+    {
+      "id": "not_ypbiqb6ep",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:44.817Z"
+    },
+    {
+      "id": "not_at507ovlc",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:42.778Z"
+    },
+    {
+      "id": "not_m7dyh3maa",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:40.521Z"
+    },
+    {
+      "id": "not_uptcciuqc",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:26.534Z"
+    },
+    {
+      "id": "not_1bth94cje",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:24.810Z"
+    },
+    {
+      "id": "not_y5gzu4uhi",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:16.656Z"
+    },
+    {
+      "id": "not_bi7chai98",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:15.054Z"
+    },
+    {
+      "id": "not_q6ayszze6",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:13.544Z"
+    },
+    {
+      "id": "not_pkydp7wh6",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:09.919Z"
+    },
+    {
+      "id": "not_lnpx4f9rb",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:08.462Z"
+    },
+    {
+      "id": "not_tsimssdhz",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:06.496Z"
+    },
+    {
+      "id": "not_g8ujyqbjm",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision Scheduled session \"CHAPTER 1 & 2 PRESENTATION\" updated to [CANCELLED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:03.822Z"
+    },
+    {
+      "id": "not_88p3gxu18",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:02.267Z"
+    },
+    {
+      "id": "not_e4unf1n34",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:00.766Z"
+    },
+    {
+      "id": "not_nzq8j3o7j",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:14:00.615Z"
+    },
+    {
+      "id": "not_l9eum2mne",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:58.031Z"
+    },
+    {
+      "id": "not_d92hqgzoa",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:57.340Z"
+    },
+    {
+      "id": "not_b7u53my9l",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:57.059Z"
+    },
+    {
+      "id": "not_kois792bc",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:53.215Z"
+    },
+    {
+      "id": "not_gq8fbcfr3",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:52.945Z"
+    },
+    {
+      "id": "not_u33ecei7u",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:52.812Z"
+    },
+    {
+      "id": "not_v2yp47v7b",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:51.847Z"
+    },
+    {
+      "id": "not_j043laom6",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:51.637Z"
+    },
+    {
+      "id": "not_kx6uoovs4",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:50.536Z"
+    },
+    {
+      "id": "not_0b90vrash",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:49.139Z"
+    },
+    {
+      "id": "not_idcmh28oi",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:47.813Z"
+    },
+    {
+      "id": "not_yzx7keabl",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:46.445Z"
+    },
+    {
+      "id": "not_kl7tc777k",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:45.411Z"
+    },
+    {
+      "id": "not_0j8vxlg1o",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:43.093Z"
+    },
+    {
+      "id": "not_wbbfpr0lr",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"CHAPTER 1 & 2 PRESENTATION\" at 2026-06-24 17:13",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-24T16:13:41.720Z"
+    },
+    {
+      "id": "not_y36gep1kw",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Welcome to FYP project supervision! Propose research titles to start milestones tracking.",
+      "read": false,
+      "type": "success",
+      "createdAt": "2026-06-24T14:30:37.407Z"
+    },
+    {
+      "id": "not_tjtxwdaji",
+      "recipientId": "usr_619mht7zp",
+      "message": "Welcome to FYP project supervision! Propose research titles to start milestones tracking.",
+      "read": false,
+      "type": "success",
+      "createdAt": "2026-06-24T14:07:33.064Z"
+    },
+    {
+      "id": "not_nc1wriceb",
+      "recipientId": "usr_jlyz7ta23",
+      "message": "Welcome to FYP project supervision! Propose research titles to start milestones tracking.",
+      "read": false,
+      "type": "success",
+      "createdAt": "2026-06-24T07:44:17.564Z"
+    },
+    {
+      "id": "not_bo6fi0ucz",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"PROJECT REVIEW\" at 2026-06-23 17:46",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-23T16:45:57.353Z"
+    },
+    {
+      "id": "not_0wg8uudcx",
+      "recipientId": "usr_sup_olukunle",
+      "message": "Supervision Scheduled session \"Initial Project Scope Consultation\" updated to [CANCELLED] by Sunday Bright.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-23T16:22:01.689Z"
+    }
+  ],
+  "schedules": [
+    {
+      "id": "sch_demo_1",
+      "title": "Initial Project Scope Consultation",
+      "meetingDate": "2026-06-28",
+      "time": "10:00",
+      "venue": "Faculty of Computing, Room 205",
+      "status": "cancelled",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    },
+    {
+      "id": "sch_e7nfk1pz8",
+      "title": "PROJECT REVIEW",
+      "meetingDate": "2026-06-23",
+      "time": "17:46",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-23T16:45:57.352Z"
+    },
+    {
+      "id": "sch_3qzgexh5o",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:41.720Z"
+    },
+    {
+      "id": "sch_twwmwn3f5",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:43.093Z"
+    },
+    {
+      "id": "sch_2wbtxec2x",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:45.411Z"
+    },
+    {
+      "id": "sch_yav5eedsu",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:46.445Z"
+    },
+    {
+      "id": "sch_rbzh03462",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:47.813Z"
+    },
+    {
+      "id": "sch_kzinslpeq",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:49.139Z"
+    },
+    {
+      "id": "sch_578ek0g8f",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:50.536Z"
+    },
+    {
+      "id": "sch_v1offz5vg",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:51.637Z"
+    },
+    {
+      "id": "sch_6xa7s41gj",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:51.847Z"
+    },
+    {
+      "id": "sch_4lfo94xbs",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:52.812Z"
+    },
+    {
+      "id": "sch_jk4p0tvav",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:52.945Z"
+    },
+    {
+      "id": "sch_hc058340i",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:53.215Z"
+    },
+    {
+      "id": "sch_3d1dmjez4",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:57.059Z"
+    },
+    {
+      "id": "sch_vw1ra09ru",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:57.340Z"
+    },
+    {
+      "id": "sch_ixtxantsx",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:13:58.031Z"
+    },
+    {
+      "id": "sch_lqmmrl2y8",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:14:00.615Z"
+    },
+    {
+      "id": "sch_h2ec1n0vb",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:14:00.766Z"
+    },
+    {
+      "id": "sch_unq32ahum",
+      "title": "CHAPTER 1 & 2 PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:13",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:14:02.267Z"
+    },
+    {
+      "id": "sch_pn1azn14w",
+      "title": "CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "meetingDate": "2026-06-24",
+      "time": "17:20",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-24T16:19:14.458Z"
+    },
+    {
+      "id": "sch_4s3jnyog1",
+      "title": "CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "meetingDate": "2026-06-24",
+      "time": "17:20",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:19:16.725Z"
+    },
+    {
+      "id": "sch_1xmgbxej2",
+      "title": "CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "meetingDate": "2026-06-24",
+      "time": "17:20",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "cancelled",
+      "createdAt": "2026-06-24T16:19:19.640Z"
+    },
+    {
+      "id": "sch_hgevq01ot",
+      "title": "SEMINAR DEFENCE + PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:27",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-24T16:27:29.615Z"
+    },
+    {
+      "id": "sch_kqju8go7w",
+      "title": "SEMINAR DEFENCE + PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:27",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-24T16:27:32.678Z"
+    },
+    {
+      "id": "sch_we03uco91",
+      "title": "SEMINAR DEFENCE + PRESENTATION",
+      "meetingDate": "2026-06-24",
+      "time": "17:27",
+      "venue": "ONLINE MEETING",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-24T16:27:36.365Z"
+    },
+    {
+      "id": "sch_9ku8c51xp",
+      "title": "SEMINAR",
+      "meetingDate": "2026-06-24",
+      "time": "17:48",
+      "venue": "ONLINE",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-24T16:47:58.023Z"
+    }
+  ],
+  "documents": [],
+  "presentations": [
+    {
+      "id": "pres_demo_1",
+      "title": "Mid-Project Progress Presentation",
+      "description": "Present your current project progress including: system architecture diagram, database schema design, and implementation milestones completed so far. Minimum 15 slides required.",
+      "dueDate": "2026-06-30",
+      "meetingUrl": "",
+      "status": "pending",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "studentName": "Sunday Bright",
+      "studentMatric": "210502197",
+      "createdAt": "2026-06-23T16:21:38.476Z"
+    }
+  ],
+  "emails": [
+    {
+      "id": "email_t2cpggm2l",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: SEMINAR",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> SEMINAR</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:48</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:47:58.029Z"
+    },
+    {
+      "id": "email_s4vo8mljw",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: SEMINAR DEFENCE + PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> SEMINAR DEFENCE + PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:27</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:27:36.365Z"
+    },
+    {
+      "id": "email_n7fjoz1ol",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: SEMINAR DEFENCE + PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> SEMINAR DEFENCE + PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:27</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:27:32.679Z"
+    },
+    {
+      "id": "email_b3bj6nfev",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: SEMINAR DEFENCE + PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> SEMINAR DEFENCE + PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:27</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:27:29.615Z"
+    },
+    {
+      "id": "email_alheawcwm",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION REVIEW</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:26:31.485Z"
+    },
+    {
+      "id": "email_hgyznm4z5",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION REVIEW</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:26:26.450Z"
+    },
+    {
+      "id": "email_wpjjdgnew",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION REVIEW</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:20</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:19:19.640Z"
+    },
+    {
+      "id": "email_t70efntqi",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION REVIEW</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:20</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:19:16.726Z"
+    },
+    {
+      "id": "email_6snidiqpq",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION REVIEW",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION REVIEW</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:20</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:19:14.458Z"
+    },
+    {
+      "id": "email_q952gj4dc",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> PROJECT REVIEW</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:18:21.753Z"
+    },
+    {
+      "id": "email_qacj1e4lv",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:53.107Z"
+    },
+    {
+      "id": "email_6rpfp2lnv",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:50.298Z"
+    },
+    {
+      "id": "email_ewlz0o54x",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:48.707Z"
+    },
+    {
+      "id": "email_qsct3t5gz",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:13.564Z"
+    },
+    {
+      "id": "email_p717dptp6",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:12.124Z"
+    },
+    {
+      "id": "email_xbqxyn63b",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:06.490Z"
+    },
+    {
+      "id": "email_vwjqck9b2",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:15:04.218Z"
+    },
+    {
+      "id": "email_2bnjcywxj",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:44.817Z"
+    },
+    {
+      "id": "email_n7uq7hs1r",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:42.779Z"
+    },
+    {
+      "id": "email_b0abh56wa",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:40.522Z"
+    },
+    {
+      "id": "email_oz3fjs3ur",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:26.535Z"
+    },
+    {
+      "id": "email_mc9fu82cq",
+      "to": "beeright004@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:24.810Z"
+    },
+    {
+      "id": "email_h78t61ly2",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:16.657Z"
+    },
+    {
+      "id": "email_2s9ivw67a",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:15.054Z"
+    },
+    {
+      "id": "email_kr2y23fle",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:13.544Z"
+    },
+    {
+      "id": "email_qyuifnaep",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:09.919Z"
+    },
+    {
+      "id": "email_ph4kt8c36",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:08.462Z"
+    },
+    {
+      "id": "email_9suck8hq0",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:06.496Z"
+    },
+    {
+      "id": "email_45j4qoeby",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:03.822Z"
+    },
+    {
+      "id": "email_l9t13eljm",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:02.267Z"
+    },
+    {
+      "id": "email_aoe7qxpgg",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:00.766Z"
+    },
+    {
+      "id": "email_py4kcgwcs",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:14:00.615Z"
+    },
+    {
+      "id": "email_qnshosnx7",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:58.032Z"
+    },
+    {
+      "id": "email_8jeludpcl",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:57.341Z"
+    },
+    {
+      "id": "email_3ranf1gop",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:57.059Z"
+    },
+    {
+      "id": "email_t0kzq5k4q",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:53.216Z"
+    },
+    {
+      "id": "email_igccdyt6r",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:52.945Z"
+    },
+    {
+      "id": "email_iv8u5uqxc",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:52.812Z"
+    },
+    {
+      "id": "email_81nokfjd3",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:51.847Z"
+    },
+    {
+      "id": "email_d4kbysr7c",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:51.638Z"
+    },
+    {
+      "id": "email_0qbeeqepa",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:50.536Z"
+    },
+    {
+      "id": "email_fkuv7sf5a",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:49.140Z"
+    },
+    {
+      "id": "email_0u0m4ph7k",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:47.814Z"
+    },
+    {
+      "id": "email_5087h52y5",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:46.446Z"
+    },
+    {
+      "id": "email_pk09fvbqf",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:45.412Z"
+    },
+    {
+      "id": "email_u50tt5jep",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:43.093Z"
+    },
+    {
+      "id": "email_79r86cycd",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: CHAPTER 1 & 2 PRESENTATION",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> CHAPTER 1 & 2 PRESENTATION</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-24</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:13</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T16:13:41.723Z"
+    },
+    {
+      "id": "email_13xvub4t0",
+      "to": "gloryokum863@gmail.com",
+      "subject": "Academic Account Activation — Final Year Supervision System",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #1e3a8a; margin-top: 0;\">Welcome to the Supervision Platform!</h2>\n        <p>Dear <strong>Glory Okum</strong>,</p>\n        <p>Your academic supervision account (registered with email: <code>gloryokum863@gmail.com</code>) as a <strong>student</strong> has been successfully authorized.</p>\n        <p>You can now log in to propose topics, manage documents, and schedule face-to-face or digital milestone reviews with your supervisor.</p>\n        <br />\n        <div style=\"background-color: #f3f4f6; padding: 15px; border-radius: 6px; font-size: 14px;\">\n          <strong>Next Steps:</strong>\n          <ul>\n            <li>Log in and complete your student/advisor profile.</li>\n            <li>Submit your final-year project title or review assigned student teams.</li>\n          </ul>\n        </div>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">This is an automated notification from the University FYP Division.</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T14:30:37.408Z"
+    },
+    {
+      "id": "email_vn8e2i0sa",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "Academic Account Activation — Final Year Supervision System",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #1e3a8a; margin-top: 0;\">Welcome to the Supervision Platform!</h2>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>Your academic supervision account (registered with email: <code>olaogundemilade@gmail.com</code>) as a <strong>student</strong> has been successfully authorized.</p>\n        <p>You can now log in to propose topics, manage documents, and schedule face-to-face or digital milestone reviews with your supervisor.</p>\n        <br />\n        <div style=\"background-color: #f3f4f6; padding: 15px; border-radius: 6px; font-size: 14px;\">\n          <strong>Next Steps:</strong>\n          <ul>\n            <li>Log in and complete your student/advisor profile.</li>\n            <li>Submit your final-year project title or review assigned student teams.</li>\n          </ul>\n        </div>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">This is an automated notification from the University FYP Division.</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T14:07:33.065Z"
+    },
+    {
+      "id": "email_awgakj5x8",
+      "to": "jane.doe@student.edu",
+      "subject": "[887097] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Jane DoeJane Doe</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">887097</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T08:22:42.286Z"
+    },
+    {
+      "id": "email_3xwemb7s7",
+      "to": "andrewuwana2@gmail.com",
+      "subject": "[102171] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Sinjae Rume</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">102171</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T08:02:49.011Z"
+    },
+    {
+      "id": "email_ls5kk9kma",
+      "to": "andrewuwana2@gmail.com",
+      "subject": "[116732] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Micheal Sunday</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">116732</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:54:28.743Z"
+    },
+    {
+      "id": "email_63x8uleia",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[437566] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">437566</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:51:32.635Z"
+    },
+    {
+      "id": "email_myqql1156",
+      "to": "test.student3@school.edu",
+      "subject": "Academic Account Activation — Final Year Supervision System",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #1e3a8a; margin-top: 0;\">Welcome to the Supervision Platform!</h2>\n        <p>Dear <strong>Test Student Three</strong>,</p>\n        <p>Your academic supervision account (registered with email: <code>test.student3@school.edu</code>) as a <strong>student</strong> has been successfully authorized.</p>\n        <p>You can now log in to propose topics, manage documents, and schedule face-to-face or digital milestone reviews with your supervisor.</p>\n        <br />\n        <div style=\"background-color: #f3f4f6; padding: 15px; border-radius: 6px; font-size: 14px;\">\n          <strong>Next Steps:</strong>\n          <ul>\n            <li>Log in and complete your student/advisor profile.</li>\n            <li>Submit your final-year project title or review assigned student teams.</li>\n          </ul>\n        </div>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">This is an automated notification from the University FYP Division.</p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:44:17.566Z"
+    },
+    {
+      "id": "email_0enn0wh5k",
+      "to": "test.student3@school.edu",
+      "subject": "[935500] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Test Student Three</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">935500</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:43:44.421Z"
+    },
+    {
+      "id": "email_j3gn5f1kx",
+      "to": "test.student@school.edu",
+      "subject": "[499900] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Test Student</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">499900</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:39:17.569Z"
+    },
+    {
+      "id": "email_mjwa0d99u",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[974965] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">974965</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-24T07:35:05.115Z"
+    },
+    {
+      "id": "email_tgmx551ew",
+      "to": "beeright004@gmail.com",
+      "subject": "Supervision Session Booked: PROJECT REVIEW",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> PROJECT REVIEW</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-23</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 17:46</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE MEETING</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:45:57.353Z"
+    },
+    {
+      "id": "email_nexvle0cw",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[593018] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">593018</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:44:06.852Z"
+    },
+    {
+      "id": "email_47586qyrv",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[576261] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">576261</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:42:40.000Z"
+    },
+    {
+      "id": "email_vgw83390j",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[828112] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">828112</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:42:15.387Z"
+    },
+    {
+      "id": "email_i027lluy0",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[588117] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">588117</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:38:58.670Z"
+    },
+    {
+      "id": "email_j20m2plr8",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[773138] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Demilade Olaogun</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">773138</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:31:00.784Z"
+    },
+    {
+      "id": "email_sws0k5qxr",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[647159] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Demilade Olaogun</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">647159</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:24:44.405Z"
+    },
+    {
+      "id": "email_adzp617im",
+      "to": "olaogundemilade@gmail.com",
+      "subject": "[222800] Verify Your FYP Supervision Academic Profile",
+      "html": "\n      <div style=\"font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;\">\n        <div style=\"text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;\">\n          <h2 style=\"color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider\">FYP Project Portal</h2>\n          <p style=\"color: #64748b; font-size: 11px; margin: 4px 0 0 0;\">Department of Computer Science & ICT (Information Technology)</p>\n        </div>\n        <p>Dear <strong>Olaogun Demilade</strong>,</p>\n        <p>You have initialized registration as a <strong>Project Candidate</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>\n        \n        <div style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;\">\n          <span style=\"font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;\">222800</span>\n          <p style=\"color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider\">Verification Access OTP Token</p>\n        </div>\n\n        <p style=\"font-size: 13px; font-weight: 500; color: #334155;\">\n          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. \n        </p>\n\n        <p style=\"font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;\">\n          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.\n        </p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:23:31.002Z"
+    },
+    {
+      "id": "email_41hz3vw5e",
+      "to": "olukunle.adebayo@university.edu",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Sunday Bright</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> Initial Project Scope Consultation</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-23T16:22:01.697Z"
+    }
+  ]
+}
