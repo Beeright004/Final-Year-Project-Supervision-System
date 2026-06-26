@@ -228,16 +228,8 @@ function RootApp() {
               </button>
             </nav>
 
-            {/* Auth & Hub Buttons */}
+            {/* Auth Buttons */}
             <div className="flex items-center gap-2.5">
-              <button
-                onClick={() => setDashboardHubOpen(true)}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-3 py-1.5 rounded-lg shadow-sm transition active:scale-95 cursor-pointer font-bold text-xs"
-                title="Open Dashboard Hub Telemetry & Diagnostics"
-              >
-                <Menu className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Hub</span>
-              </button>
               <button
                 onClick={() => setPublicView("login")}
                 className={`text-xs font-bold px-3.5 py-1.5 rounded-lg cursor-pointer transition ${publicView === "login" ? "bg-blue-600 text-white" : "text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-750"
