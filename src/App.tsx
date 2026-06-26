@@ -15,7 +15,7 @@ import {
   Building2, BookOpen, LogIn, UserPlus, LogOut, ArrowRight, BookMarked,
   LayoutDashboard, Bell, FileText, Calendar, Compass, Shield, User,
   HelpCircle, Mail, Globe, CheckCircle, Info, Hash, PhoneCall, AlertCircle, X, ChevronRight,
-  Eye, EyeOff, Users, Menu, Server, Cpu, Activity
+  Eye, EyeOff, Users, Menu, Server, Cpu, Activity, ChevronDown
 } from "lucide-react";
 
 function RootApp() {
@@ -38,7 +38,7 @@ function RootApp() {
   });
 
   const [notificationOpen, setNotificationOpen] = useState(false);
-  const [dashboardHubOpen, setDashboardHubOpen] = useState(false);
+  const [hubDropdownOpen, setHubDropdownOpen] = useState(false);
   const [submittingAuth, setSubmittingAuth] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -262,7 +262,7 @@ function RootApp() {
           <div className="flex-1 flex flex-col lg:flex-row min-h-[92vh]">
 
             {/* Sidebar Navigation */}
-            <aside className="w-full lg:w-60 bg-slate-900 text-slate-300 border-r border-slate-800 flex flex-col text-left">
+            <aside className="w-full lg:w-64 bg-slate-900 text-slate-300 border-r border-slate-800 flex flex-col text-left shrink-0">
 
               {/* Branding Section */}
               <div className="p-4 border-b border-slate-800/80 hidden lg:flex items-center gap-2.5">
@@ -276,94 +276,105 @@ function RootApp() {
               </div>
 
               {/* Navigation Elements */}
-              <div className="p-3.5 flex-1 space-y-3">
-                <div className="space-y-1">
+              <div className="p-3.5 flex-1 space-y-3 overflow-y-auto">
+                <div className="space-y-1.5">
                   <div className="px-2.5 py-1 bg-slate-950/50 rounded text-[9px] font-bold text-blue-400 uppercase tracking-widest font-mono mb-1.5">
                     Primary Panels
                   </div>
 
-                  <button className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg bg-blue-600/10 border-l-4 border-blue-500 text-white text-xs font-bold text-left cursor-default">
-                    <LayoutDashboard className="h-4 w-4 text-blue-400" />
-                    <span>Dashboard Hub</span>
-                  </button>
+                  {/* Expandable Consolidated Dropdown Hub */}
+                  <div className="space-y-1.5">
+                    <button
+                      onClick={() => setHubDropdownOpen(!hubDropdownOpen)}
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold text-left cursor-pointer shadow-md shadow-blue-500/20 transition active:scale-98"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Menu className="h-4 w-4 shrink-0" />
+                        <span>Dashboard Hub</span>
+                      </div>
+                      <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${hubDropdownOpen ? "rotate-180" : ""}`} />
+                    </button>
+
+                    {hubDropdownOpen && (
+                      <div className="bg-slate-950/90 rounded-xl p-3.5 border border-slate-800 space-y-4 text-left animate-in fade-in slide-in-from-top-2 duration-200 shadow-inner">
+                        {/* Bio Details */}
+                        <div className="space-y-2 pb-3 border-b border-slate-800/80">
+                          <div className="text-[9px] font-mono font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <User className="h-3 w-3" />
+                            <span>{user.role} Bio Details</span>
+                          </div>
+                          <div className="text-xs space-y-2 pl-1 text-slate-300">
+                            <div>
+                              <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">Full Name</span>
+                              <strong className="text-white block truncate">{user.name}</strong>
+                            </div>
+                            <div>
+                              <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">{user.role === "student" ? "Matric No" : "Registry ID"}</span>
+                              <code className="text-blue-400 font-mono text-xs">{user.matricNumber || user.id}</code>
+                            </div>
+                            <div>
+                              <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">Department</span>
+                              <span className="block truncate text-[11px]">{user.department}</span>
+                            </div>
+                            {user.supervisor && (
+                              <div className="pt-1.5 border-t border-slate-800/80">
+                                <span className="text-[9px] text-blue-400 font-mono block uppercase font-bold">Assigned Supervisor</span>
+                                <span className="text-white block truncate font-medium text-[11px]">{user.supervisor.name}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Station Diagnostics */}
+                        <div className="space-y-2 pb-3 border-b border-slate-800/80">
+                          <div className="text-[9px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <Activity className="h-3 w-3" />
+                            <span>System Gateway</span>
+                          </div>
+                          <div className="bg-slate-900/90 rounded-lg p-2.5 space-y-1.5 text-[10px] font-mono">
+                            <div className="flex justify-between items-center text-slate-400">
+                              <span>Proxy</span>
+                              <span className="text-emerald-400 font-bold">Active</span>
+                            </div>
+                            <div className="flex justify-between items-center text-slate-400">
+                              <span>Terminal</span>
+                              <span className="text-blue-400 font-bold uppercase">{user.role}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Consolidated Sign Out */}
+                        <button
+                          onClick={logout}
+                          className="w-full bg-rose-600/15 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 hover:border-rose-600 py-2.5 px-3 rounded-lg flex items-center justify-center gap-2 text-xs font-bold transition cursor-pointer shadow-sm active:scale-95"
+                        >
+                          <LogOut className="h-3.5 w-3.5" />
+                          <span>Sign Out Session</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
 
                   {user.role === "supervisor" && (
                     <button
                       onClick={handleOpenStudentsList}
-                      className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs font-bold text-left cursor-pointer transition border border-slate-700 mt-1"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-750 text-slate-200 text-xs font-bold text-left cursor-pointer transition border border-slate-700 mt-2"
                     >
                       <Users className="h-4 w-4 text-blue-400" />
                       <span>Assigned Students List</span>
                     </button>
                   )}
                 </div>
-
-                {user.role === "student" && (
-                  <div className="pt-2 border-t border-slate-800/80 space-y-2 text-left">
-                    <div className="px-2 py-1 bg-slate-950/50 rounded text-[9px] font-bold text-slate-400 uppercase tracking-widest font-mono">
-                      Student Bio Details
-                    </div>
-                    <div className="bg-slate-950/50 p-3 rounded-lg border border-slate-800/80 text-xs space-y-2 text-slate-300">
-                      <div>
-                        <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">Full Name</span>
-                        <strong className="text-white block truncate">{user.name}</strong>
-                      </div>
-                      <div>
-                        <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">Matric No</span>
-                        <code className="text-blue-400 font-mono text-xs">{user.matricNumber || "N/A"}</code>
-                      </div>
-                      <div>
-                        <span className="text-[9px] text-slate-500 font-mono block uppercase font-bold">Department</span>
-                        <span className="block truncate text-[11px]">{user.department}</span>
-                      </div>
-                      {user.supervisor && (
-                        <div className="pt-1.5 border-t border-slate-800/80">
-                          <span className="text-[9px] text-blue-400 font-mono block uppercase font-bold">Assigned Supervisor</span>
-                          <span className="text-white block truncate font-medium text-[11px]">{user.supervisor.name}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Quick Profile Segment */}
-              <div className="p-4 border-t border-slate-800/80 bg-slate-950/40 space-y-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="bg-slate-800 text-blue-305 h-8 w-8 border border-blue-500/30 rounded-full flex items-center justify-center font-extrabold text-xs">
-                    {user.name.charAt(0)}
-                  </div>
-                  <div className="space-y-0.5 truncate text-left flex-1">
-                    <p className="text-xs font-bold text-white truncate leading-none">{user.name}</p>
-                    <p className="text-[9px] text-slate-400 font-medium font-mono truncate">{user.email}</p>
-                  </div>
-                </div>
-
-                <button
-                  onClick={logout}
-                  className="w-full bg-slate-800 hover:bg-rose-950/40 hover:text-rose-200 hover:border-rose-900 border border-slate-700 text-xs font-bold py-1.5 px-2.5 rounded-lg transition cursor-pointer flex items-center justify-center gap-1.5 text-slate-300"
-                >
-                  <LogOut className="h-3.5 w-3.5" />
-                  <span>Sign Out Session</span>
-                </button>
               </div>
 
             </aside>
 
             {/* Center Content Pane container */}
-            <div className="flex-1 flex flex-col bg-slate-50">
+            <div className="flex-1 flex flex-col bg-slate-50 overflow-x-hidden">
 
               {/* Top Workspace controls status bar */}
               <header className="bg-white px-5 py-3 border-b border-slate-200 flex items-center justify-between shadow-xs">
                 <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setDashboardHubOpen(true)}
-                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl shadow-md shadow-blue-500/20 transition active:scale-95 cursor-pointer font-bold text-xs"
-                    title="Open Dashboard Hub Details & Telemetry"
-                  >
-                    <Menu className="h-4 w-4" />
-                    <span>Dashboard Hub</span>
-                  </button>
                   <span className="hidden sm:inline-flex bg-slate-100 px-2.5 py-0.5 border border-slate-200 rounded text-[9px] font-bold font-mono tracking-wider text-slate-600 uppercase">
                     SYS-MODE: {user.role === "admin" ? "MASTER_DECK" : "DECENTRALIZED"}
                   </span>
@@ -936,123 +947,7 @@ function RootApp() {
         </div>
       )}
 
-      {/* Universally Active Dashboard Hub Drawer / Slide-Over Modal */}
-      {dashboardHubOpen && (
-        <div className="fixed inset-0 z-70 bg-slate-950/60 backdrop-blur-xs flex justify-end animate-in fade-in duration-200 text-left font-sans">
-          <div className="w-full max-w-md bg-slate-900 border-l border-slate-800 text-white h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
-            <div className="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg shadow-blue-500/20 text-white">
-                  <LayoutDashboard className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-extrabold text-sm text-white tracking-tight uppercase">Dashboard Hub</h3>
-                  <p className="text-[10px] text-slate-400 font-mono tracking-wide">Telemetry & system inspection desk</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setDashboardHubOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition cursor-pointer"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
 
-            <div className="p-5 flex-1 overflow-y-auto space-y-6">
-              {/* Telemetry Card */}
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest block flex items-center gap-1.5">
-                  <Server className="h-3 w-3" /> Station Diagnostics
-                </span>
-                <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-3 text-xs shadow-inner">
-                  <div className="flex justify-between items-center pb-2.5 border-b border-slate-800/80">
-                    <span className="text-slate-400">Node Proxy Status</span>
-                    <span className="font-mono text-emerald-400 font-bold flex items-center gap-1.5">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" /> Active Express Proxy
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">API Gateway Base</span>
-                    <code className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-[11px] text-indigo-300 font-mono">/api</code>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Active Station Mode</span>
-                    <span className="uppercase font-bold text-blue-400 font-mono text-[11px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">{user?.role || "Public Guest"}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Identity Details */}
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono font-bold text-indigo-400 uppercase tracking-widest block flex items-center gap-1.5">
-                  <Shield className="h-3 w-3" /> Operator Identity Metadata
-                </span>
-                <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-3 text-xs shadow-inner">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500 uppercase font-mono text-[10px]">Registry ID</span>
-                    <code className="text-slate-200 font-mono text-xs">{user?.id || "anon_visitor"}</code>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500 uppercase font-mono text-[10px]">Division / Dept</span>
-                    <span className="text-white font-medium truncate max-w-[200px]">{user?.department || "General Public"}</span>
-                  </div>
-                  {user?.matricNumber && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500 uppercase font-mono text-[10px]">Matriculation No</span>
-                      <span className="text-blue-400 font-mono font-bold">{user.matricNumber}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500 uppercase font-mono text-[10px]">Session Status</span>
-                    <span className="text-emerald-400 font-mono text-[10px]">{user ? "Authenticated" : "Unauthenticated Guest"}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Live Channels */}
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block flex items-center gap-1.5">
-                  <Activity className="h-3 w-3" /> System Channel Pipes
-                </span>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-xl shadow-inner">
-                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Alert Channels</span>
-                    <span className="text-xl font-extrabold text-white mt-1 block">{notifications.length}</span>
-                  </div>
-                  <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-xl shadow-inner">
-                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Pending Feed</span>
-                    <span className="text-xl font-extrabold text-amber-400 mt-1 block">{unreadNotifications.length}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 border-t border-slate-800 bg-slate-950/80 flex gap-3">
-              <button
-                onClick={() => {
-                  setDashboardHubOpen(false);
-                  addToast("Hub telemetry synchronized.", "info");
-                }}
-                className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold text-xs py-3 rounded-xl transition cursor-pointer active:scale-95 border border-slate-700"
-              >
-                Close Hub
-              </button>
-              {user && (
-                <button
-                  onClick={() => {
-                    setDashboardHubOpen(false);
-                    logout();
-                  }}
-                  className="bg-rose-600/15 hover:bg-rose-600 hover:text-white text-rose-400 border border-rose-500/30 px-5 py-3 rounded-xl font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sign Out</span>
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Universally active Simulated Mail Log inbox client component drawer */}
       <Suspense fallback={null}>
