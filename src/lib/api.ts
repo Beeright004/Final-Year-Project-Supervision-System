@@ -1,4 +1,11 @@
-const API_BASE = "/api";
+const getApiBase = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return "/api";
+  const clean = envUrl.endsWith("/") ? envUrl.slice(0, -1) : envUrl;
+  return clean.endsWith("/api") ? clean : `${clean}/api`;
+};
+
+const API_BASE = getApiBase();
 
 export async function request<T = any>(
   endpoint: string,
@@ -14,7 +21,8 @@ export async function request<T = any>(
     headers.set("Content-Type", "application/json");
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
+  const fullUrl = `${API_BASE}${endpoint}`;
+  const response = await fetch(fullUrl, {
     ...options,
     headers,
   });
@@ -23,6 +31,9 @@ export async function request<T = any>(
   const isHtml = contentType && contentType.includes("text/html");
 
   if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error(`API Endpoint Not Found (404): Could not reach "${fullUrl}". If you are hosting the frontend separately (e.g., on Vercel, Netlify, or GitHub Pages), ensure your backend Express server is deployed and set the environment variable "VITE_API_URL" to your backend server URL.`);
+    }
     if (isHtml) {
       if (response.status === 403) {
         throw new Error(`Authorization Blocked (403): The sandbox environment proxy requires validation. This usually happens inside the iframe preview due to "Prevent Cross-Site Tracking" or third-party cookie restrictions. Please click "Open in New Tab" in the top-right corner of the pane to run the application in a fresh native window!`);

@@ -178,7 +178,7 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
           <div>
             <video
               className="rounded-xl shadow-md border border-slate-200"
-              poster="group-five-african-college-students-spending-time-together-campus-university-yard-black-afro-friends-studying-education-theme"
+              poster="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop"
               muted
               playsInline
             />
@@ -344,7 +344,7 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
             <div className="space-y-2 text-[11px]">
               <p className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-blue-400" /> Technology Wing, Block D, Faculty of Computing</p>
               <p className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-blue-400" /> computing-support@university.edu</p>
-              <p className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-blue-400" /> +1 (555) 019-2831</p>
+              <p className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-blue-400" /> +2348183699804</p>
             </div>
           </div>
           <div className="space-y-3">
