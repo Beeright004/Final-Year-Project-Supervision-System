@@ -359,6 +359,7 @@ export default function StudentDashboard() {
       <VideoCall
         channelName={activeVideoCall}
         userName={user?.name || "Student"}
+        userRole="student"
         onLeave={() => setActiveVideoCall(null)}
       />
     );

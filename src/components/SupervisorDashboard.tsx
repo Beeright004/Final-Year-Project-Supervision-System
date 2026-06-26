@@ -271,6 +271,7 @@ export default function SupervisorDashboard() {
       <VideoCall
         channelName={activeVideoCall}
         userName={user?.name || "Supervisor"}
+        userRole="supervisor"
         onLeave={() => setActiveVideoCall(null)}
       />
     );

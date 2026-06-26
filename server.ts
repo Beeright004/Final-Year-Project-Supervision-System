@@ -1903,14 +1903,22 @@ app.delete("/api/admin/emails/clear", async (req: Request, res: Response) => {
 // AGORA VIDEO CALL TOKEN GENERATION
 // ==========================================
 
+// Robust DJB2 string hashing to prevent UID collisions when multiple students join Agora
+function getAgoraNumericUid(str: string): number {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) + str.charCodeAt(i);
+  }
+  return (Math.abs(hash) % 89999) + 1;
+}
+
 // Get mapping of numeric UIDs to real names for video calls
 app.get("/api/users/map", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const users = await db.getUsers();
     const mapping: Record<number, string> = {};
     users.forEach((u) => {
-      let baseUid = Math.abs(u.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100000;
-      if (baseUid === 0) baseUid = 1;
+      const baseUid = getAgoraNumericUid(u.id + (u.email || ""));
       mapping[baseUid] = u.name;
     });
     res.json(mapping);
@@ -1921,7 +1929,7 @@ app.get("/api/users/map", authenticateToken, async (req: AuthRequest, res: Respo
 });
 
 // Generate Agora RTC token for video call sessions (authenticated users only)
-app.get("/api/agora/token", authenticateToken, (req: AuthRequest, res: Response) => {
+app.get("/api/agora/token", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
     const APP_ID = process.env.AGORA_APP_ID;
     const APP_CERTIFICATE = process.env.AGORA_APP_CERTIFICATE;
@@ -1935,9 +1943,11 @@ app.get("/api/agora/token", authenticateToken, (req: AuthRequest, res: Response)
       return res.status(400).json({ error: "channelName query parameter is required." });
     }
 
-    // Use a numeric UID derived from the user's string ID for Agora compatibility
-    let baseUid = Math.abs(req.user!.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)) % 100000;
-    if (baseUid === 0) baseUid = 1; // Ensure UID is never exactly 0
+    // Lookup full user object to ensure identical hash input as users/map
+    const allUsers = await db.getUsers();
+    const curUser = allUsers.find(u => u.id === req.user!.id) || { id: req.user!.id, email: req.user!.email };
+
+    const baseUid = getAgoraNumericUid(curUser.id + (curUser.email || ""));
     const isScreen = req.query.isScreen === "true";
     const uid = isScreen ? baseUid + 100000 : baseUid;
     const expirationTimeInSeconds = 3600; // 1 hour

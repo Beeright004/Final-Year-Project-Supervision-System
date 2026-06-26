@@ -31,6 +31,7 @@ AgoraRTC.setLogLevel(3);
 interface VideoCallProps {
   channelName: string;
   userName: string;
+  userRole?: string;
   onLeave: () => void;
 }
 
@@ -42,7 +43,7 @@ interface RemoteUser {
   hasAudio: boolean;
 }
 
-export default function VideoCall({ channelName, userName, onLeave }: VideoCallProps) {
+export default function VideoCall({ channelName, userName, userRole = "student", onLeave }: VideoCallProps) {
   const clientRef = useRef<IAgoraRTCClient | null>(null);
   const screenClientRef = useRef<IAgoraRTCClient | null>(null);
   const localVideoRef = useRef<HTMLDivElement>(null);
@@ -216,7 +217,7 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
 
       // Play local video
       if (localVideoRef.current) {
-        videoTrack.play(localVideoRef.current);
+        videoTrack.play(localVideoRef.current, { fit: "contain" });
       }
     } catch (err: any) {
       console.error("Failed to join Agora channel:", err);
@@ -356,7 +357,7 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
 
         // Play screen share in the preview element
         if (screenVideoRef.current) {
-          videoTrack.play(screenVideoRef.current);
+          videoTrack.play(screenVideoRef.current, { fit: "contain" });
         }
       } catch (err: any) {
         if (err?.code !== "PERMISSION_DENIED") {
@@ -386,7 +387,7 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
       if (user.videoTrack) {
         const el = document.getElementById(`remote-video-${user.uid}`);
         if (el) {
-          user.videoTrack.play(el);
+          user.videoTrack.play(el, { fit: "contain" });
         }
       }
     });
@@ -395,7 +396,7 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
   // Play local video when the ref becomes available
   useEffect(() => {
     if (localVideoTrack && localVideoRef.current) {
-      localVideoTrack.play(localVideoRef.current);
+      localVideoTrack.play(localVideoRef.current, { fit: "contain" });
     }
   }, [localVideoTrack]);
 
@@ -858,7 +859,9 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
                 <div className="flex items-center justify-center bg-slate-900/50 rounded-xl border border-dashed border-slate-700 shrink-0 w-36 h-24 lg:w-full lg:h-24">
                   <div className="text-center p-2">
                     <Users className="mx-auto h-5 w-5 text-slate-600 mb-1" />
-                    <p className="text-[9px] text-slate-500 font-bold leading-tight">Waiting for<br/>participants...</p>
+                    <p className="text-[9px] text-slate-500 font-bold leading-tight">
+                      {userRole === "supervisor" ? "Waiting for\nstudents..." : "Waiting for\nparticipants..."}
+                    </p>
                   </div>
                 </div>
               )}
@@ -866,15 +869,15 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
           </div>
         ) : (
           /* ========== NORMAL GRID LAYOUT (no presentation) ========== */
-          <div className={`h-full grid gap-3 ${
+          <div className={`h-full grid gap-3 overflow-y-auto pr-1 ${
             standardRemoteUsers.length === 0
               ? "grid-cols-1"
               : standardRemoteUsers.length <= 1
                 ? "grid-cols-1 lg:grid-cols-2"
-                : "grid-cols-2 lg:grid-cols-3"
+                : "grid-cols-2 lg:grid-cols-3 auto-rows-[220px] lg:auto-rows-[280px]"
           }`}>
             {/* Local video (Camera) — full grid tile */}
-            <div className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300">
+            <div className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300 min-h-[200px]">
               <div
                 ref={localVideoRef}
                 className="w-full h-full min-h-[200px]"
@@ -896,7 +899,7 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
 
             {/* Remote users (Cameras) — full grid tiles */}
             {standardRemoteUsers.map((user) => (
-              <div key={user.uid} className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300">
+              <div key={user.uid} className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300 min-h-[200px]">
                 {user.hasVideo ? (
                   <div id={`remote-video-${user.uid}`} className="w-full h-full min-h-[200px]" />
                 ) : (
@@ -931,8 +934,14 @@ export default function VideoCall({ channelName, userName, onLeave }: VideoCallP
                     <Users className="h-7 w-7 text-slate-500" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-slate-400">Waiting for supervisor...</p>
-                    <p className="text-[11px] text-slate-600 mt-1">Share this meeting room code with your supervisor to join</p>
+                    <p className="text-sm font-bold text-slate-400">
+                      {userRole === "supervisor" ? "Awaiting project students..." : "Awaiting meeting participants..."}
+                    </p>
+                    <p className="text-[11px] text-slate-600 mt-1">
+                      {userRole === "supervisor"
+                        ? "Share this consultation room code with your assigned project students to connect"
+                        : "Share this meeting room code with your supervisor or team members to join"}
+                    </p>
                   </div>
                   <div className="bg-slate-800 rounded-lg px-4 py-2 inline-block">
                     <code className="text-xs font-mono font-bold text-blue-400">{channelName}</code>
