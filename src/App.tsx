@@ -15,7 +15,7 @@ import {
   Building2, BookOpen, LogIn, UserPlus, LogOut, ArrowRight, BookMarked,
   LayoutDashboard, Bell, FileText, Calendar, Compass, Shield, User,
   HelpCircle, Mail, Globe, CheckCircle, Info, Hash, PhoneCall, AlertCircle, X, ChevronRight,
-  Eye, EyeOff, Users
+  Eye, EyeOff, Users, Menu, Server, Cpu, Activity
 } from "lucide-react";
 
 function RootApp() {
@@ -38,6 +38,7 @@ function RootApp() {
   });
 
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [dashboardHubOpen, setDashboardHubOpen] = useState(false);
   const [submittingAuth, setSubmittingAuth] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -354,7 +355,15 @@ function RootApp() {
 
               {/* Top Workspace controls status bar */}
               <header className="bg-white px-5 py-3 border-b border-slate-200 flex items-center justify-between shadow-xs">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setDashboardHubOpen(true)}
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-3.5 py-2 rounded-xl shadow-md shadow-blue-500/20 transition active:scale-95 cursor-pointer font-bold text-xs"
+                    title="Open Dashboard Hub Details & Telemetry"
+                  >
+                    <Menu className="h-4 w-4" />
+                    <span>Dashboard Hub</span>
+                  </button>
                   <span className="hidden sm:inline-flex bg-slate-100 px-2.5 py-0.5 border border-slate-200 rounded text-[9px] font-bold font-mono tracking-wider text-slate-600 uppercase">
                     SYS-MODE: {user.role === "admin" ? "MASTER_DECK" : "DECENTRALIZED"}
                   </span>
@@ -432,6 +441,121 @@ function RootApp() {
                 </Suspense>
               </div>
 
+              {/* Dashboard Hub Drawer / Slide-Over Modal */}
+              {dashboardHubOpen && (
+                <div className="fixed inset-0 z-60 bg-slate-950/60 backdrop-blur-xs flex justify-end animate-in fade-in duration-200 text-left">
+                  <div className="w-full max-w-md bg-slate-900 border-l border-slate-800 text-white h-full flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
+                    <div className="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-2 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg shadow-blue-500/20 text-white">
+                          <LayoutDashboard className="h-5 w-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-extrabold text-sm text-white tracking-tight uppercase">Dashboard Hub</h3>
+                          <p className="text-[10px] text-slate-400 font-mono tracking-wide">Telemetry & hidden records inspection</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setDashboardHubOpen(false)}
+                        className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition cursor-pointer"
+                      >
+                        <X className="h-5 w-5" />
+                      </button>
+                    </div>
+
+                    <div className="p-5 flex-1 overflow-y-auto space-y-6">
+                      {/* Telemetry Card */}
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest block flex items-center gap-1.5">
+                          <Server className="h-3 w-3" /> Station Diagnostics
+                        </span>
+                        <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-3 text-xs shadow-inner">
+                          <div className="flex justify-between items-center pb-2.5 border-b border-slate-800/80">
+                            <span className="text-slate-400">Node Proxy Status</span>
+                            <span className="font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+                              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" /> Active Connection
+                            </span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-400">API Gateway Endpoint</span>
+                            <code className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-[11px] text-indigo-300 font-mono">/api</code>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-400">Station Privileges</span>
+                            <span className="uppercase font-bold text-blue-400 font-mono text-[11px] bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">{user.role}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hidden Profile Details */}
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-mono font-bold text-indigo-400 uppercase tracking-widest block flex items-center gap-1.5">
+                          <Shield className="h-3 w-3" /> Operator Identity Metadata
+                        </span>
+                        <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-3 text-xs shadow-inner">
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-500 uppercase font-mono text-[10px]">Registry ID</span>
+                            <code className="text-slate-200 font-mono text-xs">{user.id}</code>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-500 uppercase font-mono text-[10px]">Department</span>
+                            <span className="text-white font-medium truncate max-w-[200px]">{user.department}</span>
+                          </div>
+                          {user.matricNumber && (
+                            <div className="flex justify-between items-center">
+                              <span className="text-slate-500 uppercase font-mono text-[10px]">Matriculation No</span>
+                              <span className="text-blue-400 font-mono font-bold">{user.matricNumber}</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-500 uppercase font-mono text-[10px]">Session Created</span>
+                            <span className="text-slate-400 font-mono text-[10px]">{new Date(user.createdAt || Date.now()).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Live Channels */}
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block flex items-center gap-1.5">
+                          <Activity className="h-3 w-3" /> Live Channel Pipes
+                        </span>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-xl shadow-inner">
+                            <span className="text-[10px] text-slate-500 uppercase font-mono block">Alert Channels</span>
+                            <span className="text-xl font-extrabold text-white mt-1 block">{notifications.length}</span>
+                          </div>
+                          <div className="bg-slate-950/60 border border-slate-800 p-3.5 rounded-xl shadow-inner">
+                            <span className="text-[10px] text-slate-500 uppercase font-mono block">Pending Actions</span>
+                            <span className="text-xl font-extrabold text-amber-400 mt-1 block">{unreadNotifications.length}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-5 border-t border-slate-800 bg-slate-950/80 flex gap-3">
+                      <button
+                        onClick={() => {
+                          setDashboardHubOpen(false);
+                          addToast("Station telemetry re-calibrated successfully.", "info");
+                        }}
+                        className="flex-1 bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold text-xs py-3 rounded-xl transition cursor-pointer active:scale-95 border border-slate-700"
+                      >
+                        Close Hub Details
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDashboardHubOpen(false);
+                          logout();
+                        }}
+                        className="bg-rose-600/15 hover:bg-rose-600 hover:text-white text-rose-400 border border-rose-500/30 px-5 py-3 rounded-xl font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
             </div>
 
