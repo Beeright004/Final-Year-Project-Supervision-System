@@ -4,7 +4,7 @@
       "id": "usr_admin_heritage15",
       "name": "Heritage Oni (Admin)",
       "email": "heritageoni15@gmail.com",
-      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "admin",
       "department": "Computer Science",
       "createdAt": "2026-06-23T16:21:38.476Z"
@@ -13,7 +13,7 @@
       "id": "usr_admin_heritage",
       "name": "Heritage Oni",
       "email": "heritageoni16@gmail.com",
-      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "admin",
       "department": "Computer Science",
       "createdAt": "2026-06-23T16:21:38.476Z"
@@ -22,7 +22,7 @@
       "id": "usr_stud_1",
       "name": "Sunday Bright",
       "email": "beeright004@gmail.com",
-      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "student",
       "matricNumber": "210502197",
       "department": "Computer Science",
@@ -33,7 +33,7 @@
       "id": "usr_sup_olukunle",
       "name": "Olukunle Adebayo",
       "email": "olukunle.adebayo@university.edu",
-      "password": "$2b$10$k.40nBpDLwdcWvH3Ccs66uAeFgaPeyCh5I9c4SZsKeuz9oCPNZEsi",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "supervisor",
       "department": "Computer Science",
       "createdAt": "2026-06-23T16:21:38.476Z"
