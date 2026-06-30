@@ -23,6 +23,10 @@ import {
   Wifi,
   Pin,
   PinOff,
+  LayoutGrid,
+  Expand,
+  Shrink,
+  X,
 } from "lucide-react";
 
 // Suppress Agora console noise in dev
@@ -43,14 +47,14 @@ interface RemoteUser {
   hasAudio: boolean;
 }
 
+type LayoutMode = "grid" | "spotlight" | "presentation";
+
 export default function VideoCall({ channelName, userName, userRole = "student", onLeave }: VideoCallProps) {
   const clientRef = useRef<IAgoraRTCClient | null>(null);
   const screenClientRef = useRef<IAgoraRTCClient | null>(null);
   const localVideoRef = useRef<HTMLDivElement>(null);
   const screenVideoRef = useRef<HTMLDivElement>(null);
 
-  // Keep refs that always point to the *current* tracks so the unmount
-  // cleanup can release hardware even when React state has gone stale.
   const localVideoTrackRef = useRef<ICameraVideoTrack | null>(null);
   const localAudioTrackRef = useRef<IMicrophoneAudioTrack | null>(null);
   const screenTrackRef = useRef<ILocalVideoTrack | null>(null);
@@ -71,25 +75,31 @@ export default function VideoCall({ channelName, userName, userRole = "student",
   const [connectionState, setConnectionState] = useState<string>("DISCONNECTED");
   const [error, setError] = useState<string | null>(null);
 
-  // Name mapping dictionary state
+  // Name mapping
   const [userMap, setUserMap] = useState<Record<number, string>>({});
-  // Presentation modes: "float" (PiP over presentation) or "dock" (top of sidebar)
-  const [presenterVideoMode, setPresenterVideoMode] = useState<"float" | "dock">("float");
-  // Floating PiP position corners
+
+  // Layout & view controls
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>("grid");
+  // pinnedUid: "local" = local camera, number = remote uid
+  const [pinnedUid, setPinnedUid] = useState<"local" | number | null>(null);
+  // maximizedUid: uid of the tile currently expanded to fill the main area
+  const [maximizedUid, setMaximizedUid] = useState<"local" | number | null>(null);
+
+  // PiP (presenter cam while screen sharing)
   const [pipPosition, setPipPosition] = useState<"bottom-right" | "bottom-left" | "top-right" | "top-left">("bottom-right");
+  const [pipDocked, setPipDocked] = useState(false);
+
+  // Sidebar visibility
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load numeric UID-to-name mapping
+  // Load UID→name map
   useEffect(() => {
     api.agora.getNameMap()
-      .then((mapping) => {
-        setUserMap(mapping);
-      })
-      .catch((err) => {
-        console.error("Failed to load user name mapping:", err);
-      });
+      .then(setUserMap)
+      .catch((err) => console.error("Failed to load user name mapping:", err));
   }, []);
 
   // Duration timer
@@ -97,10 +107,26 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     if (joined) {
       timerRef.current = setInterval(() => setCallDuration((d) => d + 1), 1000);
     }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [joined]);
+
+  // Listen for native fullscreen changes
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  // Auto-switch layout modes
+  useEffect(() => {
+    if (isScreenSharing || remoteUsers.some(u => typeof u.uid === "number" && u.uid > 100000)) {
+      setLayoutMode("presentation");
+    } else if (pinnedUid !== null) {
+      setLayoutMode("spotlight");
+    } else {
+      setLayoutMode("grid");
+    }
+  }, [isScreenSharing, remoteUsers, pinnedUid]);
 
   const formatDuration = (seconds: number) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -108,16 +134,19 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     return `${m}:${s}`;
   };
 
-  // Join the Agora channel
+  const getUserDisplayName = (uid: "local" | number | string) => {
+    if (uid === "local") return `${userName} (You)`;
+    const numUid = typeof uid === "string" ? parseInt(uid) : uid as number;
+    return userMap[numUid] || `Participant ${uid}`;
+  };
+
+  // ─── Agora: Join ────────────────────────────────────────────────────────────
   const joinChannel = useCallback(async () => {
     if (joining || joined) return;
     setJoining(true);
     setError(null);
 
     try {
-      // If a stale client is somehow still alive (e.g. HMR / double-mount),
-      // tear it down completely before creating a new one so the camera/mic
-      // are released first.
       if (clientRef.current) {
         try {
           localVideoTrackRef.current?.close();
@@ -125,25 +154,18 @@ export default function VideoCall({ channelName, userName, userRole = "student",
           localVideoTrackRef.current = null;
           localAudioTrackRef.current = null;
           await clientRef.current.leave();
-        } catch (_) { /* ignore cleanup errors */ }
+        } catch (_) {}
         clientRef.current = null;
       }
 
-      // Fetch token from backend
       const { token, uid, appId } = await api.agora.getToken(channelName);
-
       const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
       clientRef.current = client;
 
-      // Connection state listener
-      client.on("connection-state-change", (curState) => {
-        setConnectionState(curState);
-      });
+      client.on("connection-state-change", (curState) => setConnectionState(curState));
 
-      // Remote user events
       client.on("user-published", async (user, mediaType) => {
         await client.subscribe(user, mediaType);
-
         setRemoteUsers((prev) => {
           const existing = prev.find((u) => u.uid === user.uid);
           if (existing) {
@@ -170,10 +192,7 @@ export default function VideoCall({ channelName, userName, userRole = "student",
             },
           ];
         });
-
-        if (mediaType === "audio" && user.audioTrack) {
-          user.audioTrack.play();
-        }
+        if (mediaType === "audio" && user.audioTrack) user.audioTrack.play();
       });
 
       client.on("user-unpublished", (user, mediaType) => {
@@ -194,45 +213,38 @@ export default function VideoCall({ channelName, userName, userRole = "student",
 
       client.on("user-left", (user) => {
         setRemoteUsers((prev) => prev.filter((u) => u.uid !== user.uid));
+        setPinnedUid((p) => (p === user.uid ? null : p));
+        setMaximizedUid((p) => (p === user.uid ? null : p));
       });
 
-      // Join the channel
       await client.join(appId, channelName, token, uid);
 
-      // Create and publish local tracks
       const [audioTrack, videoTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(
         {},
         { encoderConfig: "720p_2" }
       );
 
       await client.publish([audioTrack, videoTrack]);
-
-      // Keep refs in sync so unmount cleanup can always find the tracks
       localAudioTrackRef.current = audioTrack;
       localVideoTrackRef.current = videoTrack;
-
       setLocalAudioTrack(audioTrack);
       setLocalVideoTrack(videoTrack);
       setJoined(true);
 
-      // Play local video
       if (localVideoRef.current) {
         videoTrack.play(localVideoRef.current, { fit: "contain" });
       }
     } catch (err: any) {
       console.error("Failed to join Agora channel:", err);
-      setError(
-        err?.message || "Failed to join video call. Please check your camera/microphone permissions."
-      );
+      setError(err?.message || "Failed to join video call. Please check your camera/microphone permissions.");
     } finally {
       setJoining(false);
     }
   }, [channelName, joined, joining]);
 
-  // Leave the channel
+  // ─── Agora: Leave ───────────────────────────────────────────────────────────
   const leaveChannel = useCallback(async () => {
     try {
-      // Stop screen share if active
       if (screenTrack) {
         if (screenClientRef.current) {
           const sClient = screenClientRef.current;
@@ -248,7 +260,6 @@ export default function VideoCall({ channelName, userName, userRole = "student",
         setIsScreenSharing(false);
       }
 
-      // Close local tracks — use refs so we always get the live instances
       if (localVideoTrackRef.current) {
         localVideoTrackRef.current.close();
         localVideoTrackRef.current = null;
@@ -260,7 +271,6 @@ export default function VideoCall({ channelName, userName, userRole = "student",
         setLocalAudioTrack(null);
       }
 
-      // Leave the channel
       if (clientRef.current) {
         await clientRef.current.leave();
         clientRef.current = null;
@@ -276,7 +286,7 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     }
   }, [screenTrack, screenAudioTrack, onLeave]);
 
-  // Toggle camera
+  // ─── Controls ───────────────────────────────────────────────────────────────
   const toggleCamera = useCallback(async () => {
     if (localVideoTrack) {
       await localVideoTrack.setEnabled(!isCameraOn);
@@ -284,7 +294,6 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     }
   }, [localVideoTrack, isCameraOn]);
 
-  // Toggle microphone
   const toggleMic = useCallback(async () => {
     if (localAudioTrack) {
       await localAudioTrack.setEnabled(!isMicOn);
@@ -292,10 +301,9 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     }
   }, [localAudioTrack, isMicOn]);
 
-  // Start/Stop screen sharing (for PowerPoint presentations)
+  // Screen share — available to ALL participants
   const toggleScreenShare = useCallback(async () => {
     if (isScreenSharing && screenClientRef.current && screenTrack) {
-      // Stop sharing
       const sClient = screenClientRef.current;
       await sClient.unpublish(screenTrack);
       if (screenAudioTrack) await sClient.unpublish(screenAudioTrack);
@@ -308,15 +316,11 @@ export default function VideoCall({ channelName, userName, userRole = "student",
       setIsScreenSharing(false);
     } else {
       try {
-        // Fetch new token specifically for the screen share UID
         const { token, uid, appId } = await api.agora.getToken(channelName, true);
-        
-        // Initialize Secondary Client
         const sClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
         screenClientRef.current = sClient;
         await sClient.join(appId, channelName, token, uid);
 
-        // Create screen video track
         const screenTracks = await AgoraRTC.createScreenVideoTrack(
           { encoderConfig: "1080p_2" },
           "auto"
@@ -330,7 +334,6 @@ export default function VideoCall({ channelName, userName, userRole = "student",
           videoTrack = screenTracks;
         }
 
-        // Listen for browser native "Stop sharing" button
         videoTrack.on("track-ended", async () => {
           if (screenClientRef.current) {
             await screenClientRef.current.unpublish(videoTrack);
@@ -355,7 +358,6 @@ export default function VideoCall({ channelName, userName, userRole = "student",
         setScreenAudioTrack(audioTrack);
         setIsScreenSharing(true);
 
-        // Play screen share in the preview element
         if (screenVideoRef.current) {
           videoTrack.play(screenVideoRef.current, { fit: "contain" });
         }
@@ -371,40 +373,50 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     }
   }, [isScreenSharing, screenTrack, screenAudioTrack, channelName]);
 
-  // Fullscreen toggle
+  // Browser native fullscreen
   const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
     if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen().then(() => setIsFullscreen(true));
+      containerRef.current.requestFullscreen().catch(() => {});
     } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false));
+      document.exitFullscreen().catch(() => {});
     }
   }, []);
 
-  // Render remote video
+  // Pin a participant tile
+  const togglePin = useCallback((uid: "local" | number) => {
+    setPinnedUid((prev) => {
+      if (prev === uid) { return null; }
+      return uid;
+    });
+    setMaximizedUid(null);
+  }, []);
+
+  // Maximize a single tile to fill main area (local layout only)
+  const toggleMaximize = useCallback((uid: "local" | number) => {
+    setMaximizedUid((prev) => (prev === uid ? null : uid));
+  }, []);
+
+  // Render remote video tracks into DOM elements
   useEffect(() => {
     remoteUsers.forEach((user) => {
       if (user.videoTrack) {
         const el = document.getElementById(`remote-video-${user.uid}`);
-        if (el) {
-          user.videoTrack.play(el, { fit: "contain" });
-        }
+        if (el) user.videoTrack.play(el, { fit: "contain" });
       }
     });
-  }, [remoteUsers, presenterVideoMode, pipPosition, isScreenSharing]);
+  }, [remoteUsers, layoutMode, pipPosition, pipDocked, isScreenSharing, pinnedUid, maximizedUid, sidebarOpen]);
 
-  // Play local video when the ref becomes available
+  // Play local video when ref becomes available
   useEffect(() => {
     if (localVideoTrack && localVideoRef.current) {
       localVideoTrack.play(localVideoRef.current, { fit: "contain" });
     }
   }, [localVideoTrack]);
 
-  // Cleanup on unmount — uses refs (not state) so we always close the
-  // actual live hardware tracks regardless of render order.
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      // Release media devices immediately
       localVideoTrackRef.current?.close();
       localAudioTrackRef.current?.close();
       screenTrackRef.current?.close();
@@ -413,36 +425,41 @@ export default function VideoCall({ channelName, userName, userRole = "student",
       localAudioTrackRef.current = null;
       screenTrackRef.current = null;
       screenAudioTrackRef.current = null;
-
-      // Leave Agora channels
-      if (screenClientRef.current) {
-        screenClientRef.current.leave().catch(() => {});
-        screenClientRef.current = null;
-      }
-      if (clientRef.current) {
-        clientRef.current.leave().catch(() => {});
-        clientRef.current = null;
-      }
+      screenClientRef.current?.leave().catch(() => {});
+      screenClientRef.current = null;
+      clientRef.current?.leave().catch(() => {});
+      clientRef.current = null;
     };
   }, []);
 
-  // Pre-join screen
+  // ─── Derived data ────────────────────────────────────────────────────────────
+  const remoteScreenUser = remoteUsers.find(
+    (u) => typeof u.uid === "number" && (u.uid as number) > 100000
+  );
+  const standardRemoteUsers = remoteUsers.filter(
+    (u) => typeof u.uid !== "number" || (u.uid as number) <= 100000
+  );
+
+  const isPresenting = isScreenSharing || !!remoteScreenUser;
+  const presenterUid = remoteScreenUser
+    ? (typeof remoteScreenUser.uid === "number" ? remoteScreenUser.uid - 100000 : null)
+    : isScreenSharing ? "local" : null;
+
+  // ─── Pre-join screen ─────────────────────────────────────────────────────────
   if (!joined && !joining) {
     return (
       <div className="fixed inset-0 z-[200] bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg p-6 text-center space-y-5 animate-in zoom-in-95 duration-200">
-          {/* Header */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg p-6 text-center space-y-5">
           <div className="space-y-2">
             <div className="mx-auto w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
               <Video className="h-7 w-7 text-white" />
             </div>
             <h2 className="text-lg font-extrabold text-slate-900">Video Call Session</h2>
             <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
-              You are about to join a live video supervision call. Ensure your camera and microphone are ready.
+              Join a live video supervision call. Camera, microphone, and screen sharing are available to all participants.
             </p>
           </div>
 
-          {/* Channel info */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Meeting Room</span>
@@ -452,16 +469,18 @@ export default function VideoCall({ channelName, userName, userRole = "student",
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Your Name</span>
               <span className="text-xs font-bold text-slate-800">{userName}</span>
             </div>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Your Role</span>
+              <span className="text-xs font-bold text-slate-800 capitalize">{userRole}</span>
+            </div>
           </div>
 
-          {/* Error display */}
           {error && (
             <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 text-left">
               <p className="text-xs text-rose-700 font-semibold">{error}</p>
             </div>
           )}
 
-          {/* Actions */}
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={onLeave}
@@ -482,7 +501,7 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     );
   }
 
-  // Joining screen
+  // ─── Joining spinner ──────────────────────────────────────────────────────────
   if (joining) {
     return (
       <div className="fixed inset-0 z-[200] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
@@ -495,284 +514,388 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     );
   }
 
-  const remoteScreenUser = remoteUsers.find(u => typeof u.uid === "number" && u.uid > 100000);
-  const standardRemoteUsers = remoteUsers.filter(u => typeof u.uid !== "number" || u.uid <= 100000);
-
-  // Presenter identification helpers
-  const presenterUid = remoteScreenUser
-    ? (typeof remoteScreenUser.uid === "number" ? remoteScreenUser.uid - 100000 : null)
-    : (isScreenSharing ? "local" : null);
-
-  const isLocalPresenter = presenterUid === "local";
-
-  // Name map mapping helper
-  const getUserDisplayName = (uid: number | string) => {
-    if (uid === "local" || uid === undefined) {
-      return `${userName} (You)`;
+  // ─── Tile renderer ────────────────────────────────────────────────────────────
+  const renderTile = (
+    uid: "local" | number,
+    opts: {
+      videoEl?: React.ReactNode;
+      hasVideo: boolean;
+      hasAudio: boolean;
+      isScreen?: boolean;
+      className?: string;
+      label?: string;
     }
-    const numUid = typeof uid === "string" ? parseInt(uid) : uid;
-    if (userMap[numUid]) {
-      return userMap[numUid];
-    }
-    return `Participant ${uid}`;
-  };
+  ) => {
+    const isPinned = pinnedUid === uid;
+    const isMaximized = maximizedUid === uid;
+    const displayName = uid === "local" ? `${userName} (You)` : getUserDisplayName(uid);
 
-  // Remote presenter's camera user object (if a remote user is presenting)
-  const remotePresenterUser = presenterUid && typeof presenterUid === "number"
-    ? standardRemoteUsers.find((u) => u.uid === presenterUid)
-    : null;
-
-  // Other participants list (non-presenters)
-  const otherRemoteParticipants = presenterUid && typeof presenterUid === "number"
-    ? standardRemoteUsers.filter((u) => u.uid !== presenterUid)
-    : standardRemoteUsers;
-
-  const renderPipControls = () => {
     return (
-      <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between p-2.5 z-20">
-        <div className="flex items-center justify-between">
-          <span className="text-[9px] font-bold text-slate-300 uppercase tracking-wide bg-slate-900/80 px-2 py-0.5 rounded">
-            Presenter View
-          </span>
-          <button
-            onClick={() => setPresenterVideoMode("dock")}
-            className="p-1 bg-slate-800 hover:bg-slate-700 text-white rounded transition cursor-pointer shadow"
-            title="Dock to Sidebar"
-          >
-            <Pin className="h-3.5 w-3.5" />
-          </button>
-        </div>
-        
-        {/* Corner navigation controls */}
-        <div className="space-y-1">
-          <p className="text-[9px] text-slate-400 font-bold text-center">Move Window</p>
-          <div className="grid grid-cols-2 gap-1 max-w-[110px] mx-auto">
-            <button
-              onClick={() => setPipPosition("top-left")}
-              className={`py-0.5 px-1.5 text-[9px] rounded border transition cursor-pointer font-bold ${
-                pipPosition === "top-left"
-                  ? "bg-blue-600 border-blue-500 text-white font-extrabold"
-                  : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-              }`}
-            >
-              TL
-            </button>
-            <button
-              onClick={() => setPipPosition("top-right")}
-              className={`py-0.5 px-1.5 text-[9px] rounded border transition cursor-pointer font-bold ${
-                pipPosition === "top-right"
-                  ? "bg-blue-600 border-blue-500 text-white font-extrabold"
-                  : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-              }`}
-            >
-              TR
-            </button>
-            <button
-              onClick={() => setPipPosition("bottom-left")}
-              className={`py-0.5 px-1.5 text-[9px] rounded border transition cursor-pointer font-bold ${
-                pipPosition === "bottom-left"
-                  ? "bg-blue-600 border-blue-500 text-white font-extrabold"
-                  : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-              }`}
-            >
-              BL
-            </button>
-            <button
-              onClick={() => setPipPosition("bottom-right")}
-              className={`py-0.5 px-1.5 text-[9px] rounded border transition cursor-pointer font-bold ${
-                pipPosition === "bottom-right"
-                  ? "bg-blue-600 border-blue-500 text-white font-extrabold"
-                  : "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-              }`}
-            >
-              BR
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderPresenterCard = (isFloating: boolean = false) => {
-    const cardClass = isFloating
-      ? `pip-overlay ${
-          pipPosition === "bottom-right"
-            ? "pip-bottom-right"
-            : pipPosition === "bottom-left"
-            ? "pip-bottom-left"
-            : pipPosition === "top-right"
-            ? "pip-top-right"
-            : "pip-top-left"
-        } border-2 border-blue-500/80 bg-slate-950/95 backdrop-blur-md transition-all duration-300 shadow-2xl group`
-      : "relative bg-slate-900 rounded-xl overflow-hidden border-2 border-blue-500/80 shrink-0 w-full h-40 lg:h-44 transition-all duration-300 shadow-lg shadow-blue-500/10 presenter-glow flex flex-col justify-between";
-
-    if (isLocalPresenter) {
-      return (
-        <div className={cardClass}>
-          <div ref={localVideoRef} className="w-full h-full object-cover" />
-          {!isCameraOn && (
-            <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-              <div className="text-center space-y-1">
-                <div className="mx-auto w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-extrabold text-slate-400">
-                    {userName.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <p className="text-[9px] text-slate-500 font-bold">Camera Off</p>
-              </div>
-            </div>
-          )}
-          <div className="absolute bottom-1.5 left-1.5 bg-blue-600/90 backdrop-blur-sm rounded px-2 py-0.5 shadow-sm">
-            <span className="text-[9px] font-bold text-white flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              Presenter: {userName} (You)
-            </span>
-          </div>
-          <div className="absolute top-1.5 right-1.5 flex gap-1 items-center">
-            {!isFloating && (
-              <button
-                onClick={() => setPresenterVideoMode("float")}
-                className="p-1 bg-slate-800/80 hover:bg-slate-700 text-white rounded transition cursor-pointer shadow-sm"
-                title="Float over Presentation"
-              >
-                <PinOff className="h-3 w-3" />
-              </button>
-            )}
-            {!isMicOn && (
-              <div className="bg-rose-500/90 rounded-full p-1 shadow-sm">
-                <MicOff className="h-2.5 w-2.5 text-white" />
-              </div>
-            )}
-          </div>
-          {isFloating && renderPipControls()}
-        </div>
-      );
-    }
-
-    // Remote presenter rendering
-    return (
-      <div className={cardClass}>
-        {remotePresenterUser && remotePresenterUser.hasVideo ? (
-          <div id={`remote-video-${remotePresenterUser.uid}`} className="w-full h-full object-cover" />
+      <div
+        key={uid}
+        className={`relative bg-slate-900 rounded-xl overflow-hidden border transition-all duration-300 group
+          ${isPinned ? "border-blue-500 ring-2 ring-blue-500/40" : "border-slate-700 hover:border-slate-500"}
+          ${opts.className || ""}
+        `}
+      >
+        {/* Video element */}
+        {opts.hasVideo ? (
+          opts.videoEl
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-slate-950">
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
             <div className="text-center space-y-2">
-              <div className="mx-auto w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
-                <Users className="h-5 w-5 text-slate-400" />
+              <div className="mx-auto w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center">
+                <span className="text-xl font-extrabold text-slate-400">
+                  {displayName.charAt(0).toUpperCase()}
+                </span>
               </div>
-              <p className="text-[9px] text-slate-500 font-bold">Camera Off (Presenter)</p>
+              <p className="text-[10px] text-slate-500 font-bold">Camera Off</p>
             </div>
           </div>
         )}
-        <div className="absolute bottom-1.5 left-1.5 bg-blue-600/90 backdrop-blur-sm rounded px-2 py-0.5 shadow-sm">
-          <span className="text-[9px] font-bold text-white flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Presenter: {presenterUid ? getUserDisplayName(presenterUid) : "Loading..."}
-          </span>
-        </div>
-        <div className="absolute top-1.5 right-1.5 flex gap-1 items-center">
-          {!isFloating && (
+
+        {/* Overlay controls — shown on hover */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-between pointer-events-none group-hover:pointer-events-auto z-10">
+          {/* Top-right action buttons */}
+          <div className="flex justify-end p-2 gap-1.5">
+            {/* Pin button */}
             <button
-              onClick={() => setPresenterVideoMode("float")}
-              className="p-1 bg-slate-800/80 hover:bg-slate-700 text-white rounded transition cursor-pointer shadow-sm"
-              title="Float over Presentation"
+              onClick={() => togglePin(uid)}
+              title={isPinned ? "Unpin" : "Pin to spotlight"}
+              className="p-1.5 bg-slate-900/80 hover:bg-blue-600 text-white rounded-lg transition cursor-pointer shadow"
             >
-              <PinOff className="h-3 w-3" />
+              {isPinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}
             </button>
-          )}
-          {(!remotePresenterUser || !remotePresenterUser.hasAudio) && (
-            <div className="bg-rose-500/90 rounded-full p-1 shadow-sm">
+            {/* Maximize button */}
+            <button
+              onClick={() => toggleMaximize(uid)}
+              title={isMaximized ? "Restore" : "Maximize tile"}
+              className="p-1.5 bg-slate-900/80 hover:bg-indigo-600 text-white rounded-lg transition cursor-pointer shadow"
+            >
+              {isMaximized ? <Shrink className="h-3.5 w-3.5" /> : <Expand className="h-3.5 w-3.5" />}
+            </button>
+          </div>
+
+          {/* Bottom name label */}
+          <div className="flex items-center justify-between p-2">
+            <div className="flex items-center gap-1.5 bg-slate-950/70 backdrop-blur-sm rounded-lg px-2 py-1">
+              <Wifi className="h-2.5 w-2.5 text-emerald-400 shrink-0" />
+              <span className="text-[10px] font-bold text-white truncate max-w-[120px]">{displayName}</span>
+            </div>
+            {!opts.hasAudio && (
+              <div className="bg-rose-500/90 rounded-full p-1">
+                <MicOff className="h-2.5 w-2.5 text-white" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Always-visible bottom label (non-hover state) */}
+        <div className="absolute bottom-2 left-2 group-hover:opacity-0 transition-opacity duration-200 z-[5]">
+          <div className="flex items-center gap-1 bg-slate-950/70 backdrop-blur-sm rounded px-2 py-0.5">
+            <span className="text-[9px] font-bold text-white truncate max-w-[100px]">{displayName}</span>
+          </div>
+        </div>
+
+        {/* Pin badge */}
+        {isPinned && (
+          <div className="absolute top-2 left-2 z-[5]">
+            <div className="flex items-center gap-1 bg-blue-600/90 rounded-full px-2 py-0.5">
+              <Pin className="h-2.5 w-2.5 text-white" />
+              <span className="text-[9px] font-bold text-white">Pinned</span>
+            </div>
+          </div>
+        )}
+
+        {/* Mic-off badge always visible */}
+        {!opts.hasAudio && (
+          <div className="absolute top-2 right-2 z-[5] group-hover:opacity-0 transition-opacity">
+            <div className="bg-rose-500/80 rounded-full p-0.5">
               <MicOff className="h-2.5 w-2.5 text-white" />
             </div>
-          )}
-        </div>
-        {isFloating && renderPipControls()}
+          </div>
+        )}
       </div>
     );
   };
 
-  const renderOtherParticipants = () => {
-    const list: React.ReactNode[] = [];
+  // ─── Maximized overlay ────────────────────────────────────────────────────────
+  const renderMaximizedOverlay = () => {
+    if (!maximizedUid) return null;
+    const isLocal = maximizedUid === "local";
+    const remoteUser = !isLocal ? standardRemoteUsers.find((u) => u.uid === maximizedUid) : null;
+    const displayName = isLocal ? `${userName} (You)` : getUserDisplayName(maximizedUid);
 
-    // 1. Render local video if local user is NOT the presenter
-    if (!isLocalPresenter) {
-      list.push(
-        <div
-          key="local-participant"
-          className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shrink-0 w-36 h-24 lg:w-full lg:h-24 transition-all duration-300 hover:border-blue-500/50 video-transition-card"
-        >
-          <div ref={localVideoRef} className="w-full h-full object-cover" />
-          {!isCameraOn && (
-            <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-              <div className="text-center space-y-1">
-                <div className="mx-auto w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-extrabold text-slate-400">
-                    {userName.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <p className="text-[9px] text-slate-500 font-bold">Camera Off</p>
+    return (
+      <div className="absolute inset-0 z-[50] bg-slate-950 rounded-xl overflow-hidden flex flex-col">
+        {/* Close maximize */}
+        <div className="absolute top-3 right-3 z-[60] flex gap-2">
+          <button
+            onClick={() => setMaximizedUid(null)}
+            className="p-2 bg-slate-800/90 hover:bg-slate-700 text-white rounded-lg transition cursor-pointer shadow flex items-center gap-1.5"
+          >
+            <Shrink className="h-4 w-4" />
+            <span className="text-xs font-bold">Restore</span>
+          </button>
+        </div>
+
+        {isLocal ? (
+          <div ref={localVideoRef} className="w-full h-full" />
+        ) : remoteUser?.hasVideo ? (
+          <div id={`remote-video-${maximizedUid}`} className="w-full h-full" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="text-center space-y-3">
+              <div className="mx-auto w-20 h-20 bg-slate-800 rounded-full flex items-center justify-center">
+                <span className="text-3xl font-extrabold text-slate-400">{displayName.charAt(0).toUpperCase()}</span>
               </div>
+              <p className="text-sm text-slate-400 font-bold">Camera Off</p>
+            </div>
+          </div>
+        )}
+
+        <div className="absolute bottom-4 left-4 z-[60]">
+          <div className="flex items-center gap-2 bg-slate-950/80 backdrop-blur-sm rounded-xl px-3 py-2">
+            <Wifi className="h-3 w-3 text-emerald-400" />
+            <span className="text-xs font-bold text-white">{displayName}</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // ─── Grid layout ──────────────────────────────────────────────────────────────
+  const renderGridLayout = () => {
+    const allParticipants: Array<{ uid: "local" | number; user?: RemoteUser }> = [
+      { uid: "local" },
+      ...standardRemoteUsers.map((u) => ({ uid: u.uid as number, user: u })),
+    ];
+
+    // If a tile is pinned → spotlight mode with sidebar
+    if (pinnedUid !== null) {
+      const pinnedIsLocal = pinnedUid === "local";
+      const pinnedRemote = !pinnedIsLocal ? standardRemoteUsers.find((u) => u.uid === pinnedUid) : null;
+      const otherParticipants = allParticipants.filter((p) => p.uid !== pinnedUid);
+
+      return (
+        <div className="h-full flex gap-3">
+          {/* Main pinned tile */}
+          <div className="flex-1 min-w-0 relative">
+            {maximizedUid && renderMaximizedOverlay()}
+            {renderTile(pinnedUid, {
+              videoEl: pinnedIsLocal
+                ? <div ref={localVideoRef} className="w-full h-full min-h-[300px]" />
+                : <div id={`remote-video-${pinnedUid}`} className="w-full h-full min-h-[300px]" />,
+              hasVideo: pinnedIsLocal ? isCameraOn : (pinnedRemote?.hasVideo ?? false),
+              hasAudio: pinnedIsLocal ? isMicOn : (pinnedRemote?.hasAudio ?? false),
+              className: "w-full h-full min-h-[300px]",
+            })}
+          </div>
+
+          {/* Sidebar strip */}
+          {sidebarOpen && otherParticipants.length > 0 && (
+            <div className="w-44 xl:w-52 flex flex-col gap-2 overflow-y-auto shrink-0 pr-0.5">
+              {otherParticipants.map(({ uid, user }) => {
+                const isLoc = uid === "local";
+                return renderTile(uid, {
+                  videoEl: isLoc
+                    ? <div ref={localVideoRef} className="w-full h-full min-h-[90px]" />
+                    : <div id={`remote-video-${uid}`} className="w-full h-full min-h-[90px]" />,
+                  hasVideo: isLoc ? isCameraOn : (user?.hasVideo ?? false),
+                  hasAudio: isLoc ? isMicOn : (user?.hasAudio ?? false),
+                  className: "w-full shrink-0 h-28",
+                });
+              })}
             </div>
           )}
-          <div className="absolute bottom-1.5 left-1.5 bg-slate-950/80 backdrop-blur-sm rounded px-2 py-0.5">
-            <span className="text-[9px] font-bold text-white">{userName} (You)</span>
-          </div>
-          <div className="absolute top-1.5 right-1.5">
-            {!isMicOn && (
-              <div className="bg-rose-500/80 rounded-full p-0.5">
-                <MicOff className="h-2.5 w-2.5 text-white" />
-              </div>
-            )}
-          </div>
         </div>
       );
     }
 
-    // 2. Render all other remote participants
-    otherRemoteParticipants.forEach((user) => {
-      list.push(
-        <div
-          key={user.uid}
-          className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-700 shrink-0 w-36 h-24 lg:w-full lg:h-24 transition-all duration-300 hover:border-blue-500/50 video-transition-card"
-        >
-          {user.hasVideo ? (
-            <div id={`remote-video-${user.uid}`} className="w-full h-full object-cover" />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-center space-y-1">
-                <div className="mx-auto w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center">
-                  <Users className="h-5 w-5 text-slate-500" />
-                </div>
-                <p className="text-[9px] text-slate-500 font-bold">Camera Off</p>
+    // Pure grid — no pin
+    const count = allParticipants.length;
+    const gridCols =
+      count === 1 ? "grid-cols-1" :
+      count === 2 ? "grid-cols-1 lg:grid-cols-2" :
+      count <= 4 ? "grid-cols-2" :
+      "grid-cols-2 lg:grid-cols-3";
+
+    return (
+      <div className={`h-full grid gap-3 content-start overflow-y-auto pr-1 ${gridCols}`}
+        style={{ gridAutoRows: count === 1 ? "100%" : count === 2 ? "minmax(250px, 1fr)" : "minmax(200px, 1fr)" }}>
+        {maximizedUid && (
+          <div className="col-span-full relative" style={{ gridRow: "1 / -1" }}>
+            {renderMaximizedOverlay()}
+          </div>
+        )}
+        {allParticipants.map(({ uid, user }) => {
+          const isLoc = uid === "local";
+          return renderTile(uid, {
+            videoEl: isLoc
+              ? <div ref={localVideoRef} className="w-full h-full min-h-[200px]" />
+              : <div id={`remote-video-${uid}`} className="w-full h-full min-h-[200px]" />,
+            hasVideo: isLoc ? isCameraOn : (user?.hasVideo ?? false),
+            hasAudio: isLoc ? isMicOn : (user?.hasAudio ?? false),
+            className: "min-h-[200px]",
+          });
+        })}
+      </div>
+    );
+  };
+
+  // ─── Presentation layout ──────────────────────────────────────────────────────
+  const renderPresentationLayout = () => {
+    const pipCornerClass = {
+      "bottom-right": "bottom-4 right-4",
+      "bottom-left": "bottom-4 left-4",
+      "top-right": "top-14 right-4",
+      "top-left": "top-14 left-4",
+    }[pipPosition];
+
+    const allCamParticipants: Array<{ uid: "local" | number; user?: RemoteUser }> = [
+      { uid: "local" },
+      ...standardRemoteUsers.map((u) => ({ uid: u.uid as number, user: u })),
+    ];
+
+    return (
+      <div className="h-full flex gap-3">
+        {/* Main presentation area */}
+        <div className="flex-1 min-w-0 relative bg-slate-900 rounded-xl overflow-hidden">
+          {maximizedUid && renderMaximizedOverlay()}
+
+          {/* Local screen share */}
+          {isScreenSharing && !remoteScreenUser && (
+            <div className="w-full h-full relative">
+              <div ref={screenVideoRef} className="w-full h-full" />
+              <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-xl rounded-full px-4 py-1.5 flex items-center gap-2 z-10">
+                <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <Monitor className="h-3.5 w-3.5 text-white" />
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">You are presenting</span>
               </div>
             </div>
           )}
-          <div className="absolute bottom-1.5 left-1.5 bg-slate-950/80 backdrop-blur-sm rounded px-2 py-0.5 flex items-center gap-1">
-            <Wifi className="h-2.5 w-2.5 text-emerald-400" />
-            <span className="text-[9px] font-bold text-white">{getUserDisplayName(user.uid)}</span>
-          </div>
-          <div className="absolute top-1.5 right-1.5 flex items-center gap-0.5">
-            {!user.hasAudio && (
-              <div className="bg-rose-500/80 rounded-full p-0.5">
-                <MicOff className="h-2.5 w-2.5 text-white" />
+
+          {/* Remote screen share */}
+          {remoteScreenUser && (
+            <div className="w-full h-full relative border-2 border-indigo-500/60 rounded-xl overflow-hidden">
+              {remoteScreenUser.hasVideo ? (
+                <div id={`remote-video-${remoteScreenUser.uid}`} className="w-full h-full" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center space-y-3 animate-pulse">
+                    <Monitor className="mx-auto h-14 w-14 text-slate-500" />
+                    <p className="text-xs text-slate-500 font-bold">Presentation Loading...</p>
+                  </div>
+                </div>
+              )}
+              <div className="absolute top-4 left-4 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-xl rounded-full px-4 py-1.5 flex items-center gap-2 z-10">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <Monitor className="h-3.5 w-3.5 text-white" />
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">
+                  {presenterUid ? getUserDisplayName(presenterUid) : "Someone"} is presenting
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* Floating PiP — local camera while screen sharing */}
+          {isScreenSharing && !pipDocked && (
+            <div className={`absolute ${pipCornerClass} z-20 w-40 h-28 rounded-xl overflow-hidden border-2 border-blue-500/80 shadow-2xl bg-slate-900 group`}>
+              <div ref={localVideoRef} className="w-full h-full" />
+              {!isCameraOn && (
+                <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+                  <span className="text-lg font-extrabold text-slate-400">{userName.charAt(0).toUpperCase()}</span>
+                </div>
+              )}
+              {/* PiP controls */}
+              <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-1.5 z-10">
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => setPipDocked(true)}
+                    className="p-1 bg-slate-800 hover:bg-slate-700 text-white rounded transition cursor-pointer"
+                    title="Dock to sidebar"
+                  >
+                    <Pin className="h-3 w-3" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-0.5">
+                  {(["top-left", "top-right", "bottom-left", "bottom-right"] as const).map((pos) => (
+                    <button
+                      key={pos}
+                      onClick={() => setPipPosition(pos)}
+                      className={`text-[8px] py-0.5 rounded font-bold transition cursor-pointer ${pipPosition === pos ? "bg-blue-600 text-white" : "bg-slate-800 text-slate-300 hover:bg-slate-700"}`}
+                    >
+                      {pos.split("-").map(w => w[0].toUpperCase()).join("")}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="absolute bottom-1.5 left-1.5 bg-blue-600/90 rounded px-1.5 py-0.5">
+                <span className="text-[8px] font-bold text-white">You</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Participants sidebar */}
+        {sidebarOpen && (
+          <div className="w-44 xl:w-52 flex flex-col gap-2 overflow-y-auto shrink-0 pr-0.5">
+            {/* Docked PiP cam */}
+            {isScreenSharing && pipDocked && (
+              <div className="relative bg-slate-900 rounded-xl overflow-hidden border-2 border-blue-500/80 shrink-0 h-28 group">
+                <div ref={localVideoRef} className="w-full h-full" />
+                <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-1.5 z-10">
+                  <button
+                    onClick={() => setPipDocked(false)}
+                    className="p-1 bg-slate-800 hover:bg-slate-700 text-white rounded transition cursor-pointer"
+                    title="Float PiP"
+                  >
+                    <PinOff className="h-3 w-3" />
+                  </button>
+                </div>
+                <div className="absolute bottom-1.5 left-1.5 bg-blue-600/90 rounded px-1.5 py-0.5">
+                  <span className="text-[8px] font-bold text-white">{userName} (You • Presenting)</span>
+                </div>
+              </div>
+            )}
+
+            {/* All camera participants */}
+            {allCamParticipants
+              .filter(({ uid }) => !(uid === "local" && isScreenSharing && !pipDocked)) // skip local if PiP floating
+              .map(({ uid, user }) => {
+                const isLoc = uid === "local";
+                return renderTile(uid, {
+                  videoEl: isLoc
+                    ? <div ref={localVideoRef} className="w-full h-full min-h-[80px]" />
+                    : <div id={`remote-video-${uid}`} className="w-full h-full min-h-[80px]" />,
+                  hasVideo: isLoc ? isCameraOn : (user?.hasVideo ?? false),
+                  hasAudio: isLoc ? isMicOn : (user?.hasAudio ?? false),
+                  className: "w-full shrink-0 h-28",
+                });
+              })}
+
+            {allCamParticipants.length === 0 && (
+              <div className="flex items-center justify-center bg-slate-900/50 rounded-xl border border-dashed border-slate-700 h-24">
+                <div className="text-center p-2">
+                  <Users className="mx-auto h-5 w-5 text-slate-600 mb-1" />
+                  <p className="text-[9px] text-slate-500 font-bold">Waiting for participants...</p>
+                </div>
               </div>
             )}
           </div>
-        </div>
-      );
-    });
-
-    return list;
+        )}
+      </div>
+    );
   };
 
-  // Main call UI
+  // ─── Main UI ──────────────────────────────────────────────────────────────────
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[200] bg-slate-950 flex flex-col"
+      className="fixed inset-0 z-[200] bg-slate-950 flex flex-col select-none"
     >
-      {/* Top Bar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 shrink-0">
+      {/* ── Top Bar ─────────────────────────────────────────────────────────── */}
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <div className={`w-2 h-2 rounded-full ${connectionState === "CONNECTED" ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} />
@@ -785,214 +908,101 @@ export default function VideoCall({ channelName, userName, userRole = "student",
             <Clock className="h-3.5 w-3.5" />
             <span className="text-xs font-mono font-bold">{formatDuration(callDuration)}</span>
           </div>
+          <div className="h-4 w-px bg-slate-700" />
+          <div className="flex items-center gap-1.5 bg-slate-800 rounded-lg px-2.5 py-1">
+            <Users className="h-3.5 w-3.5 text-slate-400" />
+            <span className="text-xs font-bold text-slate-300">{standardRemoteUsers.length + 1}</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 bg-slate-800 rounded-lg px-2.5 py-1">
-            <Users className="h-3.5 w-3.5 text-slate-400" />
-            <span className="text-xs font-bold text-slate-300">{remoteUsers.length + 1}</span>
+          {/* Layout indicator */}
+          <div className="flex items-center gap-1 bg-slate-800 rounded-lg px-2 py-1">
+            <LayoutGrid className="h-3 w-3 text-slate-400" />
+            <span className="text-[10px] font-bold text-slate-400 capitalize">{layoutMode}</span>
           </div>
-          <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-800 px-2 py-1 rounded-lg truncate max-w-[160px]">
+
+          {/* Channel name */}
+          <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-800 px-2 py-1 rounded-lg truncate max-w-[140px]">
             {channelName}
           </span>
+
+          {/* Toggle sidebar */}
+          <button
+            onClick={() => setSidebarOpen((v) => !v)}
+            title={sidebarOpen ? "Hide sidebar" : "Show sidebar"}
+            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition cursor-pointer"
+          >
+            {sidebarOpen ? <X className="h-3.5 w-3.5" /> : <Users className="h-3.5 w-3.5" />}
+          </button>
+
+          {/* Browser native fullscreen */}
+          <button
+            onClick={toggleFullscreen}
+            title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition cursor-pointer"
+          >
+            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+          </button>
         </div>
       </div>
 
-      {/* Video Grid — Presentation-aware responsive layout */}
-      <div className="flex-1 p-3 overflow-hidden">
-        {(isScreenSharing || remoteScreenUser) ? (
-          /* ========== PRESENTATION MODE LAYOUT ========== */
-          <div className="h-full flex flex-col lg:flex-row gap-3 relative">
-            {/* Primary presentation area — takes most of the space */}
-            <div className="flex-1 min-h-0 relative bg-slate-900 rounded-xl overflow-hidden">
-              {/* Local Screen Share */}
-              {isScreenSharing && !remoteScreenUser && (
-                <div className="w-full h-full relative bg-slate-900 rounded-xl overflow-hidden border border-blue-500/30 shadow-2xl shadow-blue-500/10 transition-all duration-500">
-                  <div ref={screenVideoRef} className="w-full h-full" />
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-blue-600 to-indigo-600 shadow-xl rounded-full px-4 py-1.5 flex items-center gap-2 z-10">
-                    <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                    <Monitor className="h-3.5 w-3.5 text-white" />
-                    <span className="text-[10px] font-bold text-white uppercase tracking-wider">You are presenting</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Remote Screen Share */}
-              {remoteScreenUser && (
-                <div className="w-full h-full relative bg-slate-900 rounded-xl overflow-hidden border-2 border-indigo-500 shadow-2xl shadow-indigo-500/20 transition-all duration-500">
-                  {remoteScreenUser.hasVideo ? (
-                    <div id={`remote-video-${remoteScreenUser.uid}`} className="w-full h-full" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center space-y-3 animate-pulse">
-                        <Monitor className="mx-auto h-14 w-14 text-slate-500" />
-                        <p className="text-xs text-slate-500 font-bold">Presentation Loading...</p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-xl rounded-full px-4 py-1.5 flex items-center gap-2 z-10">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <Monitor className="h-3.5 w-3.5 text-white" />
-                    <span className="text-[10px] font-bold text-white uppercase tracking-wider">Now Presenting</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Render floating presenter's video */}
-              {presenterVideoMode === "float" && presenterUid && renderPresenterCard(true)}
-            </div>
-
-            {/* Participants sidebar strip — scrollable thumbnails */}
-            <div className="lg:w-52 xl:w-60 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:overflow-x-hidden shrink-0 pb-1 lg:pb-0 lg:pr-1">
-              {/* Render docked presenter's video (if docked) */}
-              {presenterVideoMode === "dock" && presenterUid && (
-                <div className="shrink-0 w-36 lg:w-full">
-                  {renderPresenterCard(false)}
-                </div>
-              )}
-
-              {/* Standard participant thumbnails */}
-              {renderOtherParticipants()}
-
-              {/* Waiting state in sidebar */}
-              {otherRemoteParticipants.length === 0 && !isLocalPresenter && (
-                <div className="flex items-center justify-center bg-slate-900/50 rounded-xl border border-dashed border-slate-700 shrink-0 w-36 h-24 lg:w-full lg:h-24">
-                  <div className="text-center p-2">
-                    <Users className="mx-auto h-5 w-5 text-slate-600 mb-1" />
-                    <p className="text-[9px] text-slate-500 font-bold leading-tight">
-                      {userRole === "supervisor" ? "Waiting for\nstudents..." : "Waiting for\nparticipants..."}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          /* ========== NORMAL GRID LAYOUT (no presentation) ========== */
-          <div className={`h-full grid gap-3 overflow-y-auto pr-1 ${
-            standardRemoteUsers.length === 0
-              ? "grid-cols-1"
-              : standardRemoteUsers.length <= 1
-                ? "grid-cols-1 lg:grid-cols-2"
-                : "grid-cols-2 lg:grid-cols-3 auto-rows-[220px] lg:auto-rows-[280px]"
-          }`}>
-            {/* Local video (Camera) — full grid tile */}
-            <div className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300 min-h-[200px]">
-              <div
-                ref={localVideoRef}
-                className="w-full h-full min-h-[200px]"
-              />
-              {!isCameraOn && (
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-                  <div className="text-center space-y-2">
-                    <div className="mx-auto w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center">
-                      <span className="text-2xl font-extrabold text-slate-400">{userName.charAt(0).toUpperCase()}</span>
-                    </div>
-                    <p className="text-xs text-slate-500 font-bold">Camera Off</p>
-                  </div>
-                </div>
-              )}
-              <div className="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur-sm rounded-lg px-3 py-1.5">
-                <span className="text-[10px] font-bold text-white">{userName} (You)</span>
-              </div>
-            </div>
-
-            {/* Remote users (Cameras) — full grid tiles */}
-            {standardRemoteUsers.map((user) => (
-              <div key={user.uid} className="relative bg-slate-900 rounded-xl overflow-hidden border border-slate-800 transition-all duration-300 min-h-[200px]">
-                {user.hasVideo ? (
-                  <div id={`remote-video-${user.uid}`} className="w-full h-full min-h-[200px]" />
-                ) : (
-                  <div className="w-full h-full min-h-[200px] flex items-center justify-center">
-                    <div className="text-center space-y-2">
-                      <div className="mx-auto w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center">
-                        <Users className="h-7 w-7 text-slate-500" />
-                      </div>
-                      <p className="text-xs text-slate-500 font-bold">Camera Off</p>
-                    </div>
-                  </div>
-                )}
-                <div className="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-2">
-                  <Wifi className="h-3 w-3 text-emerald-400" />
-                  <span className="text-[10px] font-bold text-white">{getUserDisplayName(user.uid)}</span>
-                </div>
-                <div className="absolute top-3 right-3 flex items-center gap-1">
-                  {!user.hasAudio && (
-                    <div className="bg-rose-500/80 rounded-full p-1">
-                      <MicOff className="h-3 w-3 text-white" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            {/* Empty state when waiting for others */}
-            {standardRemoteUsers.length === 0 && (
-              <div className="flex items-center justify-center bg-slate-900/50 rounded-xl border border-dashed border-slate-700 min-h-[200px]">
-                <div className="text-center space-y-3 p-6">
-                  <div className="mx-auto w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center">
-                    <Users className="h-7 w-7 text-slate-500" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-400">
-                      {userRole === "supervisor" ? "Awaiting project students..." : "Awaiting meeting participants..."}
-                    </p>
-                    <p className="text-[11px] text-slate-600 mt-1">
-                      {userRole === "supervisor"
-                        ? "Share this consultation room code with your assigned project students to connect"
-                        : "Share this meeting room code with your supervisor or team members to join"}
-                    </p>
-                  </div>
-                  <div className="bg-slate-800 rounded-lg px-4 py-2 inline-block">
-                    <code className="text-xs font-mono font-bold text-blue-400">{channelName}</code>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+      {/* ── Video Area ──────────────────────────────────────────────────────── */}
+      <div className="flex-1 p-3 overflow-hidden min-h-0">
+        {isPresenting ? renderPresentationLayout() : renderGridLayout()}
       </div>
 
-      {/* Bottom Control Bar */}
+      {/* ── Bottom Control Bar ───────────────────────────────────────────────── */}
       <div className="shrink-0 px-4 py-3 bg-slate-900/80 backdrop-blur-sm border-t border-slate-800">
-        <div className="flex items-center justify-center gap-3">
-          {/* Mic toggle */}
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          {/* Mic */}
           <button
             onClick={toggleMic}
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
-              isMicOn
-                ? "bg-slate-700 hover:bg-slate-600 text-white"
-                : "bg-rose-500 hover:bg-rose-600 text-white"
-            }`}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${isMicOn ? "bg-slate-700 hover:bg-slate-600 text-white" : "bg-rose-500 hover:bg-rose-600 text-white"}`}
             title={isMicOn ? "Mute Microphone" : "Unmute Microphone"}
           >
             {isMicOn ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5" />}
           </button>
 
-          {/* Camera toggle */}
+          {/* Camera */}
           <button
             onClick={toggleCamera}
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
-              isCameraOn
-                ? "bg-slate-700 hover:bg-slate-600 text-white"
-                : "bg-rose-500 hover:bg-rose-600 text-white"
-            }`}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${isCameraOn ? "bg-slate-700 hover:bg-slate-600 text-white" : "bg-rose-500 hover:bg-rose-600 text-white"}`}
             title={isCameraOn ? "Turn Off Camera" : "Turn On Camera"}
           >
             {isCameraOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5" />}
           </button>
 
-          {/* Screen share */}
+          {/* Screen Share — available to ALL participants */}
           <button
             onClick={toggleScreenShare}
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${
-              isScreenSharing
-                ? "bg-blue-500 hover:bg-blue-600 text-white ring-2 ring-blue-400/50"
-                : "bg-slate-700 hover:bg-slate-600 text-white"
-            }`}
-            title={isScreenSharing ? "Stop Screen Share" : "Share Screen (PowerPoint)"}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all cursor-pointer ${isScreenSharing ? "bg-blue-500 hover:bg-blue-600 text-white ring-2 ring-blue-400/50" : "bg-slate-700 hover:bg-slate-600 text-white"}`}
+            title={isScreenSharing ? "Stop Screen Share" : "Share Screen / Present Slides"}
           >
             {isScreenSharing ? <MonitorOff className="h-5 w-5" /> : <Monitor className="h-5 w-5" />}
+          </button>
+
+          {/* Pin-clear shortcut */}
+          {pinnedUid !== null && (
+            <button
+              onClick={() => setPinnedUid(null)}
+              className="w-12 h-12 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition-all cursor-pointer ring-2 ring-blue-400/40"
+              title="Clear pin — return to grid"
+            >
+              <PinOff className="h-5 w-5" />
+            </button>
+          )}
+
+          {/* Layout cycle */}
+          <button
+            onClick={() => {
+              setPinnedUid(null);
+              setMaximizedUid(null);
+            }}
+            className="w-12 h-12 rounded-2xl bg-slate-700 hover:bg-slate-600 text-white flex items-center justify-center transition-all cursor-pointer"
+            title="Reset layout to grid"
+          >
+            <LayoutGrid className="h-5 w-5" />
           </button>
 
           {/* Fullscreen */}
@@ -1004,10 +1014,9 @@ export default function VideoCall({ channelName, userName, userRole = "student",
             {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
           </button>
 
-          {/* Divider */}
           <div className="h-8 w-px bg-slate-700 mx-1" />
 
-          {/* Leave call */}
+          {/* Leave */}
           <button
             onClick={leaveChannel}
             className="w-14 h-12 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white flex items-center justify-center transition-all cursor-pointer shadow-lg shadow-rose-600/30"
@@ -1017,12 +1026,19 @@ export default function VideoCall({ channelName, userName, userRole = "student",
           </button>
         </div>
 
-        {/* Screen share hint */}
-        {!isScreenSharing && joined && (
-          <p className="text-center text-[10px] text-slate-500 mt-2 font-medium">
-            💡 Click the <Monitor className="h-3 w-3 inline-block mx-0.5" /> button to share your PowerPoint slides
-          </p>
-        )}
+        {/* Hints */}
+        <div className="flex items-center justify-center gap-4 mt-2">
+          {!isScreenSharing && (
+            <p className="text-[10px] text-slate-500 font-medium">
+              💡 <Monitor className="h-3 w-3 inline-block mx-0.5" /> Share slides — hover a tile to <Pin className="h-3 w-3 inline-block mx-0.5" /> pin or <Expand className="h-3 w-3 inline-block mx-0.5" /> maximize
+            </p>
+          )}
+          {isScreenSharing && (
+            <p className="text-[10px] text-blue-400 font-bold animate-pulse">
+              🔴 You are presenting your screen to everyone in this room
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
