@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import { createServer as createViteServer } from "vite";
-import { db, User, Topic, Proposal, Schedule, Notification } from "./server/db.js";
+import { db, User, Topic, Proposal, Schedule, Notification, PendingOtp } from "./server/db.js";
 import { createNotification, sendEmailNotification, emailTemplates } from "./server/notifier.js";
 import agoraTokenPkg from "agora-access-token";
 
@@ -157,17 +157,8 @@ function requireRole(roles: string[]) {
 // AUTHENTICATION ENDPOINTS
 // ==========================================
 
-// ==========================================
-// AUTHENTICATION SECURITY REGISTRATION OTP ENGINE
-// ==========================================
-
-interface PendingUser {
-  otp: string;
-  expiresAt: number;
-  details: any;
-}
-
-const pendingVerifications = new Map<string, PendingUser>();
+// OTP storage is now persisted in the database (see server/db.ts PendingOtp)
+// This ensures OTPs survive serverless cold starts on Vercel
 
 // Register Account (Dual-Stage with 6-digit OTP check)
 app.post("/api/auth/register", async (req: Request, res: Response) => {
@@ -202,8 +193,12 @@ app.post("/api/auth/register", async (req: Request, res: Response) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes from now
 
-    // Temporarily save the registration details pending verification
-    pendingVerifications.set(emailStr, {
+    // Persist OTP to database (survives serverless cold starts)
+    const pendingOtps = await db.getPendingOtps();
+    // Remove any previous pending OTP for this email
+    const filtered = pendingOtps.filter((p) => p.email !== emailStr);
+    const pendingEntry: PendingOtp = {
+      email: emailStr,
       otp,
       expiresAt,
       details: {
@@ -215,45 +210,47 @@ app.post("/api/auth/register", async (req: Request, res: Response) => {
         department,
         supervisorId: role === "student" ? supervisorId : undefined,
       }
-    });
+    };
+    filtered.push(pendingEntry);
+    await db.savePendingOtps(filtered);
 
-    // Send verification email
+    // Build OTP email with professional HTML template
     const subject = `[${otp}] Verify Your FYP Supervision Academic Profile`;
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 550px; margin: 0 auto; padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; background-color: #ffffff; color: #1e293b;">
         <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px;">
-          <h2 style="color: #1e3a8a; margin: 0; font-size: 20px; text-transform: uppercase; tracking-wider">FYP Project Portal</h2>
-          <p style="color: #64748b; font-size: 11px; margin: 4px 0 0 0;">Department of Computer Science & ICT (Information Technology)</p>
+          <h2 style="color: #1e3a8a; margin: 0; font-size: 20px;">FYP Project Portal</h2>
+          <p style="color: #64748b; font-size: 11px; margin: 4px 0 0 0;">Department of Computer Science &amp; ICT</p>
         </div>
         <p>Dear <strong>${name}</strong>,</p>
-        <p>You have initialized registration as a <strong>${role === "student" ? "Project Candidate" : "Supervisor Adviser"}</strong>. Please use the following secure 6-digit Verification Access Token (OTP) to activate your account profile:</p>
-        
-        <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; text-align: center; margin: 22px 0;">
-          <span style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; color: #2563eb; letter-spacing: 8px;">${otp}</span>
-          <p style="color: #64748b; font-size: 10px; margin: 8px 0 0 0; text-transform: uppercase; font-weight: bold; tracking-wider">Verification Access OTP Token</p>
+        <p>You have initiated registration as a <strong>${role === "student" ? "Project Candidate" : "Supervisor Adviser"}</strong>. Use the secure 6-digit OTP below to activate your account:</p>
+
+        <div style="background-color: #f8fafc; border: 2px dashed #2563eb; border-radius: 10px; padding: 22px; text-align: center; margin: 22px 0;">
+          <span style="font-family: 'Courier New', monospace; font-size: 38px; font-weight: 900; color: #2563eb; letter-spacing: 10px;">${otp}</span>
+          <p style="color: #64748b; font-size: 10px; margin: 10px 0 0 0; text-transform: uppercase; font-weight: bold;">Your Verification OTP — Valid for 10 Minutes</p>
         </div>
 
-        <p style="font-size: 13px; font-weight: 500; color: #334155;">
-          <strong>Why this is securer:</strong> By implementing this automated verification layer, random registrations are blocked, protecting the university student directory database integrity. 
+        <p style="font-size: 13px; color: #334155;">
+          Enter this code on the verification screen to complete your registration. Do not share this code with anyone.
         </p>
-
-        <p style="font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 25px; border-top: 1px solid #f1f5f9; padding-top: 15px;">
-          This verification OTP will expire in 10 minutes. If you did not initiate this activation request, please discard this notification.
+        <p style="font-size: 11px; color: #94a3b8; margin-top: 20px; border-top: 1px solid #f1f5f9; padding-top: 15px;">
+          This OTP expires in <strong>10 minutes</strong>. If you did not initiate this request, please ignore this email.
         </p>
       </div>
     `;
 
-    await sendEmailNotification(emailStr, subject, html, true);
+    // Always save to in-app inbox as fallback (visible in the system even if SMTP fails)
+    await sendEmailNotification(emailStr, subject, html, false);
 
     res.status(200).json({
       verificationRequired: true,
       email: emailStr,
-      message: "A 6-digit verification security OTP has been successfully dispatched to your email address. Activate your login session below.",
+      message: "A 6-digit verification OTP has been sent to your email address. Check your inbox (and spam folder) to activate your account.",
     });
 
   } catch (error) {
     console.error("Registration dispatch error:", error);
-    res.status(500).json({ error: "Registration dispatch failed. Internal server error." });
+    res.status(500).json({ error: "Registration failed. Please try again." });
   }
 });
 
@@ -267,33 +264,35 @@ app.post("/api/auth/register/confirm", async (req: Request, res: Response) => {
     }
 
     const emailStr = email.trim().toLowerCase();
-    const pending = pendingVerifications.get(emailStr);
+
+    // Load OTPs from database (persisted across serverless calls)
+    const pendingOtps = await db.getPendingOtps();
+    const pending = pendingOtps.find((p) => p.email === emailStr);
 
     if (!pending) {
-      return res.status(400).json({ error: "No pending session registered under this email. Please re-fill your signup details." });
+      return res.status(400).json({ error: "No pending registration found for this email. Please register again." });
     }
 
     if (Date.now() > pending.expiresAt) {
-      pendingVerifications.delete(emailStr);
-      return res.status(400).json({ error: "Your verification access session has expired (10 minutes limit). Please register again." });
+      // Remove expired
+      await db.savePendingOtps(pendingOtps.filter((p) => p.email !== emailStr));
+      return res.status(400).json({ error: "Your verification OTP has expired (10-minute limit). Please register again." });
     }
 
     if (pending.otp !== otp.trim()) {
-      return res.status(400).json({ error: "Invalid verification code entered. Check your email inbox and try again." });
+      return res.status(400).json({ error: "Invalid OTP entered. Please check your email inbox and try again." });
     }
 
-    // Code matches!
+    // OTP matches — create the account
     const { name, password, role, matricNumber, department, supervisorId } = pending.details;
     const users = await db.getUsers();
 
-    // Check again to ensure no racing registrations
     const existingUser = users.find((u) => u.email.toLowerCase() === emailStr);
     if (existingUser) {
-      pendingVerifications.delete(emailStr);
+      await db.savePendingOtps(pendingOtps.filter((p) => p.email !== emailStr));
       return res.status(400).json({ error: "This email address is already registered." });
     }
 
-    // Hash and store User
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -312,8 +311,8 @@ app.post("/api/auth/register/confirm", async (req: Request, res: Response) => {
     users.push(newUser);
     await db.saveUsers(users);
 
-    // Clear verification cache
-    pendingVerifications.delete(emailStr);
+    // Remove OTP from DB after successful registration
+    await db.savePendingOtps(pendingOtps.filter((p) => p.email !== emailStr));
 
     // Create notifications & emails welcoming candidate
     await createNotification(

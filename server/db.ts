@@ -92,6 +92,21 @@ export interface PresentationRequest {
   createdAt: string;
 }
 
+export interface PendingOtp {
+  email: string;
+  otp: string;
+  expiresAt: number; // Unix ms timestamp
+  details: {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+    matricNumber?: string;
+    department: string;
+    supervisorId?: string;
+  };
+}
+
 // Global DB Structure
 interface DatabaseSchema {
   users: User[];
@@ -108,6 +123,7 @@ interface DatabaseSchema {
     html: string;
     sentAt: string;
   }>;
+  pendingOtps: PendingOtp[];
 }
 
 import crypto from "crypto";
@@ -274,6 +290,9 @@ class FileDatabase {
     if (this.memoryDb && !this.memoryDb.presentations) {
       this.memoryDb.presentations = [];
     }
+    if (this.memoryDb && !this.memoryDb.pendingOtps) {
+      this.memoryDb.pendingOtps = [];
+    }
     return this.memoryDb!;
   }
 
@@ -399,7 +418,8 @@ class FileDatabase {
           createdAt: new Date().toISOString(),
         }
       ] as any[],
-      emails: []
+      emails: [],
+      pendingOtps: []
     };
 
     await this.saveDb();
@@ -492,6 +512,21 @@ class FileDatabase {
   async savePresentations(presentations: PresentationRequest[]): Promise<void> {
     const db = await this.getDb();
     db.presentations = presentations;
+    await this.saveDb();
+  }
+
+  async getPendingOtps(): Promise<PendingOtp[]> {
+    const db = await this.getDb();
+    if (!db.pendingOtps) db.pendingOtps = [];
+    // Purge expired OTPs automatically
+    const now = Date.now();
+    db.pendingOtps = db.pendingOtps.filter((o) => o.expiresAt > now);
+    return db.pendingOtps;
+  }
+
+  async savePendingOtps(otps: PendingOtp[]): Promise<void> {
+    const db = await this.getDb();
+    db.pendingOtps = otps;
     await this.saveDb();
   }
 }

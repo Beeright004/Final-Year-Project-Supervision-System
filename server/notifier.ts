@@ -27,14 +27,22 @@ export async function createNotification(
   }
 }
 
-// Get SMTP transporter, lazy-loaded based on environment variables
+// Get SMTP transporter — supports Gmail service shorthand and custom SMTP
 function getTransporter() {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
 
-  if (!host) {
+  if (!host || !user || !pass) {
     return null;
+  }
+
+  // Gmail shorthand: use the 'gmail' service for automatic host/port/security setup
+  if (host.toLowerCase().includes("gmail")) {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: { user, pass },
+    });
   }
 
   const port = parseInt(process.env.SMTP_PORT || "465");
@@ -44,10 +52,8 @@ function getTransporter() {
     host,
     port,
     secure,
-    auth: user && pass ? { user, pass } : undefined,
-    tls: {
-      rejectUnauthorized: false
-    }
+    auth: { user, pass },
+    tls: { rejectUnauthorized: false }
   });
 }
 
@@ -58,14 +64,19 @@ export async function sendEmailNotification(
   skipSimulatedLog: boolean = false
 ) {
   try {
-    // 1. Log simulation to console for easy visual verification in server output/logs
+    // 1. Always log to server console (including OTP codes — visible in Vercel/Railway/server logs)
     console.log("\n==========================================");
-    console.log(`✉️  [EMAIL NOTIFICATION SENT] To: ${toEmail}`);
+    console.log(`✉️  [EMAIL] To: ${toEmail}`);
     console.log(`✉️  Subject: ${subject}`);
-    console.log(`✉️  Body Snippet: ${htmlContent.replace(/<[^>]*>/g, "").slice(0, 100)}...`);
+    // Extract OTP from subject line if present for easy visibility
+    const otpMatch = subject.match(/\[(\d{6})\]/);
+    if (otpMatch) {
+      console.log(`🔐 OTP CODE: ${otpMatch[1]}  <--- COPY THIS if email not delivered`);
+    }
+    console.log(`✉️  Preview: ${htmlContent.replace(/<[^>]*>/g, "").slice(0, 120)}...`);
     console.log("==========================================\n");
 
-    // 2. Persist to database so the student, lecturer, or admin can inspect emails in a dynamic in-app mailbox
+    // 2. Always persist to in-app inbox (accessible via the system UI)
     if (!skipSimulatedLog) {
       const emails = await db.getEmails();
       emails.unshift({
@@ -78,26 +89,27 @@ export async function sendEmailNotification(
       await db.saveEmails(emails);
     }
 
-    // 3. Real SMTP Transport implementation (Nodemailer hook for Phase 3 Setup)
+    // 3. Real SMTP delivery via Nodemailer
     try {
       const transporter = getTransporter();
       if (transporter) {
         const fromAddress = process.env.SMTP_USER || "noreply@university.edu";
         await transporter.sendMail({
-          from: `"University Project Supervision Module" <${fromAddress}>`,
+          from: `"FYP Supervision System" <${fromAddress}>`,
           to: toEmail,
           subject,
           html: htmlContent,
         });
-        console.log(`❇️ Physical SMTP standard delivery succeeded to ${toEmail}`);
+        console.log(`✅ Email delivered via SMTP to ${toEmail}`);
       } else {
-        console.log(`ℹ️ SMTP_HOST is not configured in .env. Running in Local Simulated Inbox mode.`);
+        console.log(`ℹ️  SMTP not configured (SMTP_HOST/SMTP_USER/SMTP_PASS missing). Email saved to in-app inbox only.`);
+        console.log(`ℹ️  To enable real email: set SMTP_HOST=smtp.gmail.com, SMTP_USER=your@gmail.com, SMTP_PASS=your-app-password in Vercel Environment Variables.`);
       }
     } catch (smtpError: any) {
-      console.error("❌ Physical SMTP Delivery failed, but email was successfully cached in simulated log:", smtpError.message);
+      console.error("❌ SMTP delivery failed (email saved to in-app inbox as fallback):", smtpError.message);
     }
   } catch (error) {
-    console.error("Failed to route simulated email notification:", error);
+    console.error("Failed to send email notification:", error);
   }
 }
 
