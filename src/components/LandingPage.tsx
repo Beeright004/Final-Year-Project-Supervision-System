@@ -89,7 +89,7 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
                 onClick={onNavigateRegister}
                 className="bg-slate-800 hover:bg-slate-700 hover:text-white text-slate-200 border border-slate-700 font-bold text-xs px-5 py-3 rounded-lg transition cursor-pointer"
               >
-                Register Student Account
+                Register Account
               </button>
             </div>
           </div>
