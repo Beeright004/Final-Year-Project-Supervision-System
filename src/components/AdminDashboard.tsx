@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { User, Topic, Proposal, Schedule } from "../types.js";
 import { api } from "../lib/api.js";
 import { useApp } from "../context/AppContext.js";
-import { 
-  Users, UserPlus, Building2, BookMarked, Calendar, Award, CheckCircle, Clock, 
+import {
+  Users, UserPlus, Building2, BookMarked, Calendar, Award, CheckCircle, Clock,
   Trash2, Edit3, ShieldAlert, KeyRound, Download, RefreshCw, Layers, Check, X, Search,
   Eye, EyeOff, Mail, CalendarX
 } from "lucide-react";
@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [stats, setStats] = useState<any>(null);
-  
+
   // Searching & Selection State
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
 
   const handleDownloadReport = () => {
     if (!stats) return;
-    
+
     // Create standard CSV content format simulation
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Metric,Value\r\n";
@@ -164,10 +164,10 @@ export default function AdminDashboard() {
 
   // Filter users based on query
   const filteredUsers = users.filter((u) => {
-    const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          (u.matricNumber && u.matricNumber.toLowerCase().includes(searchTerm.toLowerCase()));
-    
+    const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (u.matricNumber && u.matricNumber.toLowerCase().includes(searchTerm.toLowerCase()));
+
     const matchesRole = roleFilter === "all" ? true : u.role === roleFilter;
 
     return matchesSearch && matchesRole;
@@ -177,7 +177,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto w-full px-1 text-left">
-      
+
       {/* Overview Greeting */}
       <div className="bg-white rounded-lg border border-slate-200 p-4.5 flex flex-col md:flex-row md:items-center justify-between gap-5 shadow-xs">
         <div className="space-y-1 text-left">
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
             <div>
               <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-100 font-mono">Phase 3: Physical SMTP Email Notifications</h4>
               <p className="text-[11px] text-slate-400 mt-1 leading-normal">
-                {stats.summary.smtp.configured 
+                {stats.summary.smtp.configured
                   ? `Authenticated Node Server active: relaying over '${stats.summary.smtp.host}' (Port ${stats.summary.smtp.port}) using account ${stats.summary.smtp.user}.`
                   : "SMTP email delivery is currently offline. System emails are temporarily routing to the high-performance simulated Inbox Client."
                 }
@@ -275,33 +275,29 @@ export default function AdminDashboard() {
       <div className="flex border-b border-slate-200 gap-5 font-sans">
         <button
           onClick={() => setActiveTab("users")}
-          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-            activeTab === "users" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
-          }`}
+          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${activeTab === "users" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
+            }`}
         >
           User accounts ({users.length})
         </button>
         <button
           onClick={() => setActiveTab("topics")}
-          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-            activeTab === "topics" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
-          }`}
+          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${activeTab === "topics" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
+            }`}
         >
           All Topics List ({topics.length})
         </button>
         <button
           onClick={() => setActiveTab("workloads")}
-          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-            activeTab === "workloads" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
-          }`}
+          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${activeTab === "workloads" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
+            }`}
         >
           Supervision Workloads
         </button>
         <button
           onClick={() => setActiveTab("schedules")}
-          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
-            activeTab === "schedules" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
-          }`}
+          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${activeTab === "schedules" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
+            }`}
         >
           Supervision Schedule ({schedules.length})
         </button>
@@ -310,11 +306,11 @@ export default function AdminDashboard() {
       {/* Grid Panels layout contents */}
       {activeTab === "users" && (
         <div className="grid lg:grid-cols-12 gap-6 items-start">
-          
+
           {/* List Users (8 cols) */}
           <div className="lg:col-span-8 bg-white rounded-lg border border-slate-200 p-5 shadow-xs text-left">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-150 pb-3 mb-4">
-              
+
               {/* Search Bar Input */}
               <div className="relative flex-1 max-w-xs">
                 <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-400" />
@@ -373,11 +369,10 @@ export default function AdminDashboard() {
                             <div>
                               <p className="font-extrabold text-slate-905">{item.name}</p>
                               <p className="text-[10px] text-slate-500 font-mono leading-none mt-0.5">{item.email}</p>
-                              <span className={`inline-block text-[9px] uppercase font-bold mt-1 px-1.5 py-0.2 rounded leading-none ${
-                                item.role === "admin" ? "bg-slate-100 text-slate-800" :
+                              <span className={`inline-block text-[9px] uppercase font-bold mt-1 px-1.5 py-0.2 rounded leading-none ${item.role === "admin" ? "bg-slate-100 text-slate-800" :
                                 item.role === "supervisor" ? "bg-blue-50 border border-blue-100 text-blue-800" :
-                                "bg-emerald-50 border border-emerald-100 text-emerald-800"
-                              }`}>
+                                  "bg-emerald-50 border border-emerald-100 text-emerald-800"
+                                }`}>
                                 {item.role}
                               </span>
                             </div>
@@ -449,7 +444,7 @@ export default function AdminDashboard() {
                     required
                     value={userForm.name}
                     onChange={(e) => setUserForm({ ...userForm, name: e.target.value })}
-                    placeholder="e.g. Sandra McCreary"
+                    placeholder="e.g. Sunday Bright"
                     className="w-full text-xs border border-slate-250 rounded px-2.5 py-1.5 focus:border-blue-500 bg-white"
                   />
                 </div>
@@ -461,7 +456,7 @@ export default function AdminDashboard() {
                     required
                     value={userForm.email}
                     onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
-                    placeholder="e.g. sandra@university.edu"
+                    placeholder="e.g. sunday.bright@university.edu"
                     className="w-full text-xs border border-slate-250 rounded px-2.5 py-1.5 focus:border-blue-500 bg-white"
                   />
                 </div>
@@ -607,22 +602,20 @@ export default function AdminDashboard() {
                         {t.supervisorName}
                       </td>
                       <td className="p-2.5">
-                        <span className={`inline-block text-[9px] uppercase font-bold px-2 py-0.5 rounded border ${
-                          t.status === "approved" ? "bg-emerald-50 border border-emerald-100 text-emerald-800" :
+                        <span className={`inline-block text-[9px] uppercase font-bold px-2 py-0.5 rounded border ${t.status === "approved" ? "bg-emerald-50 border border-emerald-100 text-emerald-800" :
                           t.status === "revision" ? "bg-amber-50 border border-amber-100 text-amber-800" :
-                          t.status === "rejected" ? "bg-rose-50 border border-rose-100 text-rose-800" :
-                          "bg-blue-50 border border-blue-105 text-blue-850"
-                        }`}>
+                            t.status === "rejected" ? "bg-rose-50 border border-rose-100 text-rose-800" :
+                              "bg-blue-50 border border-blue-105 text-blue-850"
+                          }`}>
                           {t.status}
                         </span>
                       </td>
                       <td className="p-2.5">
                         {t.proposal ? (
-                          <span className={`inline-block text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded border ${
-                            t.proposal.status === "approved" ? "bg-emerald-50 text-emerald-800 border-emerald-100" :
+                          <span className={`inline-block text-[9px] uppercase font-extrabold px-1.5 py-0.5 rounded border ${t.proposal.status === "approved" ? "bg-emerald-50 text-emerald-800 border-emerald-100" :
                             t.proposal.status === "rejected" ? "bg-rose-50 text-rose-800 border-rose-100" :
-                            "bg-amber-50 text-amber-850 border-amber-100"
-                          }`}>
+                              "bg-amber-50 text-amber-850 border-amber-100"
+                            }`}>
                             MS: {t.proposal.status}
                           </span>
                         ) : (
@@ -669,10 +662,10 @@ export default function AdminDashboard() {
                   schedules.map((sch) => {
                     const statusStyle =
                       sch.status === "approved" ? "bg-emerald-50 text-emerald-800 border-emerald-100" :
-                      sch.status === "cancelled" ? "bg-rose-50 text-rose-700 border-rose-100" :
-                      sch.status === "completed" ? "bg-slate-100 text-slate-700 border-slate-200" :
-                      sch.status === "rejected" ? "bg-rose-100 text-rose-800 border-rose-200" :
-                      "bg-amber-50 text-amber-800 border-amber-100";
+                        sch.status === "cancelled" ? "bg-rose-50 text-rose-700 border-rose-100" :
+                          sch.status === "completed" ? "bg-slate-100 text-slate-700 border-slate-200" :
+                            sch.status === "rejected" ? "bg-rose-100 text-rose-800 border-rose-200" :
+                              "bg-amber-50 text-amber-800 border-amber-100";
                     return (
                       <tr key={sch.id} className="hover:bg-slate-50/60 transition-colors">
                         <td className="p-2.5 font-extrabold text-slate-900 max-w-[200px]">
