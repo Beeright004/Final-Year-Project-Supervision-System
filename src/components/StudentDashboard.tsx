@@ -30,6 +30,7 @@ export default function StudentDashboard() {
 
   // Video call state
   const [activeVideoCall, setActiveVideoCall] = useState<string | null>(null);
+  const [activeVideoCallDuration, setActiveVideoCallDuration] = useState<number>(0);
 
   // Proposal Document states
   const [isUploadingProposal, setIsUploadingProposal] = useState(false);
@@ -47,7 +48,7 @@ export default function StudentDashboard() {
 
   // Scheduling Bookings states
   const [isBookerOpen, setIsBookerOpen] = useState(false);
-  const [bookingForm, setBookingForm] = useState({ title: "", meetingDate: "", time: "", venue: "" });
+  const [bookingForm, setBookingForm] = useState({ title: "", meetingDate: "", time: "", duration: "60", venue: "" });
 
   const loadStudentData = async () => {
     try {
@@ -259,7 +260,7 @@ export default function StudentDashboard() {
     try {
       await api.schedules.create(bookingForm);
       addToast("Supervision session booked. Waiting for advisor confirmation.", "success");
-      setBookingForm({ title: "", meetingDate: "", time: "", venue: "" });
+      setBookingForm({ title: "", meetingDate: "", time: "", duration: "60", venue: "" });
       setIsBookerOpen(false);
       loadStudentData();
     } catch (e: any) {
@@ -360,7 +361,8 @@ export default function StudentDashboard() {
         channelName={activeVideoCall}
         userName={user?.name || "Student"}
         userRole="student"
-        onLeave={() => setActiveVideoCall(null)}
+        duration={activeVideoCallDuration}
+        onLeave={() => { setActiveVideoCall(null); setActiveVideoCallDuration(0); }}
       />
     );
   }
@@ -1205,6 +1207,22 @@ export default function StudentDashboard() {
                       className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden"
                     />
                   </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Meeting Duration</label>
+                    <select
+                      value={bookingForm.duration}
+                      onChange={(e) => setBookingForm({ ...bookingForm, duration: e.target.value })}
+                      className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden bg-white font-medium"
+                    >
+                      <option value="15">15 minutes</option>
+                      <option value="30">30 minutes</option>
+                      <option value="45">45 minutes</option>
+                      <option value="60">1 hour</option>
+                      <option value="90">1 hour 30 minutes</option>
+                      <option value="120">2 hours</option>
+                      <option value="0">Unlimited</option>
+                    </select>
+                  </div>
                   <button
                     type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded transition"
@@ -1253,11 +1271,14 @@ export default function StudentDashboard() {
                       {sch.status === "approved" && (
                         <div className="border-t border-slate-200 mt-2 pt-2.5 flex justify-end">
                           <button
-                            onClick={() => setActiveVideoCall(`supervision-${sch.supervisorId}-${sch.meetingDate}-${sch.time}`.replace(/[^a-zA-Z0-9-_]/g, "-"))}
+                            onClick={() => {
+                              setActiveVideoCallDuration(sch.duration || 0);
+                              setActiveVideoCall(`supervision-${sch.supervisorId}-${sch.meetingDate}-${sch.time}`.replace(/[^a-zA-Z0-9-_]/g, "-"));
+                            }}
                             className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-[10px] rounded flex items-center gap-1.5 transition shadow-sm cursor-pointer w-full justify-center"
                           >
                             <Video className="h-3.5 w-3.5" />
-                            <span>Join Video Meeting Room</span>
+                            <span>Join Video Meeting Room{sch.duration ? ` (${sch.duration} min)` : ""}</span>
                           </button>
                         </div>
                       )}

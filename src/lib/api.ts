@@ -101,6 +101,7 @@ export const api = {
     create: (meeting: any) => request("/schedules", { method: "POST", body: JSON.stringify(meeting) }),
     updateStatus: (id: string, status: "approved" | "rejected" | "completed" | "cancelled") => 
       request(`/schedules/${id}/status`, { method: "PUT", body: JSON.stringify({ status }) }),
+    delete: (id: string) => request(`/schedules/${id}`, { method: "DELETE" }),
   },
   notifications: {
     list: () => request("/notifications", { method: "GET" }),

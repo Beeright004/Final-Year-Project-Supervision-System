@@ -1416,11 +1416,12 @@ app.put("/api/presentations/:id/review", authenticateToken, requireRole(["superv
 // Create Meeting / Bookings
 app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
-    const { title, meetingDate, time, venue, studentId, supervisorId } = req.body;
+    const { title, meetingDate, time, venue, studentId, supervisorId, duration } = req.body;
 
     if (!title || !meetingDate || !time || !venue) {
       return res.status(400).json({ error: "Missing required booking details (title, meetingDate, time, venue)." });
     }
+    const meetingDuration = Math.max(15, parseInt(duration) || 60); // minimum 15 minutes
 
     const users = await db.getUsers();
     let computedStudentId = "";
@@ -1459,6 +1460,7 @@ app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Resp
           title,
           meetingDate,
           time,
+          duration: meetingDuration,
           venue,
           studentId: s.id,
           supervisorId: computedSupervisorId,
@@ -1495,10 +1497,11 @@ app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Resp
       title,
       meetingDate,
       time,
+      duration: meetingDuration,
       venue,
       studentId: computedStudentId,
       supervisorId: computedSupervisorId,
-      status: req.user!.role === "student" ? "pending" : "approved", // auto approved if initiator is supervisor/admin
+      status: req.user!.role === "student" ? "pending" : "approved",
       createdAt: new Date().toISOString(),
     };
 
@@ -1586,6 +1589,29 @@ app.put("/api/schedules/:id/status", authenticateToken, async (req: AuthRequest,
     res.json({ message: `Schedule labeled as '${status}' successfully.`, schedule: schedules[scheduleIndex] });
   } catch (error) {
     res.status(500).json({ error: "Error adjusting schedule indices." });
+  }
+});
+
+// Delete a cancelled schedule (admin only)
+app.delete("/api/schedules/:id", authenticateToken, async (req: AuthRequest, res: Response) => {
+  try {
+    if (req.user!.role !== "admin") {
+      return res.status(403).json({ error: "Only administrators can permanently delete schedule records." });
+    }
+    const { id } = req.params;
+    const schedules = await db.getSchedules();
+    const idx = schedules.findIndex((s) => s.id === id);
+    if (idx === -1) {
+      return res.status(404).json({ error: "Schedule record not found." });
+    }
+    if (schedules[idx].status !== "cancelled") {
+      return res.status(400).json({ error: "Only cancelled sessions can be deleted." });
+    }
+    schedules.splice(idx, 1);
+    await db.saveSchedules(schedules);
+    res.json({ message: "Cancelled session deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete schedule record." });
   }
 });
 

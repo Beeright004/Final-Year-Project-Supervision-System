@@ -70,6 +70,7 @@ export interface Schedule {
   id: string;
   meetingDate: string;
   time: string;
+  duration: number; // in minutes, minimum 15
   venue: string;
   supervisorId: string;
   studentId: string;

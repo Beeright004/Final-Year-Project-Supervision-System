@@ -53,11 +53,12 @@ export interface Schedule {
   id: string;
   meetingDate: string;
   time: string;
+  duration?: number;
   venue: string;
   supervisorId: string;
   studentId: string;
   title: string;
-  status: "pending" | "approved" | "rejected" | "completed";
+  status: "pending" | "approved" | "rejected" | "completed" | "cancelled";
   createdAt: string;
 }
 

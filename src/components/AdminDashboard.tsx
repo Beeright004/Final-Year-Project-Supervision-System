@@ -5,7 +5,7 @@ import { useApp } from "../context/AppContext.js";
 import { 
   Users, UserPlus, Building2, BookMarked, Calendar, Award, CheckCircle, Clock, 
   Trash2, Edit3, ShieldAlert, KeyRound, Download, RefreshCw, Layers, Check, X, Search,
-  Eye, EyeOff, Mail
+  Eye, EyeOff, Mail, CalendarX
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   // Searching & Selection State
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
-  const [activeTab, setActiveTab] = useState<"users" | "topics" | "workloads">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "topics" | "workloads" | "schedules">("users");
 
   // Create User State
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
@@ -101,6 +101,7 @@ export default function AdminDashboard() {
   };
 
   const [deleteConfirmation, setDeleteConfirmation] = useState<{ id: string; name: string } | null>(null);
+  const [deleteScheduleConfirm, setDeleteScheduleConfirm] = useState<{ id: string; title: string } | null>(null);
 
   const handleDeleteUser = (id: string, name: string) => {
     setDeleteConfirmation({ id, name });
@@ -110,12 +111,29 @@ export default function AdminDashboard() {
     if (!deleteConfirmation) return;
     try {
       await api.admin.users.delete(deleteConfirmation.id);
-      addToast("Account removed successfully.", "success");
-      loadAdminWorkspaceData();
+      addToast(`Account for '${deleteConfirmation.name}' permanently erased.`, "success");
+      setUsers((prev) => prev.filter((u) => u.id !== deleteConfirmation!.id));
     } catch (e: any) {
-      addToast(e.message || "Deletion failed.", "error");
+      addToast(e.message || "Failed to delete account.", "error");
     } finally {
       setDeleteConfirmation(null);
+    }
+  };
+
+  const handleDeleteSchedule = (id: string, title: string) => {
+    setDeleteScheduleConfirm({ id, title });
+  };
+
+  const handleConfirmDeleteSchedule = async () => {
+    if (!deleteScheduleConfirm) return;
+    try {
+      await api.schedules.delete(deleteScheduleConfirm.id);
+      addToast(`Cancelled session "${deleteScheduleConfirm.title}" deleted.`, "success");
+      setSchedules((prev) => prev.filter((s) => s.id !== deleteScheduleConfirm!.id));
+    } catch (e: any) {
+      addToast(e.message || "Failed to delete session.", "error");
+    } finally {
+      setDeleteScheduleConfirm(null);
     }
   };
 
@@ -278,6 +296,14 @@ export default function AdminDashboard() {
           }`}
         >
           Supervision Workloads
+        </button>
+        <button
+          onClick={() => setActiveTab("schedules")}
+          className={`pb-2.5 font-bold text-xs uppercase tracking-wider cursor-pointer border-b-2 transition-all ${
+            activeTab === "schedules" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          Supervision Schedule ({schedules.length})
         </button>
       </div>
 
@@ -611,6 +637,87 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+      {activeTab === "schedules" && (
+        <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs text-left">
+          <div className="border-b border-slate-150 pb-3 mb-4">
+            <h3 className="font-extrabold text-xs uppercase tracking-wider text-slate-950">Supervision Schedule Registry</h3>
+            <p className="text-[11px] text-slate-400 mt-1">
+              View all supervision sessions across the system. Cancelled sessions can be permanently deleted.
+            </p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-extrabold uppercase tracking-widest text-[9px] font-mono">
+                  <th className="p-2.5">Meeting Title</th>
+                  <th className="p-2.5">Student</th>
+                  <th className="p-2.5">Supervisor</th>
+                  <th className="p-2.5">Date & Time</th>
+                  <th className="p-2.5">Duration</th>
+                  <th className="p-2.5">Status</th>
+                  <th className="p-2.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-150">
+                {schedules.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-6 text-center text-slate-400 font-semibold">
+                      No scheduled sessions found in the system.
+                    </td>
+                  </tr>
+                ) : (
+                  schedules.map((sch) => {
+                    const statusStyle =
+                      sch.status === "approved" ? "bg-emerald-50 text-emerald-800 border-emerald-100" :
+                      sch.status === "cancelled" ? "bg-rose-50 text-rose-700 border-rose-100" :
+                      sch.status === "completed" ? "bg-slate-100 text-slate-700 border-slate-200" :
+                      sch.status === "rejected" ? "bg-rose-100 text-rose-800 border-rose-200" :
+                      "bg-amber-50 text-amber-800 border-amber-100";
+                    return (
+                      <tr key={sch.id} className="hover:bg-slate-50/60 transition-colors">
+                        <td className="p-2.5 font-extrabold text-slate-900 max-w-[200px]">
+                          <p className="truncate">{sch.title}</p>
+                          <p className="text-[9px] font-mono text-slate-400 mt-0.5">{sch.venue}</p>
+                        </td>
+                        <td className="p-2.5 font-bold text-slate-700">
+                          {sch.studentName || sch.studentId}
+                          <p className="text-[9px] font-mono text-slate-400">{sch.studentMatric}</p>
+                        </td>
+                        <td className="p-2.5 font-bold text-slate-700">{sch.supervisorName || sch.supervisorId}</td>
+                        <td className="p-2.5 font-mono text-[10px] text-slate-600">
+                          <p>{sch.meetingDate}</p>
+                          <p className="text-slate-400">{sch.time}</p>
+                        </td>
+                        <td className="p-2.5 text-[10px] font-bold text-slate-600">
+                          {sch.duration ? `${sch.duration} min` : "—"}
+                        </td>
+                        <td className="p-2.5">
+                          <span className={`inline-block text-[9px] uppercase font-bold px-2 py-0.5 rounded border ${statusStyle}`}>
+                            {sch.status}
+                          </span>
+                        </td>
+                        <td className="p-2.5 text-right">
+                          {sch.status === "cancelled" && (
+                            <button
+                              onClick={() => handleDeleteSchedule(sch.id, sch.title)}
+                              className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-800 rounded border border-rose-100 cursor-pointer transition flex items-center gap-1 ml-auto"
+                              title="Permanently delete this cancelled session"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                              <span className="text-[9px] font-bold">Delete</span>
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
 
       {activeTab === "workloads" && stats && (
         <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs text-left space-y-5">
@@ -837,6 +944,50 @@ export default function AdminDashboard() {
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 <span>Yes, Delete Account</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Schedule Confirmation Modal */}
+      {deleteScheduleConfirm && (
+        <div className="fixed inset-0 z-[100] bg-slate-950/65 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg border border-slate-200 shadow-2xl w-full max-w-md p-5 text-left animate-in zoom-in-95 duration-150">
+            <div className="flex items-center gap-3 text-rose-600 mb-3.5">
+              <div className="p-2.5 bg-rose-50 rounded-full">
+                <CalendarX className="h-6 w-6 stroke-[2]" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-sm text-slate-900">Delete Cancelled Session</h3>
+                <p className="text-[10px] text-slate-400 font-semibold font-mono uppercase tracking-wider">Permanent Record Removal</p>
+              </div>
+            </div>
+
+            <div className="space-y-2 text-xs mb-4">
+              <p className="text-slate-700 leading-relaxed">
+                Are you sure you want to permanently delete the cancelled session: <strong className="text-slate-950 font-extrabold">"{deleteScheduleConfirm.title}"</strong>?
+              </p>
+              <p className="text-slate-400 leading-normal text-[11px] bg-slate-50 p-2.5 rounded border border-slate-150">
+                ⚠️ This will permanently remove this session record from the system. This action cannot be undone.
+              </p>
+            </div>
+
+            <div className="flex justify-end gap-2 px-1">
+              <button
+                type="button"
+                onClick={() => setDeleteScheduleConfirm(null)}
+                className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDeleteSchedule}
+                className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded transition-all cursor-pointer shadow-sm flex items-center gap-1"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>Yes, Delete Session</span>
               </button>
             </div>
           </div>

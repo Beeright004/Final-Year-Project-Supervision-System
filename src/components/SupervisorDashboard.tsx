@@ -49,11 +49,12 @@ export default function SupervisorDashboard() {
 
   // Video call state
   const [activeVideoCall, setActiveVideoCall] = useState<string | null>(null);
+  const [activeVideoCallDuration, setActiveVideoCallDuration] = useState<number>(0);
 
   // Create customized supervisor meetings
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [bookingMode, setBookingMode] = useState<"single" | "all">("single");
-  const [meetingForm, setMeetingForm] = useState({ title: "", meetingDate: "", time: "", venue: "", studentId: "" });
+  const [meetingForm, setMeetingForm] = useState({ title: "", meetingDate: "", time: "", duration: "60", venue: "", studentId: "" });
   const [supervisorStudents, setSupervisorStudents] = useState<User[]>([]);
 
   const loadSupervisorPanelData = async () => {
@@ -225,7 +226,7 @@ export default function SupervisorDashboard() {
     try {
       await api.schedules.create(meetingForm);
       addToast("Supervision meeting scheduled and student account emailed.", "success");
-      setMeetingForm({ title: "", meetingDate: "", time: "", venue: "", studentId: "" });
+      setMeetingForm({ title: "", meetingDate: "", time: "", duration: "60", venue: "", studentId: "" });
       setBookingMode("single");
       setIsCreatorOpen(false);
       loadSupervisorPanelData();
@@ -272,7 +273,8 @@ export default function SupervisorDashboard() {
         channelName={activeVideoCall}
         userName={user?.name || "Supervisor"}
         userRole="supervisor"
-        onLeave={() => setActiveVideoCall(null)}
+        duration={activeVideoCallDuration}
+        onLeave={() => { setActiveVideoCall(null); setActiveVideoCallDuration(0); }}
       />
     );
   }
@@ -600,11 +602,14 @@ export default function SupervisorDashboard() {
                       {sch.status === "approved" && (
                         <div className="border-t border-slate-150 pt-3">
                           <button
-                            onClick={() => setActiveVideoCall(`supervision-${sch.supervisorId}-${sch.meetingDate}-${sch.time}`.replace(/[^a-zA-Z0-9-_]/g, "-"))}
+                            onClick={() => {
+                              setActiveVideoCallDuration(sch.duration || 0);
+                              setActiveVideoCall(`supervision-${sch.supervisorId}-${sch.meetingDate}-${sch.time}`.replace(/[^a-zA-Z0-9-_]/g, "-"));
+                            }}
                             className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-[10px] rounded flex items-center gap-1.5 transition shadow-sm cursor-pointer w-full justify-center"
                           >
                             <Video className="h-3.5 w-3.5" />
-                            <span>Join Video Meeting Room</span>
+                            <span>Join Video Meeting Room{sch.duration ? ` (${sch.duration} min)` : ""}</span>
                           </button>
                         </div>
                       )}
@@ -760,6 +765,23 @@ export default function SupervisorDashboard() {
                       className="w-full text-xs border border-slate-250 rounded px-2 py-1.5 focus:border-blue-500 bg-white"
                     />
                   </div>
+                </div>
+                {/* Duration field */}
+                <div className="space-y-1">
+                  <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Meeting Duration</label>
+                  <select
+                    value={meetingForm.duration}
+                    onChange={(e) => setMeetingForm({ ...meetingForm, duration: e.target.value })}
+                    className="w-full text-xs border border-slate-250 rounded px-2 py-1.5 focus:border-blue-500 bg-white font-medium"
+                  >
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1 hour 30 minutes</option>
+                    <option value="120">2 hours</option>
+                    <option value="0">Unlimited</option>
+                  </select>
                 </div>
                 <div className="space-y-1">
                   <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Platform Venue / Office Coordinates</label>

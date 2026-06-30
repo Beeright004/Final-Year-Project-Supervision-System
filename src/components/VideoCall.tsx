@@ -36,6 +36,7 @@ interface VideoCallProps {
   channelName: string;
   userName: string;
   userRole?: string;
+  duration?: number; // meeting duration in minutes (0 = unlimited)
   onLeave: () => void;
 }
 
@@ -49,7 +50,7 @@ interface RemoteUser {
 
 type LayoutMode = "grid" | "spotlight" | "presentation";
 
-export default function VideoCall({ channelName, userName, userRole = "student", onLeave }: VideoCallProps) {
+export default function VideoCall({ channelName, userName, userRole = "student", duration = 0, onLeave }: VideoCallProps) {
   const clientRef = useRef<IAgoraRTCClient | null>(null);
   const screenClientRef = useRef<IAgoraRTCClient | null>(null);
   const localVideoRef = useRef<HTMLDivElement>(null);
@@ -71,7 +72,11 @@ export default function VideoCall({ channelName, userName, userRole = "student",
   const [isMicOn, setIsMicOn] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [remoteUsers, setRemoteUsers] = useState<RemoteUser[]>([]);
-  const [callDuration, setCallDuration] = useState(0);
+  // Countdown / meeting timer
+  const [callDuration, setCallDuration] = useState(0); // seconds elapsed
+  const [timeLeft, setTimeLeft] = useState<number | null>(duration > 0 ? duration * 60 : null); // seconds remaining
+  const [showWarning, setShowWarning] = useState(false); // 5-min warning
+  const [dismissed5minWarning, setDismissed5minWarning] = useState(false);
   const [connectionState, setConnectionState] = useState<string>("DISCONNECTED");
   const [error, setError] = useState<string | null>(null);
 
@@ -102,11 +107,17 @@ export default function VideoCall({ channelName, userName, userRole = "student",
       .catch((err) => console.error("Failed to load user name mapping:", err));
   }, []);
 
-  // Duration timer
+  // Duration timer — elapsed + countdown + auto-kick
   useEffect(() => {
-    if (joined) {
-      timerRef.current = setInterval(() => setCallDuration((d) => d + 1), 1000);
-    }
+    if (!joined) return;
+    timerRef.current = setInterval(() => {
+      setCallDuration((d) => d + 1);
+      setTimeLeft((prev) => {
+        if (prev === null) return null; // unlimited
+        const next = prev - 1;
+        return next;
+      });
+    }, 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [joined]);
 
@@ -132,6 +143,14 @@ export default function VideoCall({ channelName, userName, userRole = "student",
     const m = Math.floor(seconds / 60).toString().padStart(2, "0");
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
+  };
+
+  const formatCountdown = (seconds: number) => {
+    if (seconds <= 0) return "00:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return h > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
   };
 
   const getUserDisplayName = (uid: "local" | number | string) => {
@@ -285,6 +304,20 @@ export default function VideoCall({ channelName, userName, userRole = "student",
       onLeave();
     }
   }, [screenTrack, screenAudioTrack, onLeave]);
+
+  // Watch timeLeft for warnings and auto-kick
+  useEffect(() => {
+    if (timeLeft === null) return;
+    // Show 5-min warning
+    if (timeLeft === 300 && !dismissed5minWarning) {
+      setShowWarning(true);
+    }
+    // Auto-kick at 0
+    if (timeLeft <= 0 && joined) {
+      leaveChannel();
+    }
+  }, [timeLeft, joined, dismissed5minWarning, leaveChannel]);
+
 
   // ─── Controls ───────────────────────────────────────────────────────────────
   const toggleCamera = useCallback(async () => {
@@ -904,10 +937,25 @@ export default function VideoCall({ channelName, userName, userRole = "student",
             </span>
           </div>
           <div className="h-4 w-px bg-slate-700" />
+          {/* Elapsed time */}
           <div className="flex items-center gap-1.5 text-slate-400">
             <Clock className="h-3.5 w-3.5" />
             <span className="text-xs font-mono font-bold">{formatDuration(callDuration)}</span>
           </div>
+          {/* Countdown timer */}
+          {timeLeft !== null && (
+            <>
+              <div className="h-4 w-px bg-slate-700" />
+              <div className={`flex items-center gap-1.5 rounded-lg px-2 py-0.5 ${
+                timeLeft <= 300 ? "bg-amber-500/20 border border-amber-500/40" : "bg-slate-800"
+              }`}>
+                <Clock className={`h-3.5 w-3.5 ${timeLeft <= 300 ? "text-amber-400" : "text-slate-400"}`} />
+                <span className={`text-xs font-mono font-bold ${timeLeft <= 300 ? "text-amber-300" : "text-slate-300"}`}>
+                  {formatCountdown(timeLeft)} left
+                </span>
+              </div>
+            </>
+          )}
           <div className="h-4 w-px bg-slate-700" />
           <div className="flex items-center gap-1.5 bg-slate-800 rounded-lg px-2.5 py-1">
             <Users className="h-3.5 w-3.5 text-slate-400" />
@@ -946,6 +994,24 @@ export default function VideoCall({ channelName, userName, userRole = "student",
           </button>
         </div>
       </div>
+
+      {/* ── 5-min Warning Banner ─────────────────────────────────────────────── */}
+      {showWarning && !dismissed5minWarning && (
+        <div className="shrink-0 bg-amber-500 px-4 py-2.5 flex items-center justify-between gap-3 z-30">
+          <div className="flex items-center gap-2.5">
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse shrink-0" />
+            <span className="text-xs font-bold text-amber-950">
+              ⚠️ This meeting ends in <strong>5 minutes</strong>. All participants will be automatically disconnected when time expires.
+            </span>
+          </div>
+          <button
+            onClick={() => { setDismissed5minWarning(true); setShowWarning(false); }}
+            className="shrink-0 text-amber-900 hover:text-amber-950 font-bold text-[10px] uppercase tracking-wider bg-amber-400 hover:bg-amber-300 px-2.5 py-1 rounded cursor-pointer transition"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* ── Video Area ──────────────────────────────────────────────────────── */}
       <div className="flex-1 p-3 overflow-hidden min-h-0">
