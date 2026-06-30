@@ -286,7 +286,7 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
                   required
                   value={contactForm.name}
                   onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                  placeholder="e.g. John Doe"
+                  placeholder="e.g. Sunday Bright"
                   className="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
                 />
               </div>
@@ -297,7 +297,7 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
                   required
                   value={contactForm.email}
                   onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                  placeholder="e.g. john.doe@university.edu"
+                  placeholder="e.g. sunday.bright@university.edu"
                   className="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-hidden"
                 />
               </div>
