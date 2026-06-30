@@ -54,7 +54,7 @@ export default function SupervisorDashboard() {
   // Create customized supervisor meetings
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [bookingMode, setBookingMode] = useState<"single" | "all">("single");
-  const [meetingForm, setMeetingForm] = useState({ title: "", meetingDate: "", time: "", duration: "60", venue: "", studentId: "" });
+  const [meetingForm, setMeetingForm] = useState({ title: "", meetingDate: "", time: "", endTime: "", venue: "", studentId: "" });
   const [supervisorStudents, setSupervisorStudents] = useState<User[]>([]);
 
   const loadSupervisorPanelData = async () => {
@@ -217,21 +217,35 @@ export default function SupervisorDashboard() {
 
   const handleMeetingCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { title, meetingDate, time, venue, studentId } = meetingForm;
-    if (!title || !meetingDate || !time || !venue || !studentId) {
+    const { title, meetingDate, time, endTime, venue, studentId } = meetingForm;
+    if (!title || !meetingDate || !time || !endTime || !venue || !studentId) {
       addToast("Complete all fields before scheduling meetings.", "warning");
+      return;
+    }
+
+    // Validate minimum of 15 minutes duration
+    const [sh, sm] = time.split(":").map(Number);
+    const [eh, em] = endTime.split(":").map(Number);
+    let sMins = sh * 60 + sm;
+    let eMins = eh * 60 + em;
+    if (eMins < sMins) {
+      eMins += 24 * 60; // overnight
+    }
+    const diff = eMins - sMins;
+    if (diff < 15) {
+      addToast("Supervision meetings must be scheduled for a range of at least 15 minutes.", "warning");
       return;
     }
 
     try {
       await api.schedules.create(meetingForm);
       addToast("Supervision meeting scheduled and student account emailed.", "success");
-      setMeetingForm({ title: "", meetingDate: "", time: "", duration: "60", venue: "", studentId: "" });
+      setMeetingForm({ title: "", meetingDate: "", time: "", endTime: "", venue: "", studentId: "" });
       setBookingMode("single");
       setIsCreatorOpen(false);
       loadSupervisorPanelData();
     } catch (e: any) {
-      addToast("Failed to schedule supervision session.", "error");
+      addToast(e.message || "Failed to schedule supervision session.", "error");
     }
   };
 
@@ -591,7 +605,7 @@ export default function SupervisorDashboard() {
                       <div className="grid grid-cols-2 gap-3 text-[11px] text-slate-600 font-medium">
                         <p className="flex items-center gap-1.5">
                           <Clock className="h-3.5 w-3.5 text-slate-400" />
-                          <span>{sch.meetingDate} &bull; {sch.time}</span>
+                          <span>{sch.meetingDate} &bull; {sch.time} - {sch.endTime || "?"}</span>
                         </p>
                         <p className="flex items-center gap-1.5">
                           <MapPin className="h-3.5 w-3.5 text-slate-405" />
@@ -756,7 +770,7 @@ export default function SupervisorDashboard() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Meeting Time</label>
+                    <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Start Time</label>
                     <input
                       type="time"
                       required
@@ -765,24 +779,18 @@ export default function SupervisorDashboard() {
                       className="w-full text-xs border border-slate-250 rounded px-2 py-1.5 focus:border-blue-500 bg-white"
                     />
                   </div>
+                  <div className="space-y-1">
+                    <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">End Time</label>
+                    <input
+                      type="time"
+                      required
+                      value={meetingForm.endTime}
+                      onChange={(e) => setMeetingForm({ ...meetingForm, endTime: e.target.value })}
+                      className="w-full text-xs border border-slate-250 rounded px-2 py-1.5 focus:border-blue-500 bg-white"
+                    />
+                  </div>
                 </div>
-                {/* Duration field */}
-                <div className="space-y-1">
-                  <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Meeting Duration</label>
-                  <select
-                    value={meetingForm.duration}
-                    onChange={(e) => setMeetingForm({ ...meetingForm, duration: e.target.value })}
-                    className="w-full text-xs border border-slate-250 rounded px-2 py-1.5 focus:border-blue-500 bg-white font-medium"
-                  >
-                    <option value="15">15 minutes</option>
-                    <option value="30">30 minutes</option>
-                    <option value="45">45 minutes</option>
-                    <option value="60">1 hour</option>
-                    <option value="90">1 hour 30 minutes</option>
-                    <option value="120">2 hours</option>
-                    <option value="0">Unlimited</option>
-                  </select>
-                </div>
+
                 <div className="space-y-1">
                   <label className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Platform Venue / Office Coordinates</label>
                   <input

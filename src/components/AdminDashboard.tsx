@@ -679,7 +679,7 @@ export default function AdminDashboard() {
                         <td className="p-2.5 font-bold text-slate-700">{sch.supervisorName || sch.supervisorId}</td>
                         <td className="p-2.5 font-mono text-[10px] text-slate-600">
                           <p>{sch.meetingDate}</p>
-                          <p className="text-slate-400">{sch.time}</p>
+                          <p className="text-slate-400">{sch.time} - {sch.endTime || "?"}</p>
                         </td>
                         <td className="p-2.5 text-[10px] font-bold text-slate-600">
                           {sch.duration ? `${sch.duration} min` : "—"}

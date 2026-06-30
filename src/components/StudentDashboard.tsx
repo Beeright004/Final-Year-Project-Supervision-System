@@ -48,7 +48,7 @@ export default function StudentDashboard() {
 
   // Scheduling Bookings states
   const [isBookerOpen, setIsBookerOpen] = useState(false);
-  const [bookingForm, setBookingForm] = useState({ title: "", meetingDate: "", time: "", duration: "60", venue: "" });
+  const [bookingForm, setBookingForm] = useState({ title: "", meetingDate: "", time: "", endTime: "", venue: "" });
 
   const loadStudentData = async () => {
     try {
@@ -251,18 +251,33 @@ export default function StudentDashboard() {
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { title, meetingDate, time, venue } = bookingForm;
-    if (!title || !meetingDate || !time || !venue) {
+    const { title, meetingDate, time, endTime, venue } = bookingForm;
+    if (!title || !meetingDate || !time || !endTime || !venue) {
       addToast("Ensure you fill all schedule fields completely.", "warning");
+      return;
+    }
+
+    // Validate minimum of 15 minutes duration
+    const [sh, sm] = time.split(":").map(Number);
+    const [eh, em] = endTime.split(":").map(Number);
+    let sMins = sh * 60 + sm;
+    let eMins = eh * 60 + em;
+    if (eMins < sMins) {
+      eMins += 24 * 60; // overnight
+    }
+    const diff = eMins - sMins;
+    if (diff < 15) {
+      addToast("Supervision meetings must be scheduled for a range of at least 15 minutes.", "warning");
       return;
     }
 
     try {
       await api.schedules.create(bookingForm);
       addToast("Supervision session booked. Waiting for advisor confirmation.", "success");
-      setBookingForm({ title: "", meetingDate: "", time: "", duration: "60", venue: "" });
+      setBookingForm({ title: "", meetingDate: "", time: "", endTime: "", venue: "" });
       setIsBookerOpen(false);
       loadStudentData();
+
     } catch (e: any) {
       addToast(e.message || "Scheduling request failed.", "error");
     }
@@ -1186,12 +1201,22 @@ export default function StudentDashboard() {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Time</label>
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Start Time</label>
                       <input
                         type="time"
                         required
                         value={bookingForm.time}
                         onChange={(e) => setBookingForm({ ...bookingForm, time: e.target.value })}
+                        className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden bg-white"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">End Time</label>
+                      <input
+                        type="time"
+                        required
+                        value={bookingForm.endTime}
+                        onChange={(e) => setBookingForm({ ...bookingForm, endTime: e.target.value })}
                         className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden bg-white"
                       />
                     </div>
@@ -1207,22 +1232,7 @@ export default function StudentDashboard() {
                       className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden"
                     />
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Meeting Duration</label>
-                    <select
-                      value={bookingForm.duration}
-                      onChange={(e) => setBookingForm({ ...bookingForm, duration: e.target.value })}
-                      className="w-full text-xs border border-slate-200 rounded px-2 py-1.5 focus:border-blue-500 focus:outline-hidden bg-white font-medium"
-                    >
-                      <option value="15">15 minutes</option>
-                      <option value="30">30 minutes</option>
-                      <option value="45">45 minutes</option>
-                      <option value="60">1 hour</option>
-                      <option value="90">1 hour 30 minutes</option>
-                      <option value="120">2 hours</option>
-                      <option value="0">Unlimited</option>
-                    </select>
-                  </div>
+
                   <button
                     type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded transition"
@@ -1260,7 +1270,7 @@ export default function StudentDashboard() {
                       <div className="space-y-1 text-[11px] text-slate-600 font-medium">
                         <p className="flex items-center gap-1.5">
                           <Clock className="h-3.5 w-3.5 text-slate-400 shrink-0" />
-                          <span>{sch.meetingDate} at {sch.time}</span>
+                          <span>{sch.meetingDate} from {sch.time} to {sch.endTime || "?"}</span>
                         </p>
                         <p className="flex items-center gap-1.5">
                           <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />

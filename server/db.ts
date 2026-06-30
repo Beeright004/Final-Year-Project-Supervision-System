@@ -53,6 +53,7 @@ export interface Schedule {
   id: string;
   meetingDate: string;
   time: string;
+  endTime: string;
   duration?: number;
   venue: string;
   supervisorId: string;

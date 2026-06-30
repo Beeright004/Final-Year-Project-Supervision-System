@@ -69,7 +69,8 @@ export interface Notification {
 export interface Schedule {
   id: string;
   meetingDate: string;
-  time: string;
+  time: string; // Start time (e.g., "10:00")
+  endTime: string; // End time (e.g., "10:45")
   duration: number; // in minutes, minimum 15
   venue: string;
   supervisorId: string;

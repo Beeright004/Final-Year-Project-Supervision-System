@@ -88,6 +88,22 @@
   "proposals": [],
   "notifications": [
     {
+      "id": "not_b6mr6qx6u",
+      "recipientId": "usr_sup_olukunle",
+      "message": "Supervision Scheduled session \"PROJECT DEFENSE\" updated to [CANCELLED] by Sunday Bright.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T17:35:18.343Z"
+    },
+    {
+      "id": "not_oi1wnjkf2",
+      "recipientId": "usr_sup_olukunle",
+      "message": "Supervision Scheduled session \"SEMINAR\" updated to [CANCELLED] by Sunday Bright.",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T17:35:13.184Z"
+    },
+    {
       "id": "not_1ztd13zlp",
       "recipientId": "usr_qswt7ag64",
       "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
@@ -895,7 +911,7 @@
       "venue": "ONLINE",
       "studentId": "usr_stud_1",
       "supervisorId": "usr_sup_olukunle",
-      "status": "approved",
+      "status": "cancelled",
       "createdAt": "2026-06-24T16:47:58.023Z"
     },
     {
@@ -917,7 +933,7 @@
       "venue": "ONLINE",
       "studentId": "usr_stud_1",
       "supervisorId": "usr_sup_olukunle",
-      "status": "approved",
+      "status": "cancelled",
       "createdAt": "2026-06-30T15:44:21.580Z"
     },
     {
@@ -1026,6 +1042,20 @@
     }
   ],
   "emails": [
+    {
+      "id": "email_7s5e3ao6x",
+      "to": "olukunle.adebayo@university.edu",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Sunday Bright</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> PROJECT DEFENSE</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T17:35:18.345Z"
+    },
+    {
+      "id": "email_yyauo21sn",
+      "to": "olukunle.adebayo@university.edu",
+      "subject": "Meeting Booking [CANCELLED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Sunday Bright</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> SEMINAR</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T17:35:13.196Z"
+    },
     {
       "id": "email_jq614y35v",
       "to": "glory.okum@student.edu",

@@ -1416,12 +1416,26 @@ app.put("/api/presentations/:id/review", authenticateToken, requireRole(["superv
 // Create Meeting / Bookings
 app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Response) => {
   try {
-    const { title, meetingDate, time, venue, studentId, supervisorId, duration } = req.body;
+    const { title, meetingDate, time, endTime, venue, studentId, supervisorId } = req.body;
 
-    if (!title || !meetingDate || !time || !venue) {
-      return res.status(400).json({ error: "Missing required booking details (title, meetingDate, time, venue)." });
+    if (!title || !meetingDate || !time || !endTime || !venue) {
+      return res.status(400).json({ error: "Missing required booking details (title, meetingDate, time, endTime, venue)." });
     }
-    const meetingDuration = Math.max(15, parseInt(duration) || 60); // minimum 15 minutes
+
+    // Parse start and end times to calculate duration in minutes
+    const [startH, startM] = time.split(":").map(Number);
+    const [endH, endM] = endTime.split(":").map(Number);
+    let startMinutes = startH * 60 + startM;
+    let endMinutes = endH * 60 + endM;
+
+    if (endMinutes < startMinutes) {
+      endMinutes += 24 * 60; // handle overnight crossover
+    }
+
+    const meetingDuration = endMinutes - startMinutes;
+    if (meetingDuration < 15) {
+      return res.status(400).json({ error: "Supervision meetings must be scheduled for a range of at least 15 minutes." });
+    }
 
     const users = await db.getUsers();
     let computedStudentId = "";
@@ -1460,6 +1474,7 @@ app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Resp
           title,
           meetingDate,
           time,
+          endTime,
           duration: meetingDuration,
           venue,
           studentId: s.id,
@@ -1497,6 +1512,7 @@ app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Resp
       title,
       meetingDate,
       time,
+      endTime,
       duration: meetingDuration,
       venue,
       studentId: computedStudentId,
@@ -1507,6 +1523,7 @@ app.post("/api/schedules", authenticateToken, async (req: AuthRequest, res: Resp
 
     schedules.push(newSchedule);
     await db.saveSchedules(schedules);
+
 
     // Notifications Delivery
     const opponentId = req.user!.role === "student" ? computedSupervisorId : computedStudentId;
