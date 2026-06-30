@@ -2014,13 +2014,26 @@ app.get("/api/agora/token", authenticateToken, async (req: AuthRequest, res: Res
 // Check Database Connection Status
 app.get("/api/db-status", async (req: Request, res: Response) => {
   try {
-    const connected = await db.checkMongo();
+    const isFirebase = await db.checkFirebase();
+    const isMongo = !isFirebase && await db.checkMongo();
+    const connected = isFirebase || isMongo;
+
+    let dbType = "Local JSON Sandbox (Volatile)";
+    let uriMask = "Not Configured";
+
+    if (isFirebase) {
+      dbType = "Firebase Firestore (Persistent)";
+      uriMask = `Project ID: ${process.env.FIREBASE_PROJECT_ID || "Unknown"}`;
+    } else if (isMongo) {
+      dbType = "MongoDB Atlas (Persistent)";
+      const mongoUri = process.env.MONGODB_URI || process.env.MONGODB_URL || "";
+      uriMask = mongoUri ? `${mongoUri.substring(0, 15)}...${mongoUri.slice(-10)}` : "Not Configured";
+    }
+
     res.json({
       connected,
-      type: connected ? "MongoDB Atlas (Persistent)" : "Local JSON Sandbox (Volatile)",
-      uri: process.env.MONGODB_URI 
-        ? `${process.env.MONGODB_URI.substring(0, 15)}...${process.env.MONGODB_URI.slice(-10)}` 
-        : "Not Configured",
+      type: dbType,
+      uri: uriMask,
       error: db.getLastConnectError()
     });
   } catch (error) {

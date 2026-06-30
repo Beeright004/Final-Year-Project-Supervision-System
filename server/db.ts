@@ -128,6 +128,7 @@ interface DatabaseSchema {
 
 import crypto from "crypto";
 import mongoose, { Schema } from "mongoose";
+import admin from "firebase-admin";
 
 export function getConsistentObjectId(id: string): mongoose.Types.ObjectId {
   if (mongoose.Types.ObjectId.isValid(id) && id.length === 24) {
@@ -254,6 +255,171 @@ const EmailModel = mongoose.models.Email || mongoose.model("Email", MongooseEmai
 const DocumentModel = mongoose.models.Document || mongoose.model("Document", MongooseDocumentSchema);
 const PresentationModel = mongoose.models.Presentation || mongoose.model("Presentation", MongoosePresentationSchema);
 const PendingOtpModel = mongoose.models.PendingOtp || mongoose.model("PendingOtp", MongoosePendingOtpSchema);
+
+// ==========================================
+// FIREBASE FIRESTORE DATABASE ENGINE
+// ==========================================
+
+class FirebaseDatabase {
+  private db: admin.firestore.Firestore | null = null;
+  private isInitialized = false;
+
+  initialize(): boolean {
+    if (this.isInitialized) return this.db !== null;
+    this.isInitialized = true;
+
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+    if (!projectId || !clientEmail || !privateKey) {
+      return false;
+    }
+
+    try {
+      if (admin.apps.length === 0) {
+        admin.initializeApp({
+          credential: admin.credential.cert({
+            projectId,
+            clientEmail,
+            privateKey: privateKey.replace(/\\n/g, '\n'),
+          })
+        });
+      }
+      this.db = admin.firestore();
+      console.log("❇️ Successfully established interactive live connection with Firebase Firestore!");
+      return true;
+    } catch (e: any) {
+      console.error("❌ Failed to initialize Firebase Admin SDK:", e.message);
+      return false;
+    }
+  }
+
+  private getCollection(name: string) {
+    if (!this.db) throw new Error("Firestore not initialized");
+    return this.db.collection(name);
+  }
+
+  private async saveCollection<T extends { id?: string; email?: string }>(
+    colName: string,
+    items: T[],
+    keyField: "id" | "email" = "id"
+  ): Promise<void> {
+    const col = this.getCollection(colName);
+    const snap = await col.get();
+    const batch = this.db!.batch();
+    const incomingKeys = new Set(items.map(item => item[keyField]!));
+
+    snap.forEach(doc => {
+      const docKey = doc.id;
+      if (!incomingKeys.has(docKey)) {
+        batch.delete(doc.ref);
+      }
+    });
+
+    items.forEach(item => {
+      const docKey = item[keyField]!;
+      const docRef = col.doc(docKey);
+      batch.set(docRef, item);
+    });
+
+    await batch.commit();
+  }
+
+  private async getCollectionList<T>(colName: string): Promise<T[]> {
+    const snap = await this.getCollection(colName).get();
+    const list: T[] = [];
+    snap.forEach(doc => {
+      list.push(doc.data() as T);
+    });
+    return list;
+  }
+
+  async getUsers(): Promise<User[]> {
+    return this.getCollectionList<User>("users");
+  }
+
+  async saveUsers(users: User[]): Promise<void> {
+    return this.saveCollection("users", users);
+  }
+
+  async getTopics(): Promise<Topic[]> {
+    return this.getCollectionList<Topic>("topics");
+  }
+
+  async saveTopics(topics: Topic[]): Promise<void> {
+    return this.saveCollection("topics", topics);
+  }
+
+  async getProposals(): Promise<Proposal[]> {
+    return this.getCollectionList<Proposal>("proposals");
+  }
+
+  async saveProposals(proposals: Proposal[]): Promise<void> {
+    return this.saveCollection("proposals", proposals);
+  }
+
+  async getNotifications(): Promise<Notification[]> {
+    return this.getCollectionList<Notification>("notifications");
+  }
+
+  async saveNotifications(notifications: Notification[]): Promise<void> {
+    return this.saveCollection("notifications", notifications);
+  }
+
+  async getSchedules(): Promise<Schedule[]> {
+    return this.getCollectionList<Schedule>("schedules");
+  }
+
+  async saveSchedules(schedules: Schedule[]): Promise<void> {
+    return this.saveCollection("schedules", schedules);
+  }
+
+  async getEmails(): Promise<any[]> {
+    return this.getCollectionList<any>("emails");
+  }
+
+  async saveEmails(emails: any[]): Promise<void> {
+    return this.saveCollection("emails", emails);
+  }
+
+  async getDocuments(): Promise<SharedDocument[]> {
+    return this.getCollectionList<SharedDocument>("documents");
+  }
+
+  async saveDocuments(documents: SharedDocument[]): Promise<void> {
+    return this.saveCollection("documents", documents);
+  }
+
+  async getPresentations(): Promise<PresentationRequest[]> {
+    return this.getCollectionList<PresentationRequest>("presentations");
+  }
+
+  async savePresentations(presentations: PresentationRequest[]): Promise<void> {
+    return this.saveCollection("presentations", presentations);
+  }
+
+  async getPendingOtps(): Promise<PendingOtp[]> {
+    const otps = await this.getCollectionList<PendingOtp>("pendingOtps");
+    const now = Date.now();
+    const valid = otps.filter(o => o.expiresAt > now);
+    
+    if (valid.length < otps.length) {
+      const col = this.getCollection("pendingOtps");
+      const expired = otps.filter(o => o.expiresAt <= now);
+      const batch = this.db!.batch();
+      expired.forEach(o => {
+        batch.delete(col.doc(o.email));
+      });
+      batch.commit().catch(() => {});
+    }
+    return valid;
+  }
+
+  async savePendingOtps(otps: PendingOtp[]): Promise<void> {
+    return this.saveCollection("pendingOtps", otps, "email");
+  }
+}
 
 // ==========================================
 // FILE-SYSTEM BACKUP DATABASE ENGINE
@@ -592,14 +758,34 @@ async function seedMongoIfEmpty() {
 
 class DualDatabase {
   private fileDb = new FileDatabase();
+  private firebaseDb = new FirebaseDatabase();
   private isMongoConnected = false;
   private isConnecting = false;
   private lastConnectAttemptTime = 0;
   private lastConnectError: string | null = null;
   private readonly RETRY_COOLDOWN_MS = 60000; // 1 minute cooldown between reconnection attempts
+  private useFirebase = false;
 
   constructor() {
-    this.connectMongo();
+    this.initializeDb();
+  }
+
+  private async initializeDb() {
+    if (await this.checkFirebase()) {
+      // Firebase configured successfully
+    } else {
+      this.connectMongo();
+    }
+  }
+
+  async checkFirebase(): Promise<boolean> {
+    if (this.useFirebase) return true;
+    if (this.firebaseDb.initialize()) {
+      this.useFirebase = true;
+      this.lastConnectError = null;
+      return true;
+    }
+    return false;
   }
 
   getLastConnectError(): string | null {
@@ -736,8 +922,10 @@ class DualDatabase {
   }
 
   async checkMongo(): Promise<boolean> {
+    if (this.useFirebase) return false;
     if (this.isMongoConnected) return true;
-    if (process.env.MONGODB_URI && !this.isConnecting) {
+    const uri = process.env.MONGODB_URI || process.env.MONGODB_URL;
+    if (uri && !this.isConnecting) {
       const now = Date.now();
       if (now - this.lastConnectAttemptTime > this.RETRY_COOLDOWN_MS) {
         await this.connectMongo();
@@ -747,6 +935,9 @@ class DualDatabase {
   }
 
   async getUsers(): Promise<User[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getUsers();
+    }
     if (await this.checkMongo()) {
       const result = await UserModel.find().lean();
       const idMap = new Map<string, string>();
@@ -769,6 +960,9 @@ class DualDatabase {
   }
 
   async saveUsers(users: User[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveUsers(users);
+    }
     if (await this.checkMongo()) {
       const ids = users.map(u => u.id);
       await UserModel.deleteMany({ id: { $nin: ids } });
@@ -794,6 +988,9 @@ class DualDatabase {
   }
 
   async getTopics(): Promise<Topic[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getTopics();
+    }
     if (await this.checkMongo()) {
       const result = await TopicModel.find().lean();
       return result as unknown as Topic[];
@@ -802,6 +999,9 @@ class DualDatabase {
   }
 
   async saveTopics(topics: Topic[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveTopics(topics);
+    }
     if (await this.checkMongo()) {
       const ids = topics.map(t => t.id);
       await TopicModel.deleteMany({ id: { $nin: ids } });
@@ -814,6 +1014,9 @@ class DualDatabase {
   }
 
   async getProposals(): Promise<Proposal[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getProposals();
+    }
     if (await this.checkMongo()) {
       const result = await ProposalModel.find().lean();
       return result as unknown as Proposal[];
@@ -822,6 +1025,9 @@ class DualDatabase {
   }
 
   async saveProposals(proposals: Proposal[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveProposals(proposals);
+    }
     if (await this.checkMongo()) {
       const ids = proposals.map(p => p.id);
       await ProposalModel.deleteMany({ id: { $nin: ids } });
@@ -834,6 +1040,9 @@ class DualDatabase {
   }
 
   async getNotifications(): Promise<Notification[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getNotifications();
+    }
     if (await this.checkMongo()) {
       const result = await NotificationModel.find().lean();
       return result as unknown as Notification[];
@@ -842,6 +1051,9 @@ class DualDatabase {
   }
 
   async saveNotifications(notifications: Notification[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveNotifications(notifications);
+    }
     if (await this.checkMongo()) {
       const ids = notifications.map(n => n.id);
       await NotificationModel.deleteMany({ id: { $nin: ids } });
@@ -854,6 +1066,9 @@ class DualDatabase {
   }
 
   async getSchedules(): Promise<Schedule[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getSchedules();
+    }
     if (await this.checkMongo()) {
       const result = await ScheduleModel.find().lean();
       return result as unknown as Schedule[];
@@ -862,6 +1077,9 @@ class DualDatabase {
   }
 
   async saveSchedules(schedules: Schedule[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveSchedules(schedules);
+    }
     if (await this.checkMongo()) {
       const ids = schedules.map(s => s.id);
       await ScheduleModel.deleteMany({ id: { $nin: ids } });
@@ -874,6 +1092,9 @@ class DualDatabase {
   }
 
   async getEmails(): Promise<any[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getEmails();
+    }
     if (await this.checkMongo()) {
       const result = await EmailModel.find().lean();
       return result as unknown as any[];
@@ -882,6 +1103,9 @@ class DualDatabase {
   }
 
   async saveEmails(emails: any[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveEmails(emails);
+    }
     if (await this.checkMongo()) {
       const ids = emails.map(e => e.id);
       await EmailModel.deleteMany({ id: { $nin: ids } });
@@ -894,6 +1118,9 @@ class DualDatabase {
   }
 
   async getDocuments(): Promise<SharedDocument[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getDocuments();
+    }
     if (await this.checkMongo()) {
       const result = await DocumentModel.find().lean();
       return result as unknown as SharedDocument[];
@@ -902,6 +1129,9 @@ class DualDatabase {
   }
 
   async saveDocuments(documents: SharedDocument[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.saveDocuments(documents);
+    }
     if (await this.checkMongo()) {
       const ids = documents.map(d => d.id);
       await DocumentModel.deleteMany({ id: { $nin: ids } });
@@ -914,6 +1144,9 @@ class DualDatabase {
   }
 
   async getPresentations(): Promise<PresentationRequest[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getPresentations();
+    }
     if (await this.checkMongo()) {
       const result = await PresentationModel.find().lean();
       return result as unknown as PresentationRequest[];
@@ -922,6 +1155,9 @@ class DualDatabase {
   }
 
   async savePresentations(presentations: PresentationRequest[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.savePresentations(presentations);
+    }
     if (await this.checkMongo()) {
       const ids = presentations.map(p => p.id);
       await PresentationModel.deleteMany({ id: { $nin: ids } });
@@ -934,6 +1170,9 @@ class DualDatabase {
   }
 
   async getPendingOtps(): Promise<PendingOtp[]> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.getPendingOtps();
+    }
     if (await this.checkMongo()) {
       const result = await PendingOtpModel.find().lean();
       const otps = result as unknown as PendingOtp[];
@@ -954,6 +1193,9 @@ class DualDatabase {
   }
 
   async savePendingOtps(otps: PendingOtp[]): Promise<void> {
+    if (await this.checkFirebase()) {
+      return this.firebaseDb.savePendingOtps(otps);
+    }
     if (await this.checkMongo()) {
       const emails = otps.map(o => o.email);
       await PendingOtpModel.deleteMany({ email: { $nin: emails } });
