@@ -133,5 +133,8 @@ export const api = {
   agora: {
     getToken: (channelName: string, isScreen: boolean = false) => request<{ token: string; uid: number; channelName: string; appId: string }>(`/agora/token?channelName=${encodeURIComponent(channelName)}&isScreen=${isScreen}`, { method: "GET" }),
     getNameMap: () => request<Record<number, string>>("/users/map", { method: "GET" }),
+  },
+  system: {
+    dbStatus: () => request<{ connected: boolean; type: string; uri: string }>("/db-status", { method: "GET" }),
   }
 };

@@ -618,17 +618,6 @@
   ],
   "schedules": [
     {
-      "id": "sch_demo_1",
-      "title": "Initial Project Scope Consultation",
-      "meetingDate": "2026-06-28",
-      "time": "10:00",
-      "venue": "Faculty of Computing, Room 205",
-      "status": "cancelled",
-      "studentId": "usr_stud_1",
-      "supervisorId": "usr_sup_olukunle",
-      "createdAt": "2026-06-23T16:21:38.476Z"
-    },
-    {
       "id": "sch_e7nfk1pz8",
       "title": "PROJECT REVIEW",
       "meetingDate": "2026-06-23",
@@ -924,17 +913,6 @@
       "supervisorId": "usr_sup_olukunle",
       "status": "approved",
       "createdAt": "2026-06-30T14:51:19.429Z"
-    },
-    {
-      "id": "sch_ouvsbtf0w",
-      "title": "PROJECT DEFENSE",
-      "meetingDate": "2026-06-30",
-      "time": "16:45",
-      "venue": "ONLINE",
-      "studentId": "usr_stud_1",
-      "supervisorId": "usr_sup_olukunle",
-      "status": "cancelled",
-      "createdAt": "2026-06-30T15:44:21.580Z"
     },
     {
       "id": "sch_znmpepiy0",
@@ -1602,5 +1580,6 @@
       "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>CANCELLED</strong> by <strong>Sunday Bright</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> Initial Project Scope Consultation</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
       "sentAt": "2026-06-23T16:22:01.697Z"
     }
-  ]
+  ],
+  "pendingOtps": []
 }

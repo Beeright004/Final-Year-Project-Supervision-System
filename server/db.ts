@@ -727,7 +727,7 @@ class DualDatabase {
     }
   }
 
-  private async checkMongo(): Promise<boolean> {
+  async checkMongo(): Promise<boolean> {
     if (this.isMongoConnected) return true;
     if (process.env.MONGODB_URI && !this.isConnecting) {
       const now = Date.now();

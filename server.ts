@@ -2013,6 +2013,23 @@ app.get("/api/agora/token", authenticateToken, async (req: AuthRequest, res: Res
 });
 
 
+// Check Database Connection Status
+app.get("/api/db-status", async (req: Request, res: Response) => {
+  try {
+    const connected = await db.checkMongo();
+    res.json({
+      connected,
+      type: connected ? "MongoDB Atlas (Persistent)" : "Local JSON Sandbox (Volatile)",
+      uri: process.env.MONGODB_URI 
+        ? `${process.env.MONGODB_URI.substring(0, 15)}...${process.env.MONGODB_URI.slice(-10)}` 
+        : "Not Configured"
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to query database status" });
+  }
+});
+
+
 // ==========================================
 // SERVER BOOTSTRAPS & VITE REVERSE PROXY
 // ==========================================

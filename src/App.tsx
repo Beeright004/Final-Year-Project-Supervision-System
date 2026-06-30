@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { AppProvider, useApp } from "./context/AppContext.js";
 import LandingPage from "./components/LandingPage.js";
 import DashboardLoading from "./components/DashboardLoading.js";
@@ -20,6 +20,21 @@ import {
 
 function RootApp() {
   const { user, login, register, confirmRegister, logout, loading, toasts, removeToast, supervisors, addToast, notifications, markNotificationRead } = useApp();
+
+  const [dbConnected, setDbConnected] = useState<boolean | null>(null);
+  const [dbType, setDbType] = useState<string>("Checking Database...");
+
+  useEffect(() => {
+    api.system.dbStatus()
+      .then((status) => {
+        setDbConnected(status.connected);
+        setDbType(status.type);
+      })
+      .catch(() => {
+        setDbConnected(false);
+        setDbType("Local JSON Sandbox (Volatile)");
+      });
+  }, []);
 
   // Public tabs routing states
   const [publicView, setPublicView] = useState<"home" | "about" | "faq" | "contact" | "login" | "register">("home");
@@ -195,8 +210,19 @@ function RootApp() {
             >
               <img src={supervisionLogo} className="h-10 w-auto max-w-[140px] object-contain bg-white p-1 rounded-lg shadow-md border border-slate-800/50" referrerPolicy="no-referrer" />
               <div>
-                <h1 className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-white">FYP Supervision</h1>
-                <p className="text-[10px] text-slate-400 tracking-wider uppercase mt-0.5 font-bold">University Portal</p>
+                <div className="flex items-center gap-2">
+                  <h1 className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-white">FYP Supervision</h1>
+                  {dbConnected !== null && (
+                    <span className={`text-[8px] font-mono px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider ${
+                      dbConnected 
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/35" 
+                        : "bg-amber-500/20 text-amber-400 border border-amber-500/35"
+                    }`}>
+                      {dbConnected ? "Connected" : "Sandbox"}
+                    </span>
+                  )}
+                </div>
+                <p className="text-[10px] text-slate-400 tracking-wider uppercase mt-1 font-bold">University Portal</p>
               </div>
             </button>
 
@@ -339,6 +365,12 @@ function RootApp() {
                             <div className="flex justify-between items-center text-slate-400">
                               <span>Terminal</span>
                               <span className="text-blue-400 font-bold uppercase">{user.role}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-slate-400">
+                              <span>Database</span>
+                              <span className={dbConnected ? "text-emerald-400 font-bold" : "text-amber-500 font-bold"} title={dbConnected ? "MongoDB Atlas connected successfully!" : "Running in volatile offline memory mode. Setup MONGODB_URI to save changes permanently."}>
+                                {dbConnected ? "Persistent" : "Sandbox"}
+                              </span>
                             </div>
                           </div>
                         </div>
