@@ -600,7 +600,7 @@ export default function SupervisorDashboard() {
                       {sch.status === "approved" && (
                         <div className="border-t border-slate-150 pt-3">
                           <button
-                            onClick={() => setActiveVideoCall(`supervision-${sch.id}`)}
+                            onClick={() => setActiveVideoCall(`supervision-${sch.supervisorId}-${sch.meetingDate}-${sch.time}`.replace(/[^a-zA-Z0-9-_]/g, "-"))}
                             className="px-3.5 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-[10px] rounded flex items-center gap-1.5 transition shadow-sm cursor-pointer w-full justify-center"
                           >
                             <Video className="h-3.5 w-3.5" />
