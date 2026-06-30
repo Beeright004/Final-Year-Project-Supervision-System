@@ -607,9 +607,9 @@ class DualDatabase {
   }
 
   private async connectMongo() {
-    const uri = process.env.MONGODB_URI;
+    const uri = process.env.MONGODB_URI || process.env.MONGODB_URL;
     if (!uri) {
-      this.lastConnectError = "MONGODB_URI is not set";
+      this.lastConnectError = "MONGODB_URI or MONGODB_URL is not set in Vercel settings";
       console.log("ℹ️ MONGODB_URI is not set. Running in Local JSON File Database Fallback mode.");
       return;
     }
