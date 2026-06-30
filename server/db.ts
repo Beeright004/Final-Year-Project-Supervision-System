@@ -327,7 +327,7 @@ class FileDatabase {
       {
         id: "usr_stud_1",
         name: "Sunday Bright",
-        email: "beeright004@gmail.com",
+        email: "sunday.bright@student.edu",
         password: "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
         role: "student",
         matricNumber: "210502197",

@@ -21,7 +21,7 @@
     {
       "id": "usr_stud_1",
       "name": "Sunday Bright",
-      "email": "beeright004@gmail.com",
+      "email": "sunday.bright@student.edu",
       "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "student",
       "matricNumber": "210502197",
@@ -42,7 +42,7 @@
       "id": "usr_jlyz7ta23",
       "name": "Test Student Three",
       "email": "test.student3@school.edu",
-      "password": "$2b$10$REsCQoO1Dt3Lj4uXk8UeWOmnTIKM7Ij786pQcLmyCOWI6uWWYBfrm",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "student",
       "matricNumber": "STU/2026/003",
       "department": "ICT (Information Technology)",
@@ -52,8 +52,8 @@
     {
       "id": "usr_619mht7zp",
       "name": "Olaogun Demilade",
-      "email": "olaogundemilade@gmail.com",
-      "password": "$2b$10$cf12qrn/ERZqcAC9PTjqmuQVuB.ZqZz5VCPH1ajCsqpuCT9fPq2AS",
+      "email": "olaogun.demilade@student.edu",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "student",
       "matricNumber": "220501012",
       "department": "Computer Science",
@@ -63,8 +63,8 @@
     {
       "id": "usr_qswt7ag64",
       "name": "Glory Okum",
-      "email": "gloryokum863@gmail.com",
-      "password": "$2b$10$xdO7q0Hua/8um9wc1rzQyO4EgtaDLTTvOXSKDiD2NTaedqhRnPQYO",
+      "email": "glory.okum@student.edu",
+      "password": "$2b$10$nc9tEmXTnPwwcrGekmL0eOyhpViRhq6CWACGeX2ASiLhunEaoxx36",
       "role": "student",
       "matricNumber": "220502063",
       "department": "ICT (Information Technology)",
@@ -87,6 +87,30 @@
   ],
   "proposals": [],
   "notifications": [
+    {
+      "id": "not_r69k8hm2v",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"Literature Review Alignment\" updated to [APPROVED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "success",
+      "createdAt": "2026-06-30T15:20:22.601Z"
+    },
+    {
+      "id": "not_5y1gzt2kk",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision Scheduled session \"Literature Review Alignment\" updated to [APPROVED] by Olukunle Adebayo.",
+      "read": false,
+      "type": "success",
+      "createdAt": "2026-06-30T15:20:17.052Z"
+    },
+    {
+      "id": "not_oou97f3wj",
+      "recipientId": "usr_sup_olukunle",
+      "message": "Supervision schedule proposed by Glory Okum: \"Literature Review Alignment\" at 2026-06-30 15:52",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T14:51:19.429Z"
+    },
     {
       "id": "not_c9uwoit2a",
       "recipientId": "usr_stud_1",
@@ -801,6 +825,17 @@
       "supervisorId": "usr_sup_olukunle",
       "status": "approved",
       "createdAt": "2026-06-24T16:47:58.023Z"
+    },
+    {
+      "id": "sch_2qqp9pt87",
+      "title": "Literature Review Alignment",
+      "meetingDate": "2026-06-30",
+      "time": "15:52",
+      "venue": "online",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T14:51:19.429Z"
     }
   ],
   "documents": [],
@@ -820,6 +855,27 @@
     }
   ],
   "emails": [
+    {
+      "id": "email_0p6qesf09",
+      "to": "glory.okum@student.edu",
+      "subject": "Meeting Booking [APPROVED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>APPROVED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> Literature Review Alignment</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:20:22.604Z"
+    },
+    {
+      "id": "email_mb6j36i2w",
+      "to": "glory.okum@student.edu",
+      "subject": "Meeting Booking [APPROVED] — Supervision Schedule",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #2563eb; margin-top: 0;\">Supervision Schedule Update</h2>\n        <p>A meeting request is now marked as <strong>APPROVED</strong> by <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f9fafb; padding: 15px; border: 1px solid #e5e7eb; margin: 15px 0; border-radius: 6px;\">\n          <p><strong>Session:</strong> Literature Review Alignment</p>\n        </div>\n        <p>Log in to view the adjusted booking timeline in your dashboard schedule calendar.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">University Automation Systems</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:20:17.058Z"
+    },
+    {
+      "id": "email_s7lnfa4gs",
+      "to": "olukunle.adebayo@university.edu",
+      "subject": "Supervision Session Booked: Literature Review Alignment",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Glory Okum</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> Literature Review Alignment</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 15:52</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> online</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T14:51:19.432Z"
+    },
     {
       "id": "email_t2cpggm2l",
       "to": "beeright004@gmail.com",

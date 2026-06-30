@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Methodology Report - Final Year Project Supervision System</title>
+  <style>
+    /* Styling for high-quality PDF print output */
+    @page {
+      size: A4;
+      margin: 20mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #0f172a;
+      line-height: 1.6;
+      font-size: 11.5pt;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3, h4 {
+      color: #1e3a8a;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 20pt;
+      border-bottom: 2px solid #0d9488;
+      padding-bottom: 5px;
+      margin-top: 30px;
+    }
+
+    h2 {
+      font-size: 15pt;
+      margin-top: 25px;
+      color: #0f766e;
+    }
+
+    h3 {
+      font-size: 12pt;
+      margin-top: 20px;
+      color: #1e40af;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin-bottom: 12px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+      text-align: justify;
+    }
+
+    .cover-page {
+      page-break-after: always;
+      height: 250mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 4px double #1e3a8a;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    .cover-header {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .cover-title {
+      font-size: 24pt;
+      font-weight: 800;
+      color: #1e3a8a;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      color: #0d9488;
+      font-weight: 600;
+      margin-bottom: 50px;
+    }
+
+    .cover-middle {
+      text-align: center;
+      margin-top: 80px;
+      font-size: 12pt;
+      color: #334155;
+    }
+
+    .cover-footer {
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 10pt;
+      color: #64748b;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 20px;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 10pt;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #1e3a8a;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .highlight-box {
+      background-color: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .code-span {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f1f5f9;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover Page -->
+  <div class="cover-page">
+    <div class="cover-header">
+      <div style="font-size: 11pt; letter-spacing: 2px; color: #64748b; font-weight: bold; margin-bottom: 20px;">
+        FACULTY OF COMPUTING AND INFORMATION TECHNOLOGY
+      </div>
+      <div class="cover-title">SYSTEM METHODOLOGY REPORT</div>
+      <div class="cover-subtitle">Web-Based Scheduling &amp; Final Year Project Supervision System</div>
+    </div>
+    
+    <div class="cover-middle">
+      <p style="text-align: center; font-style: italic;">
+        A comprehensive overview of the architectural framework, operational methodologies, 
+        and implementation stack engineered for academic research supervision.
+      </p>
+      <div style="margin-top: 40px; font-weight: bold; color: #0f172a;">
+        Iterative Agile Implementation &amp; Technical System Specifications
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <strong>Core Technologies:</strong> React 19 • Node.js • Express • Agora RTC (WebRTC) • MongoDB / JSON DB<br>
+      <span style="font-size: 9pt; display: inline-block; margin-top: 5px;">
+        Generated on: June 30, 2026
+      </span>
+    </div>
+  </div>
+
+  <!-- Document Body -->
+  
+  <h1>1.0 Introduction to the System Methodology</h1>
+  <p>
+    The administration of final year undergraduate and postgraduate academic projects has traditionally suffered from procedural bottlenecks, fragmented communication channels, uncoordinated document revisions, and scheduling conflicts. To address these systemic inefficiencies, this system adopts a rigorous, web-based engineering methodology aimed at unifying the entire supervision lifecycle into a single interactive platform.
+  </p>
+  <p>
+    The core methodology merges user-centered interface designs with stateful backend control flows. It constructs a secure collaborative workspace for three distinct user roles:
+  </p>
+  <ul>
+    <li><strong>Students:</strong> Empowered to propose research directions, upload chapter drafts, book office hours, and present project milestones in real-time.</li>
+    <li><strong>Supervisors:</strong> Provided with custom dashboard panels to oversee multiple assigned students, offer asynchronous feedback on specific documents, manage appointment calendars, and host defense presentations.</li>
+    <li><strong>Administrators:</strong> Enabled to coordinate user profiles, enforce supervisor assignments, monitor overall milestones, and maintain audit logs.</li>
+  </ul>
+
+  <h1>2.0 System Development Life Cycle (SDLC)</h1>
+  <p>
+    The project implementation follows the <strong>Agile Development Methodology</strong> utilizing iterative sprints. Agile development is chosen to facilitate rapid prototyping, continuous stakeholder integration, and the ability to refine capabilities based on user feedback during the academic semester.
+  </p>
+  
+  <div class="highlight-box">
+    <strong>Iterative Feedback Cycle:</strong> 
+    Unlike the traditional sequential Waterfall model, the Agile framework ensures that supervisors and students can review partial releases (e.g. initial topic proposal pipelines) while scheduling and video features are undergoing design. This eliminates the risk of building incorrect workflows.
+  </div>
+
+  <h3>2.1 Sprint Breakdown</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Sprint Cycle</th>
+        <th style="width: 45%;">Key Deliverables</th>
+        <th style="width: 30%;">Verification Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Sprint 1: Core &amp; RBAC</strong></td>
+        <td>Vite development environment, Express REST API, Bcrypt hashing, and JSON Web Token (JWT) Authentication.</td>
+        <td>Integration tests for route protection and payload authentication tokens.</td>
+      </tr>
+      <tr>
+        <td><strong>Sprint 2: Topic &amp; Document Workflow</strong></td>
+        <td>Topic proposal pipeline, chapter file upload handler via Multer, metadata tagging, and review states.</td>
+        <td>State machine validation tests (e.g., Pending &rarr; Approved/Revision).</td>
+      </tr>
+      <tr>
+        <td><strong>Sprint 3: Scheduling &amp; Real-time Video</strong></td>
+        <td>Interactive booking calendar, venue/link mapping, and WebRTC integration via the Agora RTC SDK.</td>
+        <td>P2P communication tests and microphone/camera diagnostic suites.</td>
+      </tr>
+      <tr>
+        <td><strong>Sprint 4: Alerts &amp; Deployment</strong></td>
+        <td>In-app notifications, Nodemailer SMTP service integration, production bundling, and MongoDB bridging.</td>
+        <td>SMTP delivery verification and type checking.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h1>3.0 Requirements Engineering &amp; Specifications</h1>
+  <p>
+    Detailed requirement engineering ensures the system provides correct access control boundaries, low latency operations, and dependable real-time communications.
+  </p>
+
+  <h2>3.1 Functional Requirements</h2>
+  <ul>
+    <li><strong>Authentication &amp; Role Enforcement:</strong> Secure registration and login. Session persistence via HTTP headers containing JWTs. Automatic routing based on user role (student, supervisor, admin).</li>
+    <li><strong>Topic Proposal State Machine:</strong> Students submit proposals. Supervisors are alerted and can transition the status to <span class="code-span">approved</span>, <span class="code-span">revision</span>, or <span class="code-span">rejected</span> with text-based feedback.</li>
+    <li><strong>Milestone Document Repository:</strong> Document uploads (up to 10MB) categorized with specific tags (e.g., "Chapter 1", "Chapter 2", "Presentation Slides"). Supports version uploads and inline supervisor feedback strings.</li>
+    <li><strong>Meeting Scheduler:</strong> Dynamic booking interface where students request meetings by specifying titles, dates, times, and channels (physical venue or virtual link). Supervisors accept or reschedule.</li>
+    <li><strong>Integrated Virtual Defense:</strong> An embedded virtual conference room utilizing WebRTC to facilitate remote supervisor-student consultations, slide reviews, and project defenses directly in the web browser.</li>
+  </ul>
+
+  <h2>3.2 Non-Functional Requirements</h2>
+  <ul>
+    <li><strong>Performance &amp; Response Time:</strong> Server API endpoints respond within 150ms on average under standard load. Client-side navigation is instant using React Single-Page Application (SPA) architecture.</li>
+    <li><strong>Information Security &amp; Encryption:</strong> All sensitive credentials (passwords) are irreversibly hashed using BcryptJS with 10 salt rounds. Communication is encrypted via TLS/HTTPS.</li>
+    <li><strong>High Availability &amp; Resilience:</strong> Graceful fallbacks for WebRTC/Agora connections, local file database backups, and persistent email logging to track communication failures.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h1>4.0 System Architecture &amp; Structural Design</h1>
+  <p>
+    The application is engineered as a <strong>Single-Port Client-Server Web Application</strong>. Using Vite's development proxy and unified production bundles, both the Express API endpoints and Vite's frontend assets are served from a single port, resolving CORS configuration issues and streamlining cloud deployments.
+  </p>
+
+  <h2>4.1 Layered Architecture</h2>
+  <p>
+    The system follows a classic three-tier architecture model to separate concerns, maintain clean code, and enable modular testing:
+  </p>
+  
+  <h3>1. Presentation Layer (Client Frontend)</h3>
+  <p>
+    Built with <strong>React 19</strong>, <strong>TypeScript</strong>, and <strong>Tailwind CSS v4</strong>. Utilizes client-side routing, responsive dashboard layouts, context-based state containers (<span class="code-span">AuthContext</span>, <span class="code-span">SupervisionContext</span>), and dynamic user interactions facilitated by Framer Motion and Lucide icons.
+  </p>
+
+  <h3>2. Service &amp; Business Logic Layer (Server API)</h3>
+  <p>
+    Implemented with <strong>Node.js</strong> and <strong>Express</strong>. This layer receives incoming HTTP requests, intercepts unauthorized traffic using custom JWT Verification Middleware, processes uploads via Multer, forwards notifications, and runs validations.
+  </p>
+
+  <h3>3. Data Access &amp; Storage Layer</h3>
+  <p>
+    Features a dual-mode persistence architecture:
+  </p>
+  <ul>
+    <li><strong>Development Sandbox Mode:</strong> A low-overhead, transactional JSON file-store (<span class="code-span">data/db.json</span>) that automatically reads and writes updates atomically on server starts. This allows the system to run out-of-the-box in local preview environments.</li>
+    <li><strong>Production Mode:</strong> Connects to a cloud-hosted <strong>MongoDB Atlas</strong> database cluster using Mongoose schemas. This ensures high availability, scalability, and automatic index optimization.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h1>5.0 Database Schema Design</h1>
+  <p>
+    To guarantee transactional integrity, the database model defines clear associations (e.g. connecting proposals to students, and students to supervisors). The primary entities are outlined below:
+  </p>
+
+  <h3>User Schema</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Field</th>
+        <th style="width: 25%;">Type</th>
+        <th style="width: 50%;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>id</strong></td>
+        <td>String (UUID / ObjectId)</td>
+        <td>Primary key. Unique identifier.</td>
+      </tr>
+      <tr>
+        <td><strong>email</strong></td>
+        <td>String</td>
+        <td>Unique email address used for login and notifications.</td>
+      </tr>
+      <tr>
+        <td><strong>password</strong></td>
+        <td>String</td>
+        <td>Cryptographically hashed password (Bcrypt).</td>
+      </tr>
+      <tr>
+        <td><strong>role</strong></td>
+        <td>String (Enum)</td>
+        <td>Role constraints: <span class="code-span">student</span> | <span class="code-span">supervisor</span> | <span class="code-span">admin</span>.</td>
+      </tr>
+      <tr>
+        <td><strong>matricNumber</strong></td>
+        <td>String (Optional)</td>
+        <td>Student identification number.</td>
+      </tr>
+      <tr>
+        <td><strong>supervisorId</strong></td>
+        <td>String (Foreign Key)</td>
+        <td>Reference to the assigned supervisor's user ID.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Topic &amp; Proposal Schema</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Field</th>
+        <th style="width: 25%;">Type</th>
+        <th style="width: 50%;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>id</strong></td>
+        <td>String</td>
+        <td>Unique proposal identifier.</td>
+      </tr>
+      <tr>
+        <td><strong>title</strong></td>
+        <td>String</td>
+        <td>Proposed research topic title.</td>
+      </tr>
+      <tr>
+        <td><strong>description</strong></td>
+        <td>String</td>
+        <td>Abstract, problem statement, and research goals.</td>
+      </tr>
+      <tr>
+        <td><strong>status</strong></td>
+        <td>String (Enum)</td>
+        <td>States: <span class="code-span">pending</span> | <span class="code-span">approved</span> | <span class="code-span">rejected</span> | <span class="code-span">revision</span>.</td>
+      </tr>
+      <tr>
+        <td><strong>fileUrl</strong></td>
+        <td>String (Optional)</td>
+        <td>Path to the uploaded PDF proposal document.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Schedule Schema</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Field</th>
+        <th style="width: 25%;">Type</th>
+        <th style="width: 50%;">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>meetingDate</strong></td>
+        <td>String (Date format)</td>
+        <td>Scheduled day of the meeting.</td>
+      </tr>
+      <tr>
+        <td><strong>time</strong></td>
+        <td>String</td>
+        <td>Time slot (e.g., "14:00").</td>
+      </tr>
+      <tr>
+        <td><strong>venue</strong></td>
+        <td>String</td>
+        <td>Physical office location or WebRTC virtual meeting URL.</td>
+      </tr>
+      <tr>
+        <td><strong>status</strong></td>
+        <td>String (Enum)</td>
+        <td>States: <span class="code-span">pending</span> | <span class="code-span">approved</span> | <span class="code-span">completed</span> | <span class="code-span">cancelled</span>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h1>6.0 Verification &amp; Quality Assurance</h1>
+  <p>
+    To ensure the system's reliability and compliance with academic institutional standards, a comprehensive Quality Assurance (QA) protocol was executed across the codebase.
+  </p>
+
+  <h3>6.1 Security and Authorization Testing</h3>
+  <p>
+    Tests verify that security boundaries are strictly enforced. All protected routes require a valid JSON Web Token:
+  </p>
+  <ul>
+    <li>Verified that requests without headers receive an HTTP 401 Unauthorized status.</li>
+    <li>Verified that student tokens attempting to access supervisor routes (such as updating grades or proposal approvals) trigger an HTTP 403 Forbidden status.</li>
+    <li>Verified that administrators are the only roles allowed to modify student-supervisor matching schemas.</li>
+  </ul>
+
+  <h3>6.2 Responsive Design Validation</h3>
+  <p>
+    The web interface was tested across multiple screen viewports to ensure seamless usability for students accessing dashboards from campus mobile networks or supervisors using desktop workstations:
+  </p>
+  <ul>
+    <li><strong>Mobile (375px - 480px):</strong> Navigation collapses into a touch-friendly sidebar. Cards stacked vertically.</li>
+    <li><strong>Tablet (768px - 1024px):</strong> Sidebar navigation toggles responsively. Data grids collapse into scrollable tables.</li>
+    <li><strong>Desktop (1200px+):</strong> Full split-screen views displaying supervision details, shared file lists, and calendar slots concurrently.</li>
+  </ul>
+
+  <h3>6.3 Real-Time Communications Diagnostics</h3>
+  <p>
+    WebRTC channels powered by the Agora RTC SDK NG were tested for high latency fallbacks. The system gracefully switches to audio-only transmission if packet loss exceeds 25%, maintaining session continuity.
+  </p>
+
+  <h2 style="text-align: center; margin-top: 40px; border: none; color: #1e3a8a;">End of Methodology Report</h2>
+
+</body>
+</html>

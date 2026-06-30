@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { BookOpen, FileText, Calendar, CheckSquare, Award, Users, BookMarked, ArrowRight, ShieldCheck, Mail, Phone, MapPin, Sparkles, HelpCircle } from "lucide-react";
 import supervisionLogo from "../assets/images/supervision_logo_1780237288997.png";
+import studentsImage from "../assets/images/group-five-african-college-students-spending-time-together-campus-university-yard-black-afro-friends-studying-education-theme.jpg";
+
 
 interface LandingPageProps {
   onNavigateLogin: () => void;
@@ -176,11 +178,10 @@ export default function LandingPage({ onNavigateLogin, onNavigateRegister, onSel
       <section className="py-12 bg-slate-100/60 border-y border-slate-200 px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center w-full">
           <div>
-            <video
-              className="rounded-xl shadow-md border border-slate-200"
-              poster="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop"
-              muted
-              playsInline
+            <img
+              src={studentsImage}
+              alt="Students collaborating on campus"
+              className="rounded-xl shadow-md border border-slate-200 w-full object-cover max-h-[420px]"
             />
           </div>
           <div className="space-y-4 text-left">
