@@ -100,7 +100,7 @@ export interface PendingOtp {
     name: string;
     email: string;
     password: string;
-    role: string;
+    role: "student" | "supervisor" | "admin";
     matricNumber?: string;
     department: string;
     supervisorId?: string;
