@@ -88,6 +88,78 @@
   "proposals": [],
   "notifications": [
     {
+      "id": "not_1ztd13zlp",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:49:27.595Z"
+    },
+    {
+      "id": "not_qcoo2d0zz",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:49:24.664Z"
+    },
+    {
+      "id": "not_ltiyms9w6",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:49:24.500Z"
+    },
+    {
+      "id": "not_jc48z01qj",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:49:15.711Z"
+    },
+    {
+      "id": "not_gijz0uj4a",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:49:04.237Z"
+    },
+    {
+      "id": "not_4yltrudsy",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"DEFENSE\" at 2026-06-30 16:49",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:48:44.917Z"
+    },
+    {
+      "id": "not_pj2lv362m",
+      "recipientId": "usr_qswt7ag64",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"PROJECT DEFENSE\" at 2026-06-30 16:45",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:44:43.761Z"
+    },
+    {
+      "id": "not_m65hwotqg",
+      "recipientId": "usr_619mht7zp",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"PROJECT DEFENSE\" at 2026-06-30 16:45",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:44:33.093Z"
+    },
+    {
+      "id": "not_vmtw6vvxj",
+      "recipientId": "usr_stud_1",
+      "message": "Supervision schedule proposed by Olukunle Adebayo: \"PROJECT DEFENSE\" at 2026-06-30 16:45",
+      "read": false,
+      "type": "info",
+      "createdAt": "2026-06-30T15:44:21.580Z"
+    },
+    {
       "id": "not_r69k8hm2v",
       "recipientId": "usr_qswt7ag64",
       "message": "Supervision Scheduled session \"Literature Review Alignment\" updated to [APPROVED] by Olukunle Adebayo.",
@@ -836,6 +908,105 @@
       "supervisorId": "usr_sup_olukunle",
       "status": "approved",
       "createdAt": "2026-06-30T14:51:19.429Z"
+    },
+    {
+      "id": "sch_ouvsbtf0w",
+      "title": "PROJECT DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:45",
+      "venue": "ONLINE",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:44:21.580Z"
+    },
+    {
+      "id": "sch_znmpepiy0",
+      "title": "PROJECT DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:45",
+      "venue": "ONLINE",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:44:33.093Z"
+    },
+    {
+      "id": "sch_vmg1wy3bx",
+      "title": "PROJECT DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:45",
+      "venue": "ONLINE",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:44:43.760Z"
+    },
+    {
+      "id": "sch_utdg6hu1r",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:48:44.917Z"
+    },
+    {
+      "id": "sch_3lyyhwyr7",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_stud_1",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:49:04.237Z"
+    },
+    {
+      "id": "sch_q2dk6jskg",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:49:15.711Z"
+    },
+    {
+      "id": "sch_fimrsou1e",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_619mht7zp",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:49:24.500Z"
+    },
+    {
+      "id": "sch_znd99u099",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:49:24.664Z"
+    },
+    {
+      "id": "sch_ti4ar8ij4",
+      "title": "DEFENSE",
+      "meetingDate": "2026-06-30",
+      "time": "16:49",
+      "venue": "ONLINE",
+      "studentId": "usr_qswt7ag64",
+      "supervisorId": "usr_sup_olukunle",
+      "status": "approved",
+      "createdAt": "2026-06-30T15:49:27.595Z"
     }
   ],
   "documents": [],
@@ -855,6 +1026,69 @@
     }
   ],
   "emails": [
+    {
+      "id": "email_jq614y35v",
+      "to": "glory.okum@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:49:27.604Z"
+    },
+    {
+      "id": "email_eo6coqcp7",
+      "to": "glory.okum@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:49:24.666Z"
+    },
+    {
+      "id": "email_ojr4a1owh",
+      "to": "olaogun.demilade@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:49:24.504Z"
+    },
+    {
+      "id": "email_qx7a0t9am",
+      "to": "olaogun.demilade@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:49:15.712Z"
+    },
+    {
+      "id": "email_007osp7en",
+      "to": "sunday.bright@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:49:04.238Z"
+    },
+    {
+      "id": "email_cyxt2e82a",
+      "to": "sunday.bright@student.edu",
+      "subject": "Supervision Session Booked: DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:49</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:48:44.919Z"
+    },
+    {
+      "id": "email_qwu7k939f",
+      "to": "glory.okum@student.edu",
+      "subject": "Supervision Session Booked: PROJECT DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> PROJECT DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:45</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:44:43.762Z"
+    },
+    {
+      "id": "email_itvau9cvd",
+      "to": "olaogun.demilade@student.edu",
+      "subject": "Supervision Session Booked: PROJECT DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> PROJECT DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:45</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:44:33.095Z"
+    },
+    {
+      "id": "email_t3y3jdwmq",
+      "to": "sunday.bright@student.edu",
+      "subject": "Supervision Session Booked: PROJECT DEFENSE",
+      "html": "\n      <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\">\n        <h2 style=\"color: #4f46e5; margin-top: 0;\">Meeting Notification Details</h2>\n        <p>A new supervision review meeting has been scheduled with <strong>Olukunle Adebayo</strong>:</p>\n        <div style=\"background: #f5f3ff; border-left: 4px solid #4f46e5; padding: 15px; margin: 15px 0; border-radius: 4px;\">\n          <p style=\"margin: 0 0 8px 0;\"><strong>Session Title:</strong> PROJECT DEFENSE</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Date:</strong> 2026-06-30</p>\n          <p style=\"margin: 0 0 8px 0;\"><strong>Time:</strong> 16:45</p>\n          <p style=\"margin: 0 0 0 0;\"><strong>Venue / Platform:</strong> ONLINE</p>\n        </div>\n        <p>Please sign into your university portal dashboard to confirm availability, reschedule, or review project records prior to the meeting.</p>\n        <p style=\"margin-top: 25px; font-size: 12px; color: #6b7280;\">Supervision Schedulers Office</p>\n      </div>\n    ",
+      "sentAt": "2026-06-30T15:44:21.583Z"
+    },
     {
       "id": "email_0p6qesf09",
       "to": "glory.okum@student.edu",
