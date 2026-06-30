@@ -135,6 +135,6 @@ export const api = {
     getNameMap: () => request<Record<number, string>>("/users/map", { method: "GET" }),
   },
   system: {
-    dbStatus: () => request<{ connected: boolean; type: string; uri: string }>("/db-status", { method: "GET" }),
+    dbStatus: () => request<{ connected: boolean; type: string; uri: string; error: string | null }>("/db-status", { method: "GET" }),
   }
 };

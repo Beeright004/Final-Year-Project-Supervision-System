@@ -23,16 +23,19 @@ function RootApp() {
 
   const [dbConnected, setDbConnected] = useState<boolean | null>(null);
   const [dbType, setDbType] = useState<string>("Checking Database...");
+  const [dbError, setDbError] = useState<string | null>(null);
 
   useEffect(() => {
     api.system.dbStatus()
       .then((status) => {
         setDbConnected(status.connected);
         setDbType(status.type);
+        setDbError(status.error);
       })
       .catch(() => {
         setDbConnected(false);
         setDbType("Local JSON Sandbox (Volatile)");
+        setDbError("Endpoint communication failure");
       });
   }, []);
 
@@ -213,11 +216,14 @@ function RootApp() {
                 <div className="flex items-center gap-2">
                   <h1 className="font-extrabold text-sm sm:text-base tracking-tight leading-none text-white">FYP Supervision</h1>
                   {dbConnected !== null && (
-                    <span className={`text-[8px] font-mono px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider ${
-                      dbConnected 
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/35" 
-                        : "bg-amber-500/20 text-amber-400 border border-amber-500/35"
-                    }`}>
+                    <span 
+                      title={dbConnected ? "MongoDB Atlas connected successfully!" : `Database connection error: ${dbError || "Unknown connection error"}`}
+                      className={`text-[8px] font-mono px-1.5 py-0.5 rounded font-extrabold uppercase tracking-wider ${
+                        dbConnected 
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/35" 
+                          : "bg-amber-500/20 text-amber-400 border border-amber-500/35"
+                      }`}
+                    >
                       {dbConnected ? "Connected" : "Sandbox"}
                     </span>
                   )}
@@ -368,7 +374,7 @@ function RootApp() {
                             </div>
                             <div className="flex justify-between items-center text-slate-400">
                               <span>Database</span>
-                              <span className={dbConnected ? "text-emerald-400 font-bold" : "text-amber-500 font-bold"} title={dbConnected ? "MongoDB Atlas connected successfully!" : "Running in volatile offline memory mode. Setup MONGODB_URI to save changes permanently."}>
+                              <span className={dbConnected ? "text-emerald-400 font-bold" : "text-amber-500 font-bold"} title={dbConnected ? "MongoDB Atlas connected successfully!" : `Database connection error: ${dbError || "Running in volatile offline sandbox mode. Setup MONGODB_URI to save changes permanently."}`}>
                                 {dbConnected ? "Persistent" : "Sandbox"}
                               </span>
                             </div>

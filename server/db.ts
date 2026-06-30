@@ -595,15 +595,21 @@ class DualDatabase {
   private isMongoConnected = false;
   private isConnecting = false;
   private lastConnectAttemptTime = 0;
+  private lastConnectError: string | null = null;
   private readonly RETRY_COOLDOWN_MS = 60000; // 1 minute cooldown between reconnection attempts
 
   constructor() {
     this.connectMongo();
   }
 
+  getLastConnectError(): string | null {
+    return this.lastConnectError;
+  }
+
   private async connectMongo() {
     const uri = process.env.MONGODB_URI;
     if (!uri) {
+      this.lastConnectError = "MONGODB_URI is not set";
       console.log("ℹ️ MONGODB_URI is not set. Running in Local JSON File Database Fallback mode.");
       return;
     }
@@ -624,6 +630,7 @@ class DualDatabase {
         serverSelectionTimeoutMS: 5000,
       });
       this.isMongoConnected = true;
+      this.lastConnectError = null;
       console.log("❇️ Successfully established interactive live connection with MongoDB Atlas!");
 
       // Automatically migrate legacy file-based database to MongoDB Atlas collections
@@ -631,6 +638,7 @@ class DualDatabase {
     } catch (err: any) {
       console.error("❌ Failed to connect with MongoDB Atlas, cascading back to Local Filesystem Sandbox:", err.message);
       this.isMongoConnected = false;
+      this.lastConnectError = err.message || "Unknown Mongoose connection error";
     } finally {
       this.isConnecting = false;
     }

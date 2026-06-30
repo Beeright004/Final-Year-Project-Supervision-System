@@ -2022,7 +2022,8 @@ app.get("/api/db-status", async (req: Request, res: Response) => {
       type: connected ? "MongoDB Atlas (Persistent)" : "Local JSON Sandbox (Volatile)",
       uri: process.env.MONGODB_URI 
         ? `${process.env.MONGODB_URI.substring(0, 15)}...${process.env.MONGODB_URI.slice(-10)}` 
-        : "Not Configured"
+        : "Not Configured",
+      error: db.getLastConnectError()
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to query database status" });
