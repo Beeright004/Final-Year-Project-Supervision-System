@@ -238,6 +238,13 @@ const MongoosePresentationSchema = new Schema({
   createdAt: { type: String, required: true }
 });
 
+const MongoosePendingOtpSchema = new Schema({
+  email: { type: String, required: true, unique: true },
+  otp: { type: String, required: true },
+  expiresAt: { type: Number, required: true },
+  details: { type: Object, required: true }
+});
+
 const UserModel = mongoose.models.User || mongoose.model("User", MongooseUserSchema);
 const TopicModel = mongoose.models.Topic || mongoose.model("Topic", MongooseTopicSchema);
 const ProposalModel = mongoose.models.Proposal || mongoose.model("Proposal", MongooseProposalSchema);
@@ -246,6 +253,7 @@ const ScheduleModel = mongoose.models.Schedule || mongoose.model("Schedule", Mon
 const EmailModel = mongoose.models.Email || mongoose.model("Email", MongooseEmailSchema);
 const DocumentModel = mongoose.models.Document || mongoose.model("Document", MongooseDocumentSchema);
 const PresentationModel = mongoose.models.Presentation || mongoose.model("Presentation", MongoosePresentationSchema);
+const PendingOtpModel = mongoose.models.PendingOtp || mongoose.model("PendingOtp", MongoosePendingOtpSchema);
 
 // ==========================================
 // FILE-SYSTEM BACKUP DATABASE ENGINE
@@ -915,6 +923,38 @@ class DualDatabase {
       return;
     }
     return this.fileDb.savePresentations(presentations);
+  }
+
+  async getPendingOtps(): Promise<PendingOtp[]> {
+    if (await this.checkMongo()) {
+      const result = await PendingOtpModel.find().lean();
+      const otps = result as unknown as PendingOtp[];
+      
+      // Purge expired OTPs automatically
+      const now = Date.now();
+      const valid = otps.filter(o => o.expiresAt > now);
+      
+      // If we filtered out expired ones, we should theoretically delete them, but it's fine
+      // to let the save step overwrite later. Let's do a background cleanup:
+      if (valid.length < otps.length) {
+        PendingOtpModel.deleteMany({ expiresAt: { $lte: now } }).catch(() => {});
+      }
+      
+      return valid;
+    }
+    return this.fileDb.getPendingOtps();
+  }
+
+  async savePendingOtps(otps: PendingOtp[]): Promise<void> {
+    if (await this.checkMongo()) {
+      const emails = otps.map(o => o.email);
+      await PendingOtpModel.deleteMany({ email: { $nin: emails } });
+      for (const o of otps) {
+        await PendingOtpModel.updateOne({ email: o.email }, o, { upsert: true });
+      }
+      return;
+    }
+    return this.fileDb.savePendingOtps(otps);
   }
 }
 
