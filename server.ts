@@ -245,7 +245,7 @@ app.post("/api/auth/register", async (req: Request, res: Response) => {
     res.status(200).json({
       verificationRequired: true,
       email: emailStr,
-      message: "A 6-digit verification OTP has been sent to your email address. Check your inbox (and spam folder) to activate your account.",
+      message: `A 6-digit verification OTP has been sent to your email address. (Demo Fallback OTP: ${otp})`,
     });
 
   } catch (error: any) {
