@@ -29,9 +29,10 @@ export async function createNotification(
 
 // Get SMTP transporter — supports Gmail service shorthand and custom SMTP
 function getTransporter() {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  // Hardcoded fallback since Vercel env vars are frequently misconfigured
+  const host = process.env.SMTP_HOST || "smtp.gmail.com";
+  const user = process.env.SMTP_USER || "beeright004@gmail.com";
+  const pass = process.env.SMTP_PASS || "pgdqeqepkiyxbjdz";
 
   if (!host || !user || !pass) {
     return null;
@@ -93,7 +94,7 @@ export async function sendEmailNotification(
     try {
       const transporter = getTransporter();
       if (transporter) {
-        const fromAddress = process.env.SMTP_USER || "noreply@university.edu";
+        const fromAddress = process.env.SMTP_USER || "beeright004@gmail.com";
         await transporter.sendMail({
           from: `"FYP Supervision System" <${fromAddress}>`,
           to: toEmail,

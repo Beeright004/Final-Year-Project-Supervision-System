@@ -248,9 +248,9 @@ app.post("/api/auth/register", async (req: Request, res: Response) => {
       message: "A 6-digit verification OTP has been sent to your email address. Check your inbox (and spam folder) to activate your account.",
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Registration dispatch error:", error);
-    res.status(500).json({ error: "Registration failed. Please try again." });
+    res.status(500).json({ error: `Registration failed: ${error.message || "Unknown error"}. Please try again.` });
   }
 });
 
